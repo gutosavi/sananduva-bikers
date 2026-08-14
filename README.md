@@ -2,5 +2,5 @@
 
 ### Fluxo de trabalho inicial
 
-- Criar o projeto e organização das pastas;
-- Construir as seções do site (Hero, sobre, Pedal do Tigre, Apoiadores, FAQ, Footer);
+- Criar o projeto e organizar das pastas;
+- Construir as seções do site (Hero, Sobre, Pedal do Tigre, Apoiadores, FAQ, Footer);
