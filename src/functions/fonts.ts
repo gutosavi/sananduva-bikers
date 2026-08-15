@@ -1,7 +1,7 @@
 import { Geist, Poppins } from "next/font/google";
 import localFont from "next/font/local";
 
-export const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+export const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
 
 export const neueMachina = localFont({
   src: [
@@ -21,6 +21,7 @@ export const neueMachina = localFont({
       style: "normal",
     },
   ],
+  variable: "--font-neue-machina",
 });
 
 export const poppins = Poppins({
@@ -28,5 +29,5 @@ export const poppins = Poppins({
   style: ["normal"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-secondary-poppins",
+  variable: "--font-poppins",
 });
