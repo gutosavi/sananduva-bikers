@@ -8,7 +8,7 @@ import { SiteNavBar } from "@/components/site-navbar";
 
 export default function Home() {
   return (
-    <div>
+    <div className="min-h-screen bg-background">
       <SiteNavBar />
       <main>
         <HeroSection />
