@@ -1,16 +1,17 @@
 import { Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { MenuToggle } from "./menu-toggle";
 import { Button } from "./ui/button";
 
-export function SiteNavBar() {
-  const NAV_LINKS = [
-    { href: "/about", label: "O Grupo" },
-    { href: "/routes", label: "Percursos" },
-    { href: "/gallery", label: "Galeria" },
-    { href: "/sponsor", label: "Apoiadores" },
-  ];
+const NAV_LINKS = [
+  { href: "/about", label: "O Grupo" },
+  { href: "/routes", label: "Percursos" },
+  { href: "/gallery", label: "Galeria" },
+  { href: "/sponsor", label: "Apoiadores" },
+];
 
+export function SiteNavBar() {
   return (
     <header className="sticky top-0 border-b border-white/10 bg-black/60 backdrop-blur-md">
       <nav className="mx-auto h-24 flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
@@ -23,6 +24,7 @@ export function SiteNavBar() {
           />
         </Link>
 
+        {/* Menu desktop */}
         <div className="hidden min-w-0 items-center gap-5 md:flex">
           {NAV_LINKS.map((link) => (
             <Link
@@ -52,6 +54,9 @@ export function SiteNavBar() {
             Inscreva-se
           </Button>
         </div>
+
+        {/* Menu-mobile */}
+        <MenuToggle />
       </nav>
     </header>
   );
