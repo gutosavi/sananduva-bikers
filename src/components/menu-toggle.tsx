@@ -1,10 +1,10 @@
-"use client";
 import { Menu, X } from "lucide-react";
-import React from "react";
+export interface MenuToggleProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export function MenuToggle() {
-  const [open, setOpen] = React.useState(false);
-
+export function MenuToggle({ open, setOpen }: MenuToggleProps) {
   return (
     <button
       type="button"

@@ -1,10 +1,13 @@
+"use client";
 import { Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
+import { MenuMobile } from "./menu-mobile";
 import { MenuToggle } from "./menu-toggle";
 import { Button } from "./ui/button";
 
-const NAV_LINKS = [
+export const NAV_LINKS = [
   { href: "/about", label: "O Grupo" },
   { href: "/routes", label: "Percursos" },
   { href: "/gallery", label: "Galeria" },
@@ -12,6 +15,8 @@ const NAV_LINKS = [
 ];
 
 export function SiteNavBar() {
+  const [open, setOpen] = React.useState(false);
+
   return (
     <header className="sticky top-0 border-b border-white/10 bg-black/60 backdrop-blur-md">
       <nav className="mx-auto h-24 flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
@@ -55,9 +60,12 @@ export function SiteNavBar() {
           </Button>
         </div>
 
-        {/* Menu-mobile */}
-        <MenuToggle />
+        {/* Menu-toggle */}
+        <MenuToggle open={open} setOpen={setOpen} />
       </nav>
+
+      {/* Menu-Mobile */}
+      <MenuMobile open={open} setOpen={setOpen} />
     </header>
   );
 }
