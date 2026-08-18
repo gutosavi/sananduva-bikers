@@ -68,10 +68,8 @@
   --popover-foreground: #f4f2ec;
 
   /* Neon orange accent */
-  --primary: #e8620e;
+  --primary: #f2670b;
   --primary-foreground: #0b0f0c;
-
-  /* #ff6d00 - cor alternativa para decidir durante o projeto */
 
   /* Deep forest green */
   --secondary: #1b2e23;
@@ -80,7 +78,7 @@
   --muted: #16201a;
   --muted-foreground: #96a89b;
 
-  --accent: #e8620e;
+  --accent: #f2670b;
   --accent-foreground: #0b0f0c;
 
   --destructive: #e5484d;
@@ -94,9 +92,9 @@
 
   --border: rgba(255, 255, 255, 0.09);
   --input: rgba(255, 255, 255, 0.12);
-  --ring: #e8620e;
+  --ring: #f2670b;
 
-  --chart-1: #e8620e;
+  --chart-1: #f2670b;
   --chart-2: #35c47a;
   --chart-3: #f5b23e;
   --chart-4: #2f7f5b;
@@ -106,12 +104,12 @@
 
   --sidebar: #0f1511;
   --sidebar-foreground: #f4f2ec;
-  --sidebar-primary: #e8620e;
+  --sidebar-primary: #f2670b;
   --sidebar-primary-foreground: #0b0f0c;
   --sidebar-accent: #16201a;
   --sidebar-accent-foreground: #f4f2ec;
   --sidebar-border: rgba(255, 255, 255, 0.09);
-  --sidebar-ring: #e8620e;
+  --sidebar-ring: #f2670b;
 }
 
 @layer base {
@@ -203,10 +201,10 @@
 /* Glowing neon bullet dot, matching the Instagram artwork markers */
 @utility neon-dot {
   border-radius: 9999px;
-  background-color: #ff6d00;
+  background-color: #f2670b;
   box-shadow:
-    0 0 12px #ff6d00,
-    0 0 4px #ffb066;
+    0 0 12px #f2670b,
+    0 0 4px #f2670b;
 }
 
 @layer utilities {
