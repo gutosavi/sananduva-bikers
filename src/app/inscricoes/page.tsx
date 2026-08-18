@@ -1,6 +1,9 @@
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavBar } from "@/components/site-navbar";
 import { TornPaper } from "@/components/torn-paper";
+import { CategoriesCard } from "@/features/registration/components/CategoriesCard";
+import { ParticipantKitCard } from "@/features/registration/components/ParticipantKidCard";
+import { RoutesCard } from "@/features/registration/components/RoutesCard";
 import type { Metadata } from "next";
 import Image from "next/image";
 
@@ -37,8 +40,13 @@ export default function InscricoesPage() {
             className="h-8 sm:h-8 md:h-16"
             zIndex="z-20"
           />
-          <div className="relative z-10 px-6 pb-24 pt-24 md:pt-32">
-            Formulário
+        </section>
+
+        <section className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.3fr] mx-5 pb-24 pt-24 md:pt-32 md:mx-20">
+          <div className="col-start-1 space-y-10">
+            <ParticipantKitCard />
+            <RoutesCard />
+            <CategoriesCard />
           </div>
         </section>
       </main>
