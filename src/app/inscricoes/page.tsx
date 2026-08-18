@@ -50,7 +50,7 @@ export default function InscricoesPage() {
             <CategoriesCard />
           </div>
 
-          <div className="col-start-1 space-y-10 md:col-start-2 ">
+          <div className="col-start-1 space-y-10 md:col-start-2">
             <RegistrationForm />
           </div>
         </section>
