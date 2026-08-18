@@ -1,5 +1,6 @@
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavBar } from "@/components/site-navbar";
+import { TornPaper } from "@/components/torn-paper";
 import type { Metadata } from "next";
 import Image from "next/image";
 
@@ -12,14 +13,33 @@ export default function InscricoesPage() {
   return (
     <>
       <SiteNavBar />
-      <main className="w-screen h-screen max-h-screen">
-        <section className="relative h-80 w-full top-0 flex justify-center ">
-          <Image
-            src="/assets/section-inscricoes.png"
-            alt="Painel Inscreva-se"
-            fill
-            style={{ objectFit: "cover" }}
+      <main className="min-h-screen w-full overflow-x-hidden">
+        <section className="relative">
+          <div className="relative h-40 w-full overflow-visible md:h-85">
+            <Image
+              src="/assets/section-inscricoes.png"
+              alt="Painel Inscreva-se"
+              fill
+              priority
+              className="object-fill md:object-cover"
+            />
+            <TornPaper
+              position="bottom"
+              className="h-6 sm:h-8 md:h-16"
+              zIndex="z-20"
+            />
+          </div>
+        </section>
+
+        <section className="relative">
+          <TornPaper
+            position="top"
+            className="h-8 sm:h-8 md:h-16"
+            zIndex="z-20"
           />
+          <div className="relative z-10 px-6 pb-24 pt-24 md:pt-32">
+            Formulário
+          </div>
         </section>
       </main>
       <SiteFooter />
