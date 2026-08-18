@@ -3,6 +3,7 @@ import { SiteNavBar } from "@/components/site-navbar";
 import { TornPaper } from "@/components/torn-paper";
 import { CategoriesCard } from "@/features/registration/components/CategoriesCard";
 import { ParticipantKitCard } from "@/features/registration/components/ParticipantKidCard";
+import { RegistrationForm } from "@/features/registration/components/RegistragionForm";
 import { RoutesCard } from "@/features/registration/components/RoutesCard";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -47,6 +48,10 @@ export default function InscricoesPage() {
             <ParticipantKitCard />
             <RoutesCard />
             <CategoriesCard />
+          </div>
+
+          <div className="col-start-1 space-y-10 md:col-start-2 ">
+            <RegistrationForm />
           </div>
         </section>
       </main>
