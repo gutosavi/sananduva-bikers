@@ -1,11 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
+import {
+  RegistrationFormData,
+  registrationSchema,
+} from "../schemas/registration.schema";
 import { ParticipantDetailsCard } from "./ParticipantDetailsCard";
 import { RegistrationDetailsCard } from "./RegistrationDetailsCard";
 
-type FormData = {
+export type FormData = {
   fullname: string;
   cpf: string;
   birthDate: Date;
@@ -20,9 +25,24 @@ type FormData = {
 };
 
 export function RegistrationForm() {
-  const methods = useForm<FormData>();
+  const methods = useForm<RegistrationFormData>({
+    resolver: zodResolver(registrationSchema),
+    defaultValues: {
+      fullname: "",
+      cpf: "",
+      birthDate: "",
+      gender: "",
+      cityState: "",
+      emergencyContact: "",
+      emergencyPhone: "",
+      category: "",
+      route: "",
+      tshirtSize: "",
+      team: "",
+    },
+  });
 
-  const onSubmit = methods.handleSubmit((data: FormData) => {
+  const onSubmit = methods.handleSubmit((data: RegistrationFormData) => {
     console.log(data);
 
     methods.reset();
