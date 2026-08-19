@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Field } from "@/components/ui/field";
+import { Field, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Controller, useFormContext } from "react-hook-form";
+import { RegistrationFormData } from "../schemas/registration.schema";
 
 const optionsGender = [
   { label: "Feminino", value: "Feminino" },
@@ -26,7 +27,12 @@ const optionsGender = [
 ];
 
 export function ParticipantDetailsCard() {
-  const { register, control } = useFormContext();
+  /* Card - Etapa 1 */
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext<RegistrationFormData>();
 
   return (
     <Card className="glass border-white/10 hover:glow-orange">
@@ -52,6 +58,7 @@ export function ParticipantDetailsCard() {
               placeholder="Nome Completo"
               required
             />
+            <FieldError errors={[errors.fullname]} />
           </Field>
 
           <Field>
@@ -64,6 +71,7 @@ export function ParticipantDetailsCard() {
               placeholder="000.000.000-00"
               required
             />
+            <FieldError errors={[errors.cpf]} />
           </Field>
 
           <Field>
@@ -76,6 +84,7 @@ export function ParticipantDetailsCard() {
               autoComplete="bday"
               required
             />
+            <FieldError errors={[errors.birthDate]} />
           </Field>
 
           <Field>
@@ -101,6 +110,32 @@ export function ParticipantDetailsCard() {
                 </Select>
               )}
             />
+            <FieldError errors={[errors.gender]} />
+          </Field>
+
+          <Field>
+            <Label htmlFor="email">E-mail</Label>
+            <Input
+              {...register("email")}
+              name="email"
+              type="email"
+              placeholder="exemplo@exemplo.com.br"
+              autoComplete="email"
+              required
+            />
+            <FieldError errors={[errors.email]} />
+          </Field>
+
+          <Field>
+            <Label htmlFor="phoneNumber">Telefone</Label>
+            <Input
+              {...register("phoneNumber")}
+              name="phoneNumber"
+              type="text"
+              placeholder="(54) 99999-9999"
+              required
+            />
+            <FieldError errors={[errors.phoneNumber]} />
           </Field>
 
           <Field>
@@ -113,6 +148,7 @@ export function ParticipantDetailsCard() {
               autoComplete="address-level2"
               required
             />
+            <FieldError errors={[errors.cityState]} />
           </Field>
 
           <Field>
@@ -124,6 +160,7 @@ export function ParticipantDetailsCard() {
               placeholder="Nome do contato"
               required
             />
+            <FieldError errors={[errors.emergencyContact]} />
           </Field>
 
           <Field>
@@ -137,6 +174,7 @@ export function ParticipantDetailsCard() {
               placeholder="(54) 99999-9999"
               required
             />
+            <FieldError errors={[errors.emergencyPhone]} />
           </Field>
         </div>
       </CardContent>

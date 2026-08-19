@@ -76,3 +76,5 @@ export const CATEGORIES = [
   "Pro - Masculino Master B2",
   "E-Bike",
 ];
+
+export const tshirtSizes = ["PP", "P", "M", "G", "GG"];

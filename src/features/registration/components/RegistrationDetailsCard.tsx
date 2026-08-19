@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Field } from "@/components/ui/field";
+import { Field, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -16,13 +16,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CATEGORIES, ROUTES_EVENT } from "@/lib/event-data";
+import { CATEGORIES, ROUTES_EVENT, tshirtSizes } from "@/lib/event-data";
 import { Controller, useFormContext } from "react-hook-form";
-
-const tshirtSizes = ["PP", "P", "M", "G", "GG"];
+import { RegistrationFormData } from "../schemas/registration.schema";
 
 export function RegistrationDetailsCard() {
-  const { register, control } = useFormContext();
+  /* Card - Etapa 2 */
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext<RegistrationFormData>();
   return (
     <Card className="glass border-white/10 hover:glow-orange">
       <CardHeader className="px-6 pt-6">
@@ -45,7 +49,6 @@ export function RegistrationDetailsCard() {
               autoComplete="team"
               type="text"
               placeholder="Opcional"
-              required
             />
           </Field>
 
@@ -73,6 +76,7 @@ export function RegistrationDetailsCard() {
                 </Select>
               )}
             />
+            <FieldError errors={[errors.tshirtSize]} />
           </Field>
 
           <Field>
@@ -99,6 +103,7 @@ export function RegistrationDetailsCard() {
                 </Select>
               )}
             />
+            <FieldError errors={[errors.route]} />
           </Field>
 
           <Field>
@@ -125,6 +130,7 @@ export function RegistrationDetailsCard() {
                 </Select>
               )}
             />
+            <FieldError errors={[errors.category]} />
           </Field>
         </div>
       </CardContent>
