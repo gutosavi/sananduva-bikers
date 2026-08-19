@@ -17,10 +17,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CATEGORIES, ROUTES_EVENT } from "@/lib/event-data";
+import { Controller, useFormContext } from "react-hook-form";
 
 const tshirtSizes = ["PP", "P", "M", "G", "GG"];
 
 export function RegistrationDetailsCard() {
+  const { register, control } = useFormContext();
   return (
     <Card className="glass border-white/10 hover:glow-orange">
       <CardHeader className="px-6 pt-6">
@@ -38,7 +40,7 @@ export function RegistrationDetailsCard() {
           <Field>
             <Label htmlFor="team">Equipe / Grupo</Label>
             <Input
-              id="team"
+              {...register("team")}
               name="team"
               autoComplete="team"
               type="text"
@@ -50,61 +52,79 @@ export function RegistrationDetailsCard() {
           <Field>
             <Label htmlFor="tshirtSize">Tamanho da camisa</Label>
 
-            <Select>
-              <SelectTrigger id="tshirtSize">
-                <SelectValue placeholder="Selecione o tamanho" />
-              </SelectTrigger>
+            <Controller
+              name="tshirtSize"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="tshirtSize">
+                    <SelectValue placeholder="Selecione o tamanho" />
+                  </SelectTrigger>
 
-              <SelectContent>
-                <SelectGroup>
-                  {tshirtSizes.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {item}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+                  <SelectContent>
+                    <SelectGroup>
+                      {tshirtSizes.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </Field>
 
           <Field>
-            <Label htmlFor="routes">Percurso</Label>
+            <Label htmlFor="route">Percurso</Label>
 
-            <Select>
-              <SelectTrigger id="routes">
-                <SelectValue placeholder="Selecione o percurso" />
-              </SelectTrigger>
+            <Controller
+              name="route"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="route">
+                    <SelectValue placeholder="Selecione o percurso" />
+                  </SelectTrigger>
 
-              <SelectContent>
-                <SelectGroup>
-                  {ROUTES_EVENT.map((item) => (
-                    <SelectItem key={item.title} value={item.title}>
-                      {item.title} - {item.distance}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+                  <SelectContent>
+                    <SelectGroup>
+                      {ROUTES_EVENT.map((item) => (
+                        <SelectItem key={item.title} value={item.title}>
+                          {item.title} - {item.distance}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </Field>
 
           <Field>
-            <Label htmlFor="categories">Categoria</Label>
+            <Label htmlFor="category">Categoria</Label>
 
-            <Select>
-              <SelectTrigger id="categories">
-                <SelectValue placeholder="Selecione a categoria" />
-              </SelectTrigger>
+            <Controller
+              name="category"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="category">
+                    <SelectValue placeholder="Selecione a categoria" />
+                  </SelectTrigger>
 
-              <SelectContent>
-                <SelectGroup>
-                  {CATEGORIES.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {item} - {item}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+                  <SelectContent>
+                    <SelectGroup>
+                      {CATEGORIES.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item} - {item}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </Field>
         </div>
       </CardContent>

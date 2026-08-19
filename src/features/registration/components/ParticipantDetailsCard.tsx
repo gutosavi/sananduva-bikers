@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Controller, useFormContext } from "react-hook-form";
 
 const optionsGender = [
   { label: "Feminino", value: "Feminino" },
@@ -25,6 +26,8 @@ const optionsGender = [
 ];
 
 export function ParticipantDetailsCard() {
+  const { register, control } = useFormContext();
+
   return (
     <Card className="glass border-white/10 hover:glow-orange">
       <CardHeader className="px-6 pt-6">
@@ -42,7 +45,7 @@ export function ParticipantDetailsCard() {
           <Field className="md:col-span-2">
             <Label htmlFor="fullname">Nome Completo</Label>
             <Input
-              id="fullname"
+              {...register("fullname")}
               name="fullname"
               autoComplete="name"
               type="text"
@@ -54,7 +57,7 @@ export function ParticipantDetailsCard() {
           <Field>
             <Label htmlFor="CPF">CPF</Label>
             <Input
-              id="cpf"
+              {...register("cpf")}
               name="cpf"
               type="text"
               inputMode="numeric"
@@ -66,7 +69,7 @@ export function ParticipantDetailsCard() {
           <Field>
             <Label htmlFor="birthDate">Data de nascimento</Label>
             <Input
-              id="birthDate"
+              {...register("birthDate")}
               name="birthDate"
               type="date"
               placeholder="dd/mm/aaaa"
@@ -77,28 +80,33 @@ export function ParticipantDetailsCard() {
 
           <Field>
             <Label htmlFor="gender">Gênero</Label>
+            <Controller
+              name="gender"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="gender">
+                    <SelectValue placeholder="Selecione seu gênero" />
+                  </SelectTrigger>
 
-            <Select>
-              <SelectTrigger id="gender">
-                <SelectValue placeholder="Selecione seu gênero" />
-              </SelectTrigger>
-
-              <SelectContent>
-                <SelectGroup>
-                  {optionsGender.map((item) => (
-                    <SelectItem key={item.value} value={item.value}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+                  <SelectContent>
+                    <SelectGroup>
+                      {optionsGender.map((item) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </Field>
 
           <Field>
             <Label htmlFor="cityState">Cidade / Estado</Label>
             <Input
-              id="cityState"
+              {...register("cityState")}
               name="cityState"
               type="text"
               placeholder="Sananduva - RS"
@@ -110,7 +118,7 @@ export function ParticipantDetailsCard() {
           <Field>
             <Label htmlFor="emergencyContact">Contato de Emergência</Label>
             <Input
-              id="emergencyContact"
+              {...register("emergencyContact")}
               name="emergencyContact"
               type="text"
               placeholder="Nome do contato"
@@ -121,7 +129,7 @@ export function ParticipantDetailsCard() {
           <Field>
             <Label htmlFor="emergencyPhone">Telefone de emergência</Label>
             <Input
-              id="emergencyPhone"
+              {...register("emergencyPhone")}
               name="emergencyPhone"
               type="tel"
               inputMode="tel"
