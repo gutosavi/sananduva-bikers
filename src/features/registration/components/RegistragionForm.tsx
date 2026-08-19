@@ -22,7 +22,7 @@ type FormData = {
 export function RegistrationForm() {
   const methods = useForm<FormData>();
 
-  const onSubmit = methods.handleSubmit((data) => {
+  const onSubmit = methods.handleSubmit((data: FormData) => {
     console.log(data);
 
     methods.reset();

@@ -1,6 +1,6 @@
-import { SiteFooter } from "@/components/site-footer";
-import { SiteNavBar } from "@/components/site-navbar";
-import { TornPaper } from "@/components/torn-paper";
+import { SiteFooter } from "@/components/shared/site-footer";
+import { SiteNavBar } from "@/components/shared/site-navbar";
+import { TornPaper } from "@/components/shared/torn-paper";
 import { CategoriesCard } from "@/features/registration/components/CategoriesCard";
 import { ParticipantKitCard } from "@/features/registration/components/ParticipantKidCard";
 import { RegistrationForm } from "@/features/registration/components/RegistragionForm";

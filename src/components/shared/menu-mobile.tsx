@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { Button } from "../ui/button";
 import { MenuToggleProps } from "./menu-toggle";
 import { NAV_LINKS } from "./site-navbar";
-import { Button } from "./ui/button";
 
 export function MenuMobile({ open, setOpen }: MenuToggleProps) {
   return (

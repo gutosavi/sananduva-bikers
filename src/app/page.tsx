@@ -3,8 +3,8 @@ import { GallerySection } from "@/components/home/gallery-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { RoutesSection } from "@/components/home/routes-section";
 import { SponsorSection } from "@/components/home/sponsor-section";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteNavBar } from "@/components/site-navbar";
+import { SiteFooter } from "@/components/shared/site-footer";
+import { SiteNavBar } from "@/components/shared/site-navbar";
 
 export default function Home() {
   return (

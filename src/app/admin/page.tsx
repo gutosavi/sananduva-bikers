@@ -1,5 +1,5 @@
-import { SiteFooter } from "@/components/site-footer";
-import { SiteNavBar } from "@/components/site-navbar";
+import { SiteFooter } from "@/components/shared/site-footer";
+import { SiteNavBar } from "@/components/shared/site-navbar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

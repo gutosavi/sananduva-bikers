@@ -3,9 +3,9 @@ import { Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { Button } from "../ui/button";
 import { MenuMobile } from "./menu-mobile";
 import { MenuToggle } from "./menu-toggle";
-import { Button } from "./ui/button";
 
 export const NAV_LINKS = [
   { href: "/about", label: "O Grupo" },
