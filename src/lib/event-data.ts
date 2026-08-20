@@ -78,3 +78,8 @@ export const CATEGORIES = [
 ];
 
 export const tshirtSizes = ["PP", "P", "M", "G", "GG"];
+
+export const BRL = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
+});
