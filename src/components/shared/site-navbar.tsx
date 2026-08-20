@@ -18,7 +18,7 @@ export function SiteNavBar() {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <header className="sticky top-0 border-b border-white/10 bg-black/60 backdrop-blur-md">
+    <header className="sticky top-0 border-b border-white/10 bg-black/60 backdrop-blur-md z-50">
       <nav className="mx-auto h-24 flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
         <Link href="/">
           <Image

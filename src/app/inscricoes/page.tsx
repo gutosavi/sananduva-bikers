@@ -21,7 +21,7 @@ export default function InscricoesPage() {
         <section className="relative">
           <div className="relative h-40 w-full overflow-visible md:h-85">
             <Image
-              src="/assets/section-inscricoes.png"
+              src="/assets/images/banner-inscricoes.png"
               alt="Painel Inscreva-se"
               fill
               priority

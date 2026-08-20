@@ -15,12 +15,12 @@ export function TornPaper({
 }: TornPaperProps) {
   const positionClass =
     position === "top"
-      ? "top-0 translate-y-[-30%] md:-translate-y-[30%] rotate-180"
-      : "bottom-3 translate-y-[70%] md:translate-y-1/2";
+      ? "top-0 translate-y-[-50%] md:-translate-y-[50%] rotate-180"
+      : "bottom-3 translate-y-[65%] md:translate-y-1/2";
 
   return (
     <div
-      className={`pointer-events-none absolute inset-x-0 w-full h-8 sm:h-8 md:h-20 ${positionClass} ${zIndex} ${className}`}
+      className={`pointer-events-none absolute inset-x-0 w-full h-8 sm:h-4 ${positionClass} ${zIndex} ${className}`}
     >
       <Image
         src={src}
@@ -28,7 +28,7 @@ export function TornPaper({
         aria-hidden="true"
         fill
         sizes="100vw"
-        className="h-full w-full object-cover"
+        className="w-full object-cover"
       />
     </div>
   );
