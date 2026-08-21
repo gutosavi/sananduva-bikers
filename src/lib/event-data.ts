@@ -26,7 +26,14 @@ export const KIT_ITENS = [
   },
 ];
 
-export const ROUTES_EVENT = [
+export type Routes = {
+  title: string;
+  distance: string;
+  elevation: string;
+  level: string;
+};
+
+export const ROUTES_EVENT: Routes[] = [
   {
     title: "Light",
     distance: "15 km",
@@ -198,3 +205,7 @@ export const MOCK_REGISTRATIONS: Registration[] = [
     status: "pendente",
   },
 ];
+
+export function routeName(title: Routes["title"]) {
+  return ROUTES_EVENT.find((row) => row.title === title);
+}
