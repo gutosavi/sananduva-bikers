@@ -29,7 +29,7 @@ export const KIT_ITENS = [
 export const ROUTES_EVENT = [
   {
     title: "Light",
-    distance: "15,2 km",
+    distance: "15 km",
     elevation: "250m",
     level: "Iniciante",
   },
@@ -83,3 +83,118 @@ export const BRL = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
 });
+
+export type Registration = {
+  // mock_type
+  id: number | null;
+  name: string;
+  cpf: string;
+  route: "Amador" | "Light" | "Sport" | "Pro";
+  category: string;
+  shirtSize: string;
+  date: string;
+  status: "confirmado" | "pendente";
+};
+
+export const MOCK_REGISTRATIONS: Registration[] = [
+  {
+    id: 1,
+    name: "Anderson Foppa",
+    cpf: "012.345.678-90",
+    route: "Pro",
+    category: "MTB Masculino",
+    shirtSize: "G",
+    date: "2026-06-12",
+    status: "confirmado",
+  },
+  {
+    id: 2,
+    name: "Juliana Bortolini",
+    cpf: "123.456.789-01",
+    route: "Sport",
+    category: "MTB Feminino",
+    shirtSize: "P",
+    date: "2026-06-13",
+    status: "confirmado",
+  },
+  {
+    id: 3,
+    name: "Marcos Dallabrida",
+    cpf: "234.567.890-12",
+    route: "Light",
+    category: "Master B (40-49)",
+    shirtSize: "GG",
+    date: "2026-06-15",
+    status: "confirmado",
+  },
+  {
+    id: null,
+    name: "Fernanda Cerezer",
+    cpf: "345.678.901-23",
+    route: "Sport",
+    category: "E-Bike",
+    shirtSize: "M",
+    date: "2026-06-18",
+    status: "pendente",
+  },
+  {
+    id: 4,
+    name: "Rafael Menegat",
+    cpf: "456.789.012-34",
+    route: "Pro",
+    category: "Sub-23",
+    shirtSize: "M",
+    date: "2026-06-19",
+    status: "confirmado",
+  },
+  {
+    id: null,
+    name: "Camila Sartori",
+    cpf: "567.890.123-45",
+    route: "Light",
+    category: "MTB Feminino",
+    shirtSize: "P",
+    date: "2026-06-21",
+    status: "pendente",
+  },
+  {
+    id: 5,
+    name: "Gustavo Tonello",
+    cpf: "678.901.234-56",
+    route: "Sport",
+    category: "Master A (30-39)",
+    shirtSize: "GG",
+    date: "2026-06-22",
+    status: "confirmado",
+  },
+  {
+    id: null,
+    name: "Patrícia Lorenzoni",
+    cpf: "789.012.345-67",
+    route: "Pro",
+    category: "MTB Feminino",
+    shirtSize: "M",
+    date: "2026-06-24",
+    status: "pendente",
+  },
+  {
+    id: 6,
+    name: "Eduardo Panizzi",
+    cpf: "890.123.456-78",
+    route: "Amador",
+    category: "Master C (50+)",
+    shirtSize: "G",
+    date: "2026-06-25",
+    status: "confirmado",
+  },
+  {
+    id: null,
+    name: "Bruno Zanella",
+    cpf: "901.234.567-89",
+    route: "Sport",
+    category: "MTB Masculino",
+    shirtSize: "XGG",
+    date: "2026-06-27",
+    status: "pendente",
+  },
+];

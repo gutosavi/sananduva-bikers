@@ -36,7 +36,7 @@ const stats = [
 
 export function AdminStats() {
   return (
-    <section className="grid grid-cols-1 gap-10 md:grid-cols-2 mx-5 pb-24 pt-24 md:pt-32 md:mx-20">
+    <>
       {stats.map((stat) => (
         <Card
           key={stat.label}
@@ -59,6 +59,6 @@ export function AdminStats() {
           </CardContent>
         </Card>
       ))}
-    </section>
+    </>
   );
 }

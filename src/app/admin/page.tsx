@@ -1,6 +1,6 @@
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteNavBar } from "@/components/shared/site-navbar";
-import { AdminStats } from "@/features/admin/AdminStats";
+import { AdminDashboard } from "@/features/admin/AdminDashboard";
 import { DotIcon } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -36,7 +36,7 @@ export default function AdminPage() {
           </div>
         </section>
 
-        <AdminStats />
+        <AdminDashboard />
       </main>
       <SiteFooter />
     </>
