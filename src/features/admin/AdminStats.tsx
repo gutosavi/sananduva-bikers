@@ -2,39 +2,45 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BRL } from "@/lib/event-data";
 import { CircleCheck, CircleDollarSign, Clock, Users } from "lucide-react";
 
-const total = 10;
-const confirmed = 10;
-const pending = 10;
-const revenue = 1000;
+type StatsRegistration = {
+  total: number;
+  confirmed: number;
+  pending: number;
+  revenue: number;
+};
 
-const stats = [
-  {
-    label: "Inscrições",
-    value: String(total),
-    icon: Users,
-    accent: "text-foreground",
-  },
-  {
-    label: "Confirmadas",
-    value: String(confirmed),
-    icon: CircleCheck,
-    accent: "text-gradient-neon",
-  },
-  {
-    label: "Pendentes",
-    value: String(pending),
-    icon: Clock,
-    accent: "text-warning",
-  },
-  {
-    label: "Receita confirmada",
-    value: BRL.format(revenue),
-    icon: CircleDollarSign,
-    accent: "text-gradient-neon",
-  },
-];
-
-export function AdminStats() {
+export function AdminStats({
+  total,
+  confirmed,
+  pending,
+  revenue,
+}: StatsRegistration) {
+  const stats = [
+    {
+      label: "Inscrições",
+      value: String(total),
+      icon: Users,
+      accent: "text-foreground",
+    },
+    {
+      label: "Confirmadas",
+      value: String(confirmed),
+      icon: CircleCheck,
+      accent: "text-gradient-neon",
+    },
+    {
+      label: "Pendentes",
+      value: String(pending),
+      icon: Clock,
+      accent: "text-warning",
+    },
+    {
+      label: "Receita confirmada",
+      value: BRL.format(revenue),
+      icon: CircleDollarSign,
+      accent: "text-gradient-neon",
+    },
+  ];
   return (
     <>
       {stats.map((stat) => (
