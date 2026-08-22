@@ -10,23 +10,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MOCK_REGISTRATIONS, routeName, ROUTES_EVENT } from "@/lib/event-data";
+import {
+  MOCK_REGISTRATIONS,
+  Registration,
+  routeName,
+  ROUTES_EVENT,
+} from "@/lib/event-data";
 import { Download, Search } from "lucide-react";
 import React from "react";
 import { AdminStats } from "./AdminStats";
-import { RegistrationsTable } from "./RegistrationTable";
+import { RegistrationsTable } from "./RegistrationsTable";
 
 export function AdminDashboard() {
+  const [rows, setRows] = React.useState<Registration[]>(MOCK_REGISTRATIONS);
   const [routeFilter, setRouteFilter] = React.useState<string | null>("all");
   const [statusFilter, setStatusFilter] = React.useState<string | null>("all");
   const [inputValue, setInputValue] = React.useState("");
-  const rows = MOCK_REGISTRATIONS;
-  const eventPrice = 140;
 
-  const stats = rows.reduce(
+  const stats = Object.values(rows).reduce(
     (acc, user) => {
-      acc.confirmed += user.status === "confirmado" ? 1 : 0;
-      acc.pending += user.status === "pendente" ? 1 : 0;
+      acc.confirmed += user.status === "confirmed" ? 1 : 0;
+      acc.pending += user.status === "pending" ? 1 : 0;
+      acc.revenue += user.status === "confirmed" ? user.revenue : 0;
 
       return acc;
     },
@@ -34,16 +39,32 @@ export function AdminDashboard() {
       total: rows.length,
       confirmed: 0,
       pending: 0,
-      revenue: rows.length * eventPrice,
+      revenue: 0,
     },
   );
 
-  React.useEffect(() => {
-    //for debugging
-    console.log("Filtro do percurso:", routeFilter);
-    console.log("Filtro do status:", statusFilter);
-    console.log("Valor do input:", inputValue);
+  const filtered = Object.values(rows).filter((row) => {
+    const input = inputValue.trim().toLowerCase();
+    const matchInput =
+      !input ||
+      row.name.toLowerCase().includes(input) ||
+      row.cpf.includes(input);
+    const matchRoute = routeFilter === "all" || row.route === routeFilter;
+    const matchStatus = statusFilter === "all" || row.status === statusFilter;
+
+    return matchInput && matchRoute && matchStatus;
   });
+
+  const toggleStatus = (index: number) => {
+    setRows((prevRows) => {
+      const newRows = [...prevRows];
+      newRows[index] = {
+        ...newRows[index],
+        status: newRows[index].status === "confirmed" ? "pending" : "confirmed",
+      };
+      return newRows;
+    });
+  };
 
   return (
     <section className="w-full overflow-hidden">
@@ -100,7 +121,7 @@ export function AdminDashboard() {
                   {(value: string) =>
                     value === "all"
                       ? "Todos status"
-                      : value === "confirmado"
+                      : value === "confirmed"
                         ? "Confirmado"
                         : "Pendente"
                   }
@@ -109,8 +130,8 @@ export function AdminDashboard() {
 
               <SelectContent>
                 <SelectItem value="all">Todos status</SelectItem>
-                <SelectItem value="confirmado">Confirmado</SelectItem>
-                <SelectItem value="pendente">Pendente</SelectItem>
+                <SelectItem value="confirmed">Confirmado</SelectItem>
+                <SelectItem value="pending">Pendente</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -121,7 +142,7 @@ export function AdminDashboard() {
         </div>
 
         <div className="overflow-x-auto">
-          <RegistrationsTable />
+          <RegistrationsTable rows={filtered} onClick={toggleStatus} />
         </div>
       </Card>
     </section>
