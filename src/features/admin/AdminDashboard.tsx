@@ -55,14 +55,18 @@ export function AdminDashboard() {
     return matchInput && matchRoute && matchStatus;
   });
 
-  const toggleStatus = (index: number) => {
+  const toggleStatus = (id: number | null) => {
+    if (id === null) return;
+
     setRows((prevRows) => {
-      const newRows = [...prevRows];
-      newRows[index] = {
-        ...newRows[index],
-        status: newRows[index].status === "confirmed" ? "pending" : "confirmed",
-      };
-      return newRows;
+      return prevRows.map((row) =>
+        row.id === id
+          ? {
+              ...row,
+              status: row.status === "confirmed" ? "pending" : "confirmed",
+            }
+          : row,
+      );
     });
   };
 

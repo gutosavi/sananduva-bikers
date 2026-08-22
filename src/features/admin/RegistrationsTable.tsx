@@ -13,7 +13,7 @@ import { CircleCheck, Trophy } from "lucide-react";
 
 type Props = {
   rows: Registration[];
-  onClick: (index: number) => void;
+  onClick: (index: number | null) => void;
 };
 
 export function RegistrationsTable({ rows, onClick }: Props) {
@@ -41,7 +41,7 @@ export function RegistrationsTable({ rows, onClick }: Props) {
             </TableCell>
           </TableRow>
         )}
-        {rows.map((row, index) => (
+        {rows.map((row) => (
           <TableRow key={row.id} className="py-10">
             <TableCell className="font-medium flex flex-col text-foreground">
               {row.name}
@@ -74,7 +74,7 @@ export function RegistrationsTable({ rows, onClick }: Props) {
               <Button
                 variant={row.status === "confirmed" ? "ghost" : "outline"}
                 size="sm"
-                onClick={() => onClick(index)}
+                onClick={() => onClick(row.id)}
                 className={
                   row.status === "confirmed"
                     ? "text-xs text-muted-foreground"
