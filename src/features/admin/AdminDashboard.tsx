@@ -27,22 +27,6 @@ export function AdminDashboard() {
   const [statusFilter, setStatusFilter] = React.useState<string | null>("all");
   const [inputValue, setInputValue] = React.useState("");
 
-  const stats = Object.values(rows).reduce(
-    (acc, user) => {
-      acc.confirmed += user.status === "confirmed" ? 1 : 0;
-      acc.pending += user.status === "pending" ? 1 : 0;
-      acc.revenue += user.status === "confirmed" ? user.revenue : 0;
-
-      return acc;
-    },
-    {
-      total: rows.length,
-      confirmed: 0,
-      pending: 0,
-      revenue: 0,
-    },
-  );
-
   const filtered = Object.values(rows).filter((row) => {
     const input = inputValue.trim().toLowerCase();
     const matchInput =
@@ -73,7 +57,7 @@ export function AdminDashboard() {
   return (
     <section className="w-full overflow-hidden">
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 mx-5 pb-15 pt-15 md:pt-15">
-        <AdminStats {...stats} />
+        <AdminStats rows={rows} />
       </div>
 
       <Card className="glass mx-5 border-white/10 p-0">

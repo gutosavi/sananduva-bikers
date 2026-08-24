@@ -1,46 +1,51 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BRL } from "@/lib/event-data";
+import { BRL, Registration } from "@/lib/event-data";
 import { CircleCheck, CircleDollarSign, Clock, Users } from "lucide-react";
 
-type StatsRegistration = {
-  total: number;
-  confirmed: number;
-  pending: number;
-  revenue: number;
-};
+export function AdminStats({ rows }: { rows: Registration[] }) {
+  const statsRegistration = Object.values(rows).reduce(
+    (acc, user) => {
+      acc.confirmed += user.status === "confirmed" ? 1 : 0;
+      acc.pending += user.status === "pending" ? 1 : 0;
+      acc.revenue += user.status === "confirmed" ? user.revenue : 0;
 
-export function AdminStats({
-  total,
-  confirmed,
-  pending,
-  revenue,
-}: StatsRegistration) {
+      return acc;
+    },
+    {
+      total: rows.length,
+      confirmed: 0,
+      pending: 0,
+      revenue: 0,
+    },
+  );
+
   const stats = [
     {
       label: "Inscrições",
-      value: String(total),
+      value: String(statsRegistration.total),
       icon: Users,
       accent: "text-foreground",
     },
     {
       label: "Confirmadas",
-      value: String(confirmed),
+      value: String(statsRegistration.confirmed),
       icon: CircleCheck,
-      accent: "text-gradient-neon",
+      accent: "text-foreground",
     },
     {
       label: "Pendentes",
-      value: String(pending),
+      value: String(statsRegistration.pending),
       icon: Clock,
       accent: "text-warning",
     },
     {
       label: "Receita confirmada",
-      value: BRL.format(revenue),
+      value: BRL.format(statsRegistration.revenue),
       icon: CircleDollarSign,
-      accent: "text-gradient-neon",
+      accent: "text-foreground",
     },
   ];
+
   return (
     <>
       {stats.map((stat) => (
