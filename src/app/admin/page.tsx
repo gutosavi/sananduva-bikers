@@ -1,6 +1,6 @@
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteNavBar } from "@/components/shared/site-navbar";
-import { AdminDashboard } from "@/features/admin/AdminDashboard";
+import { AdminDashboard } from "@/features/admin/components/AdminDashboard";
 import { DotIcon } from "lucide-react";
 import type { Metadata } from "next";
 
