@@ -59,12 +59,12 @@ export function RegistrationsTable({ rows, onClick }: Props) {
             </TableCell>
             <TableCell>
               {row.status === "confirmed" ? (
-                <span className="inline-flex items-center gap-1 rounded-full border border-success/40 bg-success/15 px-2 py-1 text-success glow-green">
+                <span className="inline-flex items-center gap-1 rounded-full border border-success/40 bg-success/15 px-2 py-1 text-success">
                   <CircleCheck className="h-3.5 w-3.5" />
                   Confirmado
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-warning/15 px-2 py-1 text-warning glow-amber">
+                <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-warning/15 px-2 py-1 text-warning">
                   <CircleCheck className="h-3.5 w-3.5" />
                   Pendente
                 </span>

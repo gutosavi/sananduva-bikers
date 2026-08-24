@@ -31,14 +31,12 @@ export function RegisteredTable({ rows }: { rows: Registration[] }) {
   const registrationsByCategory = groupByCategory(rows);
 
   return (
-    <Card className="m-5 overflow-hidden">
+    <Card className="m-5 overflow-hidden max-w-3xl border">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Nome</TableHead>
-            <TableHead>Equipe</TableHead>
-            <TableHead>Cidade</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead className="text-right">Status</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -57,13 +55,22 @@ export function RegisteredTable({ rows }: { rows: Registration[] }) {
 
                 {registrations.map((registration) => (
                   <TableRow key={registration.id}>
-                    <TableCell>{registration.name}</TableCell>
-                    <TableCell>Equipe</TableCell>
-                    <TableCell>Cidade</TableCell>
-                    <TableCell>
-                      {registration.status === "confirmed"
-                        ? "Confirmado"
-                        : "Pendente"}
+                    <TableCell className="flex flex-col">
+                      {registration.name}
+                      <span className="text-xs text-muted-foreground">
+                        Equipe - Cidade
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {registration.status === "confirmed" ? (
+                        <span className="inline-flex items-center gap-1 rounded-full border border-success/40 bg-success/15 px-2 py-1 text-success">
+                          Confirmado
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-warning/15 px-2 py-1 text-warning">
+                          Pendente
+                        </span>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

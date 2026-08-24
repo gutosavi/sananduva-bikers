@@ -12,20 +12,30 @@ export default function InscritosPage() {
   const [inputValue, setInputValue] = React.useState("");
   const rows = MOCK_REGISTRATIONS;
 
+  const filtered = rows.filter((row) => {
+    const input = inputValue.trim().toLowerCase();
+    const matchInput = !input || row.name.toLowerCase().includes(input);
+
+    return matchInput;
+  });
+
   return (
     <>
       <SiteNavBar />
       <main className="min-h-screen w-full overflow-x-hidden">
-        <div className="relative m-5">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            className="h-10 pl-9"
-            placeholder="Buscar por nome ou cidade"
-          />
+        <div className="mx-auto max-w-3xl">
+          <div className="relative m-5 max-w-3xl">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              className="h-10 pl-9"
+              placeholder="Buscar por nome"
+            />
+          </div>
+
+          <RegisteredTable rows={filtered} />
         </div>
-        <RegisteredTable rows={rows} />
       </main>
       <SiteFooter />
     </>
