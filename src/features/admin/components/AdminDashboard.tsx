@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useDebounce from "@/hooks/useDebounce";
 import {
   MOCK_REGISTRATIONS,
   Registration,
@@ -26,9 +27,10 @@ export function AdminDashboard() {
   const [routeFilter, setRouteFilter] = React.useState<string | null>("all");
   const [statusFilter, setStatusFilter] = React.useState<string | null>("all");
   const [inputValue, setInputValue] = React.useState("");
+  const debounceSearchTerm = useDebounce(inputValue, 500);
 
   const filtered = Object.values(rows).filter((row) => {
-    const input = inputValue.trim().toLowerCase();
+    const input = debounceSearchTerm.trim().toLowerCase();
     const matchInput =
       !input ||
       row.name.toLowerCase().includes(input) ||

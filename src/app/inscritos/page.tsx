@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteNavBar } from "@/components/shared/site-navbar";
 import { Input } from "@/components/ui/input";
 import { RegisteredTable } from "@/features/registered/components/RegisteredTable";
+import useDebounce from "@/hooks/useDebounce";
 import { MOCK_REGISTRATIONS } from "@/lib/event-data";
 import { Search } from "lucide-react";
 import React from "react";
@@ -11,9 +12,10 @@ import React from "react";
 export default function InscritosPage() {
   const [inputValue, setInputValue] = React.useState("");
   const rows = MOCK_REGISTRATIONS;
+  const debounceSearchTerm = useDebounce(inputValue, 500);
 
   const filtered = rows.filter((row) => {
-    const input = inputValue.trim().toLowerCase();
+    const input = debounceSearchTerm.trim().toLowerCase();
     const matchInput = !input || row.name.toLowerCase().includes(input);
 
     return matchInput;
