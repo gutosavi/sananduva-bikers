@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -9,7 +8,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { BRL, Registration } from "@/lib/event-data";
-import { CircleCheck, EllipsisVertical, Trophy } from "lucide-react";
+import { CircleCheck, Trophy } from "lucide-react";
+import { RegistrantRowActions } from "./RegistrantRowActions";
 
 type Props = {
   rows: Registration[];
@@ -71,13 +71,7 @@ export function RegistrationsTable({ rows, onClick }: Props) {
               )}
             </TableCell>
             <TableCell className="text-right">
-              <Button
-                variant={row.status === "confirmed" ? "ghost" : "outline"}
-                size="sm"
-                onClick={() => onClick(row.id)}
-              >
-                <EllipsisVertical />
-              </Button>
+              <RegistrantRowActions />
             </TableCell>
           </TableRow>
         ))}
