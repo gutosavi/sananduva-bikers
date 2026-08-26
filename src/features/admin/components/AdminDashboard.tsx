@@ -41,7 +41,7 @@ export function AdminDashboard() {
     return matchInput && matchRoute && matchStatus;
   });
 
-  const toggleStatus = (id: number | null) => {
+  const handleToggleStatus = (id: Registration["id"]) => {
     if (id === null) return;
 
     setRows((prevRows) => {
@@ -55,6 +55,10 @@ export function AdminDashboard() {
       );
     });
   };
+
+  const handleEdit = () => {};
+
+  const handleDelete = () => {};
 
   return (
     <section className="w-full overflow-hidden">
@@ -132,7 +136,12 @@ export function AdminDashboard() {
         </div>
 
         <div className="overflow-x-auto">
-          <RegistrationsTable rows={filtered} onClick={toggleStatus} />
+          <RegistrationsTable
+            rows={filtered}
+            onToggleStatus={handleToggleStatus}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
         </div>
       </Card>
     </section>

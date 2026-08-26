@@ -13,10 +13,17 @@ import { RegistrantRowActions } from "./RegistrantRowActions";
 
 type Props = {
   rows: Registration[];
-  onClick: (index: number | null) => void;
+  onToggleStatus: (id: Registration["id"]) => void;
+  onEdit: () => void;
+  onDelete: () => void;
 };
 
-export function RegistrationsTable({ rows, onClick }: Props) {
+export function RegistrationsTable({
+  rows,
+  onToggleStatus,
+  onEdit,
+  onDelete,
+}: Props) {
   return (
     <Table>
       <TableCaption>Lista de inscritos</TableCaption>
@@ -71,7 +78,12 @@ export function RegistrationsTable({ rows, onClick }: Props) {
               )}
             </TableCell>
             <TableCell className="text-right">
-              <RegistrantRowActions />
+              <RegistrantRowActions
+                row={row}
+                onToggleStatus={onToggleStatus}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
             </TableCell>
           </TableRow>
         ))}
