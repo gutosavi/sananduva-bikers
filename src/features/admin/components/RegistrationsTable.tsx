@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { BRL, Registration } from "@/lib/event-data";
-import { CircleCheck, Trophy } from "lucide-react";
+import { CircleCheck, EllipsisVertical, Trophy } from "lucide-react";
 
 type Props = {
   rows: Registration[];
@@ -26,7 +26,7 @@ export function RegistrationsTable({ rows, onClick }: Props) {
           <TableHead className="hidden md:table-cell">Percurso</TableHead>
           <TableHead>Categoria</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead className="text-right">Ação</TableHead>
+          <TableHead className="text-right">Ações</TableHead>
         </TableRow>
       </TableHeader>
 
@@ -75,13 +75,8 @@ export function RegistrationsTable({ rows, onClick }: Props) {
                 variant={row.status === "confirmed" ? "ghost" : "outline"}
                 size="sm"
                 onClick={() => onClick(row.id)}
-                className={
-                  row.status === "confirmed"
-                    ? "text-xs text-muted-foreground"
-                    : "border-success/40 bg-transparent text-xs text-success hover:bg-success/10"
-                }
               >
-                {row.status === "confirmed" ? "Desconfirmar" : "Confirmar"}
+                <EllipsisVertical />
               </Button>
             </TableCell>
           </TableRow>
