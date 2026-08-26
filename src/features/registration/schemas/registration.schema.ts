@@ -24,9 +24,18 @@ export const registrationSchema = z.object({
   route: z.string().min(1, "Selecione o percurso desejado"),
   tshirtSize: z.string().min(1, "Selecione o tamanho da camiseta"),
   team: z.string().optional(),
+
   termsCheck: z
     .boolean()
     .refine((value) => value === true, "Você precisa aceitar os termos"),
 });
 
+export type RegistrationStatus = "pending" | "confirmed" | "cancelled";
+
 export type RegistrationFormData = z.infer<typeof registrationSchema>;
+
+export type Registration = RegistrationFormData & {
+  id: string;
+  status: RegistrationStatus;
+  revenue: number;
+};

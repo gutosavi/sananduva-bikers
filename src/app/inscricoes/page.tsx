@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteNavBar } from "@/components/shared/site-navbar";
 import { CategoriesCard } from "@/features/registration/components/CategoriesCard";
 import { ParticipantKitCard } from "@/features/registration/components/ParticipantKidCard";
-import { RegistrationForm } from "@/features/registration/components/RegistragionForm";
+import { RegistrationForm } from "@/features/registration/components/RegistrationForm";
 import { RoutesCard } from "@/features/registration/components/RoutesCard";
 import type { Metadata } from "next";
 

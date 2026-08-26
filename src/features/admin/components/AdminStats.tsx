@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BRL, Registration } from "@/lib/event-data";
+import { Registration } from "@/features/registration/schemas/registration.schema";
+import { BRL } from "@/lib/event-data";
 import { CircleCheck, CircleDollarSign, Clock, Users } from "lucide-react";
 
 export function AdminStats({ rows }: { rows: Registration[] }) {

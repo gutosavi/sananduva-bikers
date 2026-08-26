@@ -6,13 +6,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Registration } from "@/lib/event-data";
+import { Registration } from "@/features/registration/schemas/registration.schema";
 import { EllipsisVertical } from "lucide-react";
 
 type RegistrantRowActionsProps = {
   row: Registration;
   onToggleStatus: (id: Registration["id"]) => void;
-  onEdit: () => void;
+  onEdit: (updateRow: Registration) => void;
   onDelete: () => void;
 };
 
@@ -45,13 +45,15 @@ export function RegistrantRowActions({
             onClick={() => onToggleStatus(row.id)}
             className={
               row.status === "confirmed"
-                ? "text-emerald-600 focus:text-emerald-600 focus:bg-emerald-500/10 dark:text-emerald-500 dark:focus:text-emerald-400"
-                : "text-amber-600 focus:text-amber-600 focus:bg-amber-500/10 dark:text-amber-500 dark:focus:text-amber-400"
+                ? "text-amber-600 focus:text-amber-600 focus:bg-amber-500/10 dark:text-amber-500 dark:focus:text-amber-400"
+                : "text-emerald-600 focus:text-emerald-600 focus:bg-emerald-500/10 dark:text-emerald-500 dark:focus:text-emerald-400"
             }
           >
-            {row.status === "confirmed" ? "Confirmar" : "Desconfirmar"}
+            {row.status === "confirmed" ? "Desconfirmar" : "Confirmar"}
           </DropdownMenuItem>
-          <DropdownMenuItem>Editar</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => onEdit(row)}>
+            Editar
+          </DropdownMenuItem>
           <DropdownMenuItem className="text-destructive">
             Excluir
           </DropdownMenuItem>

@@ -7,14 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BRL, Registration } from "@/lib/event-data";
+import { Registration } from "@/features/registration/schemas/registration.schema";
+import { BRL } from "@/lib/event-data";
 import { CircleCheck, Trophy } from "lucide-react";
 import { RegistrantRowActions } from "./RegistrantRowActions";
 
 type Props = {
   rows: Registration[];
   onToggleStatus: (id: Registration["id"]) => void;
-  onEdit: () => void;
+  onEdit: (row: Registration) => void;
   onDelete: () => void;
 };
 
@@ -51,7 +52,7 @@ export function RegistrationsTable({
         {rows.map((row) => (
           <TableRow key={row.id} className="py-10">
             <TableCell className="font-medium flex flex-col text-foreground">
-              {row.name}
+              {row.fullname}
               <span className="text-xs text-muted-foreground">{row.cpf}</span>
             </TableCell>
             <TableCell className="hidden md:table-cell">
