@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { registrationsServices } from "@/services/registrations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderIcon, SendIcon } from "lucide-react";
 import React from "react";
@@ -17,7 +18,7 @@ import { RegistrationDetailsCard } from "./RegistrationDetailsCard";
 type RegistrationFormProps = {
   isEditing?: boolean;
   initialData?: Registration | null;
-  onSave?: (data: RegistrationFormData) => void;
+  onSave?: (data: Registration) => void;
   onCancel?: () => void;
 };
 
@@ -25,7 +26,6 @@ export function RegistrationForm({
   isEditing = false,
   initialData,
   onSave,
-  onCancel,
 }: RegistrationFormProps) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const methods = useForm<RegistrationFormData>({
@@ -64,6 +64,7 @@ export function RegistrationForm({
         route: initialData.route,
         tshirtSize: initialData.tshirtSize,
         team: initialData.team,
+        termsCheck: true,
       });
     } else {
       methods.reset({
@@ -80,6 +81,7 @@ export function RegistrationForm({
         route: "",
         tshirtSize: "",
         team: "",
+        termsCheck: false,
       });
     }
   }, [initialData, methods]);
@@ -90,23 +92,18 @@ export function RegistrationForm({
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // simula atraso no envio do formulário
 
-      if (data) {
-        const registration: Registration = {
-          id: crypto.randomUUID(),
-          ...data,
-          status: "pending",
-          revenue: 140,
-        };
-
-        localStorage.setItem("registration", JSON.stringify(registration));
+      if (isEditing && initialData?.id) {
+        if (onSave) {
+          onSave({ ...initialData, ...data });
+        }
+      } else {
+        registrationsServices.createRegistration(data);
 
         methods.reset();
         console.log("Dados enviados", data);
-      } else {
-        throw new Error("Os dados não puderam ser enviados");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Erro no envio:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -115,7 +112,10 @@ export function RegistrationForm({
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={methods.handleSubmit(onSubmit)}
+        id="registration-form"
+        onSubmit={methods.handleSubmit(onSubmit, (errors) => {
+          console.log("Erros de validação travando o envio:", errors);
+        })}
         className="flex flex-col gap-5"
       >
         {/* Etapas do formulário */}

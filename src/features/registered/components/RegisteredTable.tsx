@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Registration } from "@/lib/event-data";
+import { Registration } from "@/features/registration/schemas/registration.schema";
 import { User } from "lucide-react";
 import { Fragment } from "react";
 
@@ -56,7 +56,7 @@ export function RegisteredTable({ rows }: { rows: Registration[] }) {
                 {registrations.map((registration) => (
                   <TableRow key={registration.id}>
                     <TableCell className="flex flex-col">
-                      {registration.name}
+                      {registration.fullname}
                       <span className="text-xs text-muted-foreground">
                         Equipe - Cidade
                       </span>

@@ -28,7 +28,7 @@ export function RegistrationDetailsCard() {
     formState: { errors },
   } = useFormContext<RegistrationFormData>();
   return (
-    <Card className="glass border-white/10 hover:glow-orange">
+    <Card className="glass border-white/10">
       <CardHeader className="px-6 pt-6">
         <CardDescription className="mt-1 text-sm font-bold uppercase text-muted-foreground">
           Etapa 2

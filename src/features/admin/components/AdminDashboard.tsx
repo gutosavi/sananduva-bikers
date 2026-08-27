@@ -13,6 +13,7 @@ import {
 import { Registration } from "@/features/registration/schemas/registration.schema";
 import useDebounce from "@/hooks/useDebounce";
 import { MOCK_REGISTRATIONS, routeName, ROUTES_EVENT } from "@/lib/event-data";
+import { registrationsServices } from "@/services/registrations";
 import { Download, Search } from "lucide-react";
 import React from "react";
 import { AdminStats } from "./AdminStats";
@@ -27,12 +28,23 @@ export function AdminDashboard() {
   const [editingRow, setEditingRow] = React.useState<Registration | null>(null);
   const debounceSearchTerm = useDebounce(inputValue, 500);
 
+  React.useEffect(() => {
+    const loadData = async () => {
+      const localData = registrationsServices.getRegistrations();
+      if (localData && localData.length > 0) {
+        setRows(localData);
+      }
+    };
+
+    loadData();
+  }, []);
+
   const filtered = Object.values(rows).filter((row) => {
     const input = debounceSearchTerm.trim().toLowerCase();
     const matchInput =
       !input ||
       row.fullname.toLowerCase().includes(input) ||
-      row.cpf.includes(input);
+      row.cityState.includes(input);
     const matchRoute = routeFilter === "all" || row.route === routeFilter;
     const matchStatus = statusFilter === "all" || row.status === statusFilter;
 
@@ -42,22 +54,28 @@ export function AdminDashboard() {
   const handleToggleStatus = (id: Registration["id"]) => {
     if (id === null) return;
 
-    setRows((prevRows) => {
-      return prevRows.map((row) =>
-        row.id === id
-          ? {
-              ...row,
-              status: row.status === "confirmed" ? "pending" : "confirmed",
-            }
-          : row,
-      );
+    const targetRow = rows.find((r) => r.id === id);
+    if (!targetRow) return;
+
+    const newStatus =
+      targetRow.status === "confirmed" ? "pending" : "confirmed";
+
+    const updatedList = registrationsServices.updateRegistration(id, {
+      ...targetRow,
+      status: newStatus,
     });
+
+    setRows(updatedList);
   };
 
   const handleEdit = (updateRow: Registration) => {
-    setRows((prev) =>
-      prev.map((row) => (row.id === updateRow.id ? updateRow : row)),
+    const updatedList = registrationsServices.updateRegistration(
+      updateRow.id,
+      updateRow,
     );
+
+    setRows(updatedList);
+    setEditingRow(null);
   };
 
   const handleDelete = () => {};
@@ -149,6 +167,7 @@ export function AdminDashboard() {
             <EditRegistrationDialog
               editingRow={editingRow}
               setEditingRow={setEditingRow}
+              onSave={handleEdit}
             />
           )}
         </div>

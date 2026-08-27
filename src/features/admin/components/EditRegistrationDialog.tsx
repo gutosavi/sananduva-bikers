@@ -6,7 +6,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { RegistrationForm } from "@/features/registration/components/RegistrationForm";
 import { Registration } from "@/features/registration/schemas/registration.schema";
@@ -14,15 +13,16 @@ import { Registration } from "@/features/registration/schemas/registration.schem
 type EditRegistrationDialogProps = {
   editingRow: Registration;
   setEditingRow: React.Dispatch<React.SetStateAction<Registration | null>>;
+  onSave: (updateRow: Registration) => void;
 };
 
 export function EditRegistrationDialog({
   editingRow,
   setEditingRow,
+  onSave,
 }: EditRegistrationDialogProps) {
   return (
     <Dialog open={!!editingRow} onOpenChange={() => setEditingRow(null)}>
-      <DialogTrigger>Open</DialogTrigger>
       <DialogContent className="sm:max-w-lg flex flex-col max-h-[90vh]">
         <DialogHeader className="m-2">
           <DialogTitle>
@@ -36,7 +36,11 @@ export function EditRegistrationDialog({
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto p-2 space-y-4 my-2 max-h-[60vh] scrollbar-thin scrollbar-thumb-accent">
-          <RegistrationForm isEditing={true} initialData={editingRow} />
+          <RegistrationForm
+            isEditing={true}
+            initialData={editingRow}
+            onSave={onSave}
+          />
         </div>
 
         <DialogFooter className="pt-2 border-t">
@@ -47,7 +51,9 @@ export function EditRegistrationDialog({
           >
             Cancelar
           </Button>
-          <Button type="submit">Salvar</Button>
+          <Button type="submit" form="registration-form">
+            Salvar alterações
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

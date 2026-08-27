@@ -16,7 +16,7 @@ export default function InscritosPage() {
 
   const filtered = rows.filter((row) => {
     const input = debounceSearchTerm.trim().toLowerCase();
-    const matchInput = !input || row.name.toLowerCase().includes(input);
+    const matchInput = !input || row.fullname.toLowerCase().includes(input);
 
     return matchInput;
   });
