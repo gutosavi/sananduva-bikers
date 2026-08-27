@@ -2,15 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -19,13 +10,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RegistrationForm } from "@/features/registration/components/RegistrationForm";
 import { Registration } from "@/features/registration/schemas/registration.schema";
 import useDebounce from "@/hooks/useDebounce";
 import { MOCK_REGISTRATIONS, routeName, ROUTES_EVENT } from "@/lib/event-data";
 import { Download, Search } from "lucide-react";
 import React from "react";
 import { AdminStats } from "./AdminStats";
+import { EditRegistrationDialog } from "./EditRegistrationDialog";
 import { RegistrationsTable } from "./RegistrationsTable";
 
 export function AdminDashboard() {
@@ -33,8 +24,7 @@ export function AdminDashboard() {
   const [routeFilter, setRouteFilter] = React.useState<string | null>("all");
   const [statusFilter, setStatusFilter] = React.useState<string | null>("all");
   const [inputValue, setInputValue] = React.useState("");
-  const [editingRegistration, setEditRegistration] =
-    React.useState<Registration | null>(null);
+  const [editingRow, setEditingRow] = React.useState<Registration | null>(null);
   const debounceSearchTerm = useDebounce(inputValue, 500);
 
   const filtered = Object.values(rows).filter((row) => {
@@ -151,42 +141,15 @@ export function AdminDashboard() {
           <RegistrationsTable
             rows={filtered}
             onToggleStatus={handleToggleStatus}
-            onEdit={(row: Registration) => setEditRegistration(row)}
+            onEdit={(row: Registration) => setEditingRow(row)}
             onDelete={handleDelete}
           />
 
-          {editingRegistration && (
-            <Dialog open={true} onOpenChange={() => setEditRegistration(null)}>
-              <DialogTrigger>Open</DialogTrigger>
-              <DialogContent className="sm:max-w-lg flex flex-col max-h-[90vh]">
-                <DialogHeader className="m-4">
-                  <DialogTitle>
-                    <span className="font-semibold text-primary">
-                      Editar inscrito:{" "}
-                    </span>
-                    {editingRegistration.fullname}
-                  </DialogTitle>
-                  <DialogDescription className="mt-1 text-sm">
-                    Edite os dados do inscrito e clique em salvar para atualizar
-                    as informações.
-                  </DialogDescription>
-                </DialogHeader>
-
-                <div className="flex-1 overflow-y-auto pr-2 space-y-4 my-2 max-h-[60vh]">
-                  <RegistrationForm
-                    isEditing={true}
-                    initialData={editingRegistration}
-                  />
-                </div>
-
-                <DialogFooter className="pt-2 border-t">
-                  <Button type="button" variant="outline">
-                    Cancelar
-                  </Button>
-                  <Button type="submit">Salvar</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+          {editingRow && (
+            <EditRegistrationDialog
+              editingRow={editingRow}
+              setEditingRow={setEditingRow}
+            />
           )}
         </div>
       </Card>

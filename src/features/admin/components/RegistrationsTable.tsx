@@ -33,6 +33,7 @@ export function RegistrationsTable({
           <TableHead>Nome</TableHead>
           <TableHead className="hidden md:table-cell">Percurso</TableHead>
           <TableHead>Categoria</TableHead>
+          <TableHead className="hidden md:table-cell">Valor</TableHead>
           <TableHead>Status</TableHead>
           <TableHead className="text-right">Ações</TableHead>
         </TableRow>
@@ -62,7 +63,7 @@ export function RegistrationsTable({
               </span>
             </TableCell>
             <TableCell>{row.category}</TableCell>
-            <TableCell className="hidden font-medium lg:table-cell">
+            <TableCell className="hidden font-medium md:table-cell">
               {BRL.format(row.revenue)}
             </TableCell>
             <TableCell>
