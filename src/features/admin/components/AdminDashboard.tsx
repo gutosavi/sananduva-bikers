@@ -29,22 +29,20 @@ export function AdminDashboard() {
   const debounceSearchTerm = useDebounce(inputValue, 500);
 
   React.useEffect(() => {
-    const loadData = async () => {
+    const loadData = () => {
       const localData = registrationsServices.getRegistrations();
-      if (localData && localData.length > 0) {
-        setRows(localData);
-      }
+      setRows(localData.length > 0 ? localData : MOCK_REGISTRATIONS);
     };
 
     loadData();
   }, []);
 
-  const filtered = Object.values(rows).filter((row) => {
+  const filtered = rows.filter((row) => {
     const input = debounceSearchTerm.trim().toLowerCase();
     const matchInput =
       !input ||
       row.fullname.toLowerCase().includes(input) ||
-      row.cityState.includes(input);
+      row.cityState.toLowerCase().includes(input);
     const matchRoute = routeFilter === "all" || row.route === routeFilter;
     const matchStatus = statusFilter === "all" || row.status === statusFilter;
 
@@ -52,17 +50,11 @@ export function AdminDashboard() {
   });
 
   const handleToggleStatus = (id: Registration["id"]) => {
-    if (id === null) return;
-
-    const targetRow = rows.find((r) => r.id === id);
+    const targetRow = rows.find((row) => row.id === id);
     if (!targetRow) return;
 
-    const newStatus =
-      targetRow.status === "confirmed" ? "pending" : "confirmed";
-
     const updatedList = registrationsServices.updateRegistration(id, {
-      ...targetRow,
-      status: newStatus,
+      status: targetRow.status === "confirmed" ? "pending" : "confirmed",
     });
 
     setRows(updatedList);
