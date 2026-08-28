@@ -37,12 +37,20 @@ export const registrationsServices = {
     return newRegistration;
   },
 
-  updateRegistration(id: string | number, data: Partial<Registration>) {
+  updateRegistration(id: string, data: Partial<Registration>) {
     const registration = getRegistrations();
 
     const updatedList = registration.map((item) =>
       item.id === id ? { ...item, ...data } : item,
     );
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
+    return updatedList;
+  },
+
+  deleteRegistration(id: string): Registration[] {
+    const registration = getRegistrations();
+    const updatedList = registration.filter((item) => item.id !== id);
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
     return updatedList;

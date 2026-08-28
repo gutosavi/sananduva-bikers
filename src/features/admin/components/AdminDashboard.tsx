@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Registration } from "@/features/registration/schemas/registration.schema";
 import useDebounce from "@/hooks/useDebounce";
-import { MOCK_REGISTRATIONS, routeName, ROUTES_EVENT } from "@/lib/event-data";
+import { routeName, ROUTES_EVENT } from "@/lib/event-data";
 import { registrationsServices } from "@/services/registrations";
 import { Download, Search } from "lucide-react";
 import React from "react";
@@ -21,7 +21,7 @@ import { EditRegistrationDialog } from "./EditRegistrationDialog";
 import { RegistrationsTable } from "./RegistrationsTable";
 
 export function AdminDashboard() {
-  const [rows, setRows] = React.useState<Registration[]>(MOCK_REGISTRATIONS);
+  const [rows, setRows] = React.useState<Registration[]>([]);
   const [routeFilter, setRouteFilter] = React.useState<string | null>("all");
   const [statusFilter, setStatusFilter] = React.useState<string | null>("all");
   const [inputValue, setInputValue] = React.useState("");
@@ -31,7 +31,7 @@ export function AdminDashboard() {
   React.useEffect(() => {
     const loadData = () => {
       const localData = registrationsServices.getRegistrations();
-      setRows(localData.length > 0 ? localData : MOCK_REGISTRATIONS);
+      setRows(localData.length > 0 ? localData : []);
     };
 
     loadData();
@@ -70,7 +70,12 @@ export function AdminDashboard() {
     setEditingRow(null);
   };
 
-  const handleDelete = () => {};
+  const handleDelete = (id: Registration["id"]) => {
+    const updateList = registrationsServices.deleteRegistration(id);
+
+    setRows(updateList);
+    setEditingRow(null);
+  };
 
   return (
     <section className="w-full overflow-hidden">

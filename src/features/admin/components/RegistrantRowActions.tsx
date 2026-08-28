@@ -13,7 +13,7 @@ type RegistrantRowActionsProps = {
   row: Registration;
   onToggleStatus: (id: Registration["id"]) => void;
   onEdit: (updateRow: Registration) => void;
-  onDelete: () => void;
+  onDelete: (id: Registration["id"]) => void;
 };
 
 export function RegistrantRowActions({
@@ -54,7 +54,10 @@ export function RegistrantRowActions({
           <DropdownMenuItem onClick={() => onEdit(row)}>
             Editar
           </DropdownMenuItem>
-          <DropdownMenuItem className="text-destructive">
+          <DropdownMenuItem
+            onClick={() => onDelete(row.id)}
+            className="text-destructive"
+          >
             Excluir
           </DropdownMenuItem>
         </DropdownMenuGroup>
