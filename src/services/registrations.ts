@@ -47,4 +47,12 @@ export const registrationsServices = {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
     return updatedList;
   },
+
+  deleteRegistration(id: string): Registration[] {
+    const registration = getRegistrations();
+    const updatedList = registration.filter((item) => item.id !== id);
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
+    return updatedList;
+  },
 };

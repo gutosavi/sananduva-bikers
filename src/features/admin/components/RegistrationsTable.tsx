@@ -16,7 +16,7 @@ type Props = {
   rows: Registration[];
   onToggleStatus: (id: Registration["id"]) => void;
   onEdit: (row: Registration) => void;
-  onDelete: () => void;
+  onDelete: (id: Registration["id"]) => void;
 };
 
 export function RegistrationsTable({

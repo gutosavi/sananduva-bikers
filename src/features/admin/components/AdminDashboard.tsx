@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Registration } from "@/features/registration/schemas/registration.schema";
 import useDebounce from "@/hooks/useDebounce";
-import { MOCK_REGISTRATIONS, routeName, ROUTES_EVENT } from "@/lib/event-data";
+import { routeName, ROUTES_EVENT } from "@/lib/event-data";
 import { registrationsServices } from "@/services/registrations";
 import { Download, Search } from "lucide-react";
 import React from "react";
@@ -21,7 +21,7 @@ import { EditRegistrationDialog } from "./EditRegistrationDialog";
 import { RegistrationsTable } from "./RegistrationsTable";
 
 export function AdminDashboard() {
-  const [rows, setRows] = React.useState<Registration[]>(MOCK_REGISTRATIONS);
+  const [rows, setRows] = React.useState<Registration[]>([]);
   const [routeFilter, setRouteFilter] = React.useState<string | null>("all");
   const [statusFilter, setStatusFilter] = React.useState<string | null>("all");
   const [inputValue, setInputValue] = React.useState("");
@@ -29,11 +29,9 @@ export function AdminDashboard() {
   const debounceSearchTerm = useDebounce(inputValue, 500);
 
   React.useEffect(() => {
-    const loadData = async () => {
+    const loadData = () => {
       const localData = registrationsServices.getRegistrations();
-      if (localData && localData.length > 0) {
-        setRows(localData);
-      }
+      setRows(localData.length > 0 ? localData : []);
     };
 
     loadData();
@@ -44,7 +42,7 @@ export function AdminDashboard() {
     const matchInput =
       !input ||
       row.fullname.toLowerCase().includes(input) ||
-      row.cityState.includes(input);
+      row.cityState.toLowerCase().includes(input);
     const matchRoute = routeFilter === "all" || row.route === routeFilter;
     const matchStatus = statusFilter === "all" || row.status === statusFilter;
 
@@ -52,17 +50,11 @@ export function AdminDashboard() {
   });
 
   const handleToggleStatus = (id: Registration["id"]) => {
-    if (id === null) return;
-
-    const targetRow = rows.find((r) => r.id === id);
+    const targetRow = rows.find((row) => row.id === id);
     if (!targetRow) return;
 
-    const newStatus =
-      targetRow.status === "confirmed" ? "pending" : "confirmed";
-
     const updatedList = registrationsServices.updateRegistration(id, {
-      ...targetRow,
-      status: newStatus,
+      status: targetRow.status === "confirmed" ? "pending" : "confirmed",
     });
 
     setRows(updatedList);
@@ -78,7 +70,12 @@ export function AdminDashboard() {
     setEditingRow(null);
   };
 
-  const handleDelete = () => {};
+  const handleDelete = (id: Registration["id"]) => {
+    const updateList = registrationsServices.deleteRegistration(id);
+
+    setRows(updateList);
+    setEditingRow(null);
+  };
 
   return (
     <section className="w-full overflow-hidden">
