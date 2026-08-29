@@ -19,15 +19,15 @@ type RegistrationFormProps = {
   isEditing?: boolean;
   initialData?: Registration | null;
   onSave?: (data: Registration) => void;
-  onCancel?: () => void;
+  onCancel: React.Dispatch<React.SetStateAction<Registration | null>>;
 };
 
 export function RegistrationForm({
   isEditing = false,
   initialData,
   onSave,
+  onCancel,
 }: RegistrationFormProps) {
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const methods = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
@@ -86,9 +86,11 @@ export function RegistrationForm({
     }
   }, [initialData, methods]);
 
-  const onSubmit = async (data: RegistrationFormData): Promise<void> => {
-    setIsSubmitting(true);
+  const {
+    formState: { isSubmitting },
+  } = methods;
 
+  const onSubmit = async (data: RegistrationFormData): Promise<void> => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // simula atraso no envio do formulário
 
@@ -104,8 +106,6 @@ export function RegistrationForm({
       }
     } catch (error) {
       console.error("Erro no envio:", error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -125,7 +125,48 @@ export function RegistrationForm({
           {!isEditing && <CheckboxSection />}
         </div>
 
-        {!isEditing &&
+        {isEditing ? (
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onCancel(null)}
+            >
+              Cancelar
+            </Button>
+
+            <Button type="submit" form="registration-form">
+              {isSubmitting ? (
+                <>
+                  Salvando...
+                  <LoaderIcon className="h-4 w-4 animate-spin" />
+                </>
+              ) : (
+                "Salvar alterações"
+              )}
+            </Button>
+          </>
+        ) : (
+          <Button
+            type="submit"
+            className="whitespace-nowrap px-3 py-5 text-xs font-semibold glow-orange lg:px-4"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                Enviando inscrição...
+                <LoaderIcon className="h-4 w-4 animate-spin" />
+              </>
+            ) : (
+              <>
+                Finalizar inscrição
+                <SendIcon className="h-4 w-4" />
+              </>
+            )}
+          </Button>
+        )}
+
+        {/* {!isEditing &&
           (isSubmitting ? (
             <Button
               className="whitespace-nowrap px-3 py-5 text-xs glow-orange font-semibold lg:px-4 lg:text-sm"
@@ -145,7 +186,7 @@ export function RegistrationForm({
               <SendIcon className="w-4 h-4" />
               Finalizar inscrição
             </Button>
-          ))}
+          ))} */}
       </form>
     </FormProvider>
   );

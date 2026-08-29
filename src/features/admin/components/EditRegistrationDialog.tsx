@@ -1,9 +1,7 @@
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -40,21 +38,9 @@ export function EditRegistrationDialog({
             isEditing={true}
             initialData={editingRow}
             onSave={onSave}
+            onCancel={setEditingRow}
           />
         </div>
-
-        <DialogFooter className="pt-2 border-t">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setEditingRow(null)}
-          >
-            Cancelar
-          </Button>
-          <Button type="submit" form="registration-form">
-            Salvar alterações
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
