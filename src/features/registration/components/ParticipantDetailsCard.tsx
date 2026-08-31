@@ -17,14 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Controller, useFormContext } from "react-hook-form";
+import { extraLunchQuantity, optionsGender } from "../constants";
 import { RegistrationFormData } from "../schemas/registration.schema";
-
-const optionsGender = [
-  { label: "Feminino", value: "Feminino" },
-  { label: "Masculino", value: "Masculino" },
-  { label: "Outro", value: "Outro" },
-  { label: "Prefiro não informar", value: "Prefiro não informar" },
-];
 
 export function ParticipantDetailsCard() {
   /* Card - Etapa 1 */
@@ -175,6 +169,32 @@ export function ParticipantDetailsCard() {
               required
             />
             <FieldError errors={[errors.emergencyPhone]} />
+          </Field>
+
+          <Field>
+            <Label htmlFor="extraLunchQuantity">Almoço Extra</Label>
+            <Controller
+              name="extraLunchQuantity"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="extraLunchQuantity">
+                    <SelectValue placeholder="Selecione a quantidade" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectGroup>
+                      {extraLunchQuantity.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            <FieldError errors={[errors.extraLunchQuantity]} />
           </Field>
         </div>
       </CardContent>

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleX, LoaderIcon, SendIcon } from "lucide-react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { defaultValues } from "../constants";
 import {
   Registration,
   RegistrationFormData,
@@ -31,60 +32,21 @@ export function RegistrationForm({
   const [error, setError] = React.useState("");
   const methods = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
-    defaultValues: {
-      fullname: initialData?.fullname ?? "",
-      cpf: initialData?.cpf ?? "",
-      birthDate: initialData?.birthDate ?? "",
-      gender: initialData?.gender ?? "",
-      email: initialData?.email ?? "",
-      phoneNumber: initialData?.phoneNumber ?? "",
-      cityState: initialData?.cityState ?? "",
-      emergencyContact: initialData?.emergencyContact ?? "",
-      emergencyPhone: initialData?.emergencyPhone ?? "",
-      category: initialData?.category ?? "",
-      route: initialData?.route ?? "",
-      tshirtSize: initialData?.tshirtSize ?? "",
-      team: initialData?.team ?? "",
-      termsCheck: false,
-    },
+    defaultValues: initialData
+      ? {
+          ...defaultValues,
+          ...initialData,
+          termsCheck: true,
+        }
+      : defaultValues,
   });
 
   React.useEffect(() => {
-    if (initialData) {
-      methods.reset({
-        fullname: initialData.fullname,
-        cpf: initialData.cpf,
-        birthDate: initialData.birthDate,
-        gender: initialData.gender,
-        email: initialData.email,
-        phoneNumber: initialData.phoneNumber,
-        cityState: initialData.cityState,
-        emergencyContact: initialData.emergencyContact,
-        emergencyPhone: initialData.emergencyPhone,
-        category: initialData.category,
-        route: initialData.route,
-        tshirtSize: initialData.tshirtSize,
-        team: initialData.team,
-        termsCheck: true,
-      });
-    } else {
-      methods.reset({
-        fullname: "",
-        cpf: "",
-        birthDate: "",
-        gender: "",
-        email: "",
-        phoneNumber: "",
-        cityState: "",
-        emergencyContact: "",
-        emergencyPhone: "",
-        category: "",
-        route: "",
-        tshirtSize: "",
-        team: "",
-        termsCheck: false,
-      });
-    }
+    methods.reset(
+      initialData
+        ? { ...defaultValues, ...initialData, termsCheck: true }
+        : defaultValues,
+    );
   }, [initialData, methods]);
 
   const {

@@ -121,6 +121,7 @@ export const MOCK_REGISTRATIONS: Registration[] = [
     team: "Sananduva Bikers",
     termsCheck: true,
     status: "pending",
+    extraLunchQuantity: 2,
     revenue: 140.0,
   },
   {
@@ -140,6 +141,7 @@ export const MOCK_REGISTRATIONS: Registration[] = [
     team: "Pedal Forte",
     termsCheck: true,
     status: "confirmed",
+    extraLunchQuantity: 1,
     revenue: 140.0,
   },
   {
@@ -159,6 +161,7 @@ export const MOCK_REGISTRATIONS: Registration[] = [
     team: "Equipe Pedal RS",
     termsCheck: true,
     status: "pending",
+    extraLunchQuantity: 0,
     revenue: 140.0,
   },
   {
@@ -178,6 +181,7 @@ export const MOCK_REGISTRATIONS: Registration[] = [
     team: "",
     termsCheck: true,
     status: "confirmed",
+    extraLunchQuantity: 1,
     revenue: 140.0,
   },
   {
@@ -197,7 +201,8 @@ export const MOCK_REGISTRATIONS: Registration[] = [
     team: "",
     termsCheck: true,
     status: "pending",
-    revenue: 140.0,
+    extraLunchQuantity: 0,
+    revenue: 140,
   },
 ];
 

@@ -24,12 +24,15 @@ export const registrationsServices = {
   getRegistrations,
   createRegistration(data: RegistrationFormData): Registration {
     const registrations = getRegistrations();
+    const total =
+      REGISTRATION_PRICES.registrationFee +
+      data.extraLunchQuantity * REGISTRATION_PRICES.extraLunchFee;
 
     const newRegistration: Registration = {
       ...data,
       id: crypto.randomUUID(),
       status: "pending",
-      revenue: REGISTRATION_PRICES.registrationFee,
+      revenue: total,
     };
 
     const updatedList = [...registrations, newRegistration];
