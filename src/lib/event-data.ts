@@ -1,5 +1,17 @@
 import { Registration } from "@/features/registration/schemas/registration.schema";
 
+export type Routes = {
+  title: string;
+  distance: string;
+  elevation: string;
+  level: string;
+};
+
+export type EventPrices = {
+  registrationFee: number;
+  extraLunchFee: number;
+};
+
 export const KIT_ITENS = [
   {
     title: "Meia de Ciclismo",
@@ -27,13 +39,6 @@ export const KIT_ITENS = [
     description: "Fotografias profissionais e sem custo aos inscritos",
   },
 ];
-
-export type Routes = {
-  title: string;
-  distance: string;
-  elevation: string;
-  level: string;
-};
 
 export const ROUTES_EVENT: Routes[] = [
   {
@@ -87,6 +92,11 @@ export const CATEGORIES = [
 ];
 
 export const tshirtSizes = ["PP", "P", "M", "G", "GG"];
+
+export const REGISTRATION_PRICES: EventPrices = {
+  registrationFee: 100.0,
+  extraLunchFee: 40.0,
+};
 
 export const BRL = new Intl.NumberFormat("pt-BR", {
   style: "currency",

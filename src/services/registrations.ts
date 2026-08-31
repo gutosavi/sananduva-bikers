@@ -2,6 +2,7 @@ import {
   Registration,
   RegistrationFormData,
 } from "@/features/registration/schemas/registration.schema";
+import { REGISTRATION_PRICES } from "@/lib/event-data";
 
 const STORAGE_KEY = "registration";
 
@@ -28,7 +29,7 @@ export const registrationsServices = {
       ...data,
       id: crypto.randomUUID(),
       status: "pending",
-      revenue: 140,
+      revenue: REGISTRATION_PRICES.registrationFee,
     };
 
     const updatedList = [...registrations, newRegistration];
