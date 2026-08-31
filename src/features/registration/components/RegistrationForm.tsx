@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { registrationsServices } from "@/services/registrations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderIcon, SendIcon } from "lucide-react";
+import { CircleX, LoaderIcon, SendIcon } from "lucide-react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -28,6 +28,7 @@ export function RegistrationForm({
   onSave,
   onCancel,
 }: RegistrationFormProps) {
+  const [error, setError] = React.useState("");
   const methods = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
@@ -102,10 +103,11 @@ export function RegistrationForm({
         registrationsServices.createRegistration(data);
 
         methods.reset();
-        console.log("Dados enviados", data);
+        console.log("Dados enviados", data); // para debug
       }
     } catch (error) {
-      console.error("Erro no envio:", error);
+      setError(`Não foi possível enviar os dados: ${error}`);
+      console.error("Erro no envio:", error); // para debug
     }
   };
 
@@ -113,9 +115,7 @@ export function RegistrationForm({
     <FormProvider {...methods}>
       <form
         id="registration-form"
-        onSubmit={methods.handleSubmit(onSubmit, (errors) => {
-          console.log("Erros de validação travando o envio:", errors);
-        })}
+        onSubmit={methods.handleSubmit(onSubmit)}
         className="flex flex-col gap-5"
       >
         {/* Etapas do formulário */}
@@ -166,27 +166,12 @@ export function RegistrationForm({
           </Button>
         )}
 
-        {/* {!isEditing &&
-          (isSubmitting ? (
-            <Button
-              className="whitespace-nowrap px-3 py-5 text-xs glow-orange font-semibold lg:px-4 lg:text-sm"
-              type="submit"
-              disabled
-            >
-              <span className="flex flex-row gap-1">
-                Enviando inscrição...
-                <LoaderIcon className="w-4 h-4 animate-spin" />
-              </span>
-            </Button>
-          ) : (
-            <Button
-              className="whitespace-nowrap px-3 py-5 text-xs glow-orange font-semibold lg:px-4 lg:text-sm"
-              type="submit"
-            >
-              <SendIcon className="w-4 h-4" />
-              Finalizar inscrição
-            </Button>
-          ))} */}
+        {error && (
+          <div className="flex flex-row gap-2 items-center text-sm text-destructive">
+            <CircleX className="h-6 w-6" />
+            {error}
+          </div>
+        )}
       </form>
     </FormProvider>
   );
