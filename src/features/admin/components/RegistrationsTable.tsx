@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Registration } from "@/features/registration/schemas/registration.schema";
-import { BRL } from "@/lib/event-data";
+import { BRL, formatCPF } from "@/lib/utils";
 import { CircleCheck, Trophy } from "lucide-react";
 import { RegistrantRowActions } from "./RegistrantRowActions";
 
@@ -54,7 +54,9 @@ export function RegistrationsTable({
           <TableRow key={row.id} className="py-10">
             <TableCell className="font-medium flex flex-col text-foreground">
               {row.fullname}
-              <span className="text-xs text-muted-foreground">{row.cpf}</span>
+              <span className="text-xs text-muted-foreground">
+                {formatCPF(row.cpf)}
+              </span>
             </TableCell>
             <TableCell className="hidden md:table-cell">
               <span className="flex items-center gap-1 md:flex font-medium">

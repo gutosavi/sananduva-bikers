@@ -91,17 +91,196 @@ export const CATEGORIES = [
   "E-Bike",
 ];
 
+export interface CategoryOptions {
+  id: string;
+  label: string;
+  gender: "Masculino" | "Feminino" | "Unissex";
+  minAge?: number;
+  maxAge?: number;
+  route: "Light" | "Amador" | "Sport" | "Pro" | "Livre";
+}
+
+export const CATEGORIES_OPTIONS: CategoryOptions[] = [
+  // Geral / Open
+  {
+    id: "cicloturismo",
+    label: "Cicloturismo",
+    gender: "Unissex",
+    route: "Livre",
+  },
+  {
+    id: "fem-amador",
+    label: "Amador Feminino",
+    gender: "Feminino",
+    route: "Amador",
+  },
+  {
+    id: "masc-amador",
+    label: "Amador Masculino",
+    gender: "Masculino",
+    route: "Amador",
+  },
+  {
+    id: "junior",
+    label: "Junior (Unissex)",
+    maxAge: 17,
+    gender: "Unissex",
+    route: "Sport",
+  },
+  {
+    id: "pcd",
+    label: "PCD: Pessoa com Deficiência",
+    gender: "Unissex",
+    route: "Sport",
+  },
+  {
+    id: "nelore",
+    label: "Masculino Nelore (100kg+)",
+    gender: "Masculino",
+    route: "Sport",
+  },
+  { id: "e-bike", label: "E-Bike (Unissex)", gender: "Unissex", route: "Pro" },
+
+  // Sport - Feminino
+  {
+    id: "sport-fem-sub30",
+    label: "Feminino Sub-30",
+    gender: "Feminino",
+    maxAge: 29,
+    route: "Sport",
+  },
+  {
+    id: "sport-fem-masterA",
+    label: "Feminino Master A",
+    gender: "Feminino",
+    minAge: 30,
+    maxAge: 39,
+    route: "Sport",
+  },
+  {
+    id: "sport-fem-masterB",
+    label: "Feminino Master B",
+    gender: "Feminino",
+    minAge: 40,
+    maxAge: 49,
+    route: "Sport",
+  },
+  {
+    id: "sport-fem-masterC",
+    label: "Feminino Master C",
+    gender: "Feminino",
+    minAge: 50,
+    route: "Sport",
+  },
+
+  // Sport - Masculino
+  {
+    id: "sport-masc-sub30",
+    label: "Masculino Sub-30",
+    gender: "Masculino",
+    maxAge: 29,
+    route: "Sport",
+  },
+  {
+    id: "sport-masc-masterA",
+    label: "Masculino Master A",
+    gender: "Masculino",
+    minAge: 30,
+    maxAge: 39,
+    route: "Sport",
+  },
+  {
+    id: "sport-masc-masterB",
+    label: "Masculino Master B",
+    gender: "Masculino",
+    minAge: 40,
+    maxAge: 49,
+    route: "Sport",
+  },
+  {
+    id: "sport-masc-masterC1",
+    label: "Masculino Master C1",
+    gender: "Masculino",
+    minAge: 50,
+    maxAge: 54,
+    route: "Sport",
+  },
+  {
+    id: "sport-masc-masterC2",
+    label: "Masculino Master C2",
+    gender: "Masculino",
+    minAge: 55,
+    maxAge: 59,
+    route: "Sport",
+  },
+  {
+    id: "sport-masc-vet",
+    label: "Masculino Veterano",
+    gender: "Masculino",
+    minAge: 60,
+    route: "Sport",
+  },
+
+  // Pro Geral/Masculino
+  {
+    id: "pro-masc-elite",
+    label: "Masculino Elite",
+    gender: "Masculino",
+    route: "Pro",
+  },
+  {
+    id: "pro-fem-elite",
+    label: "Feminino Elite",
+    gender: "Feminino",
+    route: "Pro",
+  },
+  {
+    id: "pro-masc-sub30",
+    label: "Masculino Sub-30",
+    gender: "Masculino",
+    maxAge: 29,
+    route: "Pro",
+  },
+  {
+    id: "pro-masc-masterA1",
+    label: "Masculino Master A1",
+    gender: "Masculino",
+    minAge: 30,
+    maxAge: 34,
+    route: "Pro",
+  },
+  {
+    id: "pro-masc-masterA2",
+    label: "Masculino Master A2",
+    gender: "Masculino",
+    minAge: 35,
+    maxAge: 39,
+    route: "Pro",
+  },
+  {
+    id: "pro-masc-masterB1",
+    label: "Masculino Master B1",
+    gender: "Masculino",
+    minAge: 40,
+    maxAge: 44,
+    route: "Pro",
+  },
+  {
+    id: "pro-masc-masterB2",
+    label: "Masculino Master B2",
+    gender: "Masculino",
+    minAge: 45,
+    maxAge: 49,
+    route: "Pro",
+  },
+];
+
 export const tshirtSizes = ["PP", "P", "M", "G", "GG"];
 
 export const REGISTRATION_PRICES: EventPrices = {
   registrationFee: 100.0,
   extraLunchFee: 40.0,
 };
-
-export const BRL = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
 
 export const MOCK_REGISTRATIONS: Registration[] = [
   {

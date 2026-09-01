@@ -1,14 +1,10 @@
 import { z } from "zod";
 
-const cpfSchema = z.string().refine(
-  (val) => {
-    const cpf = val.replace(/\D/g, "");
-    if (cpf.length !== 11) return false;
-
-    return true;
-  },
-  { message: "CPF inválido" },
-);
+const cpfSchema = z
+  .string()
+  .min(1, "O CPF é obrigatório")
+  .transform((val) => val.replace(/\D/g, ""))
+  .refine((val) => val.length === 11);
 
 export const registrationSchema = z.object({
   fullname: z.string().min(3, "Nome é obrigatório"),

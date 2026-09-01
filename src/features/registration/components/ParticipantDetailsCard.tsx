@@ -50,7 +50,6 @@ export function ParticipantDetailsCard() {
               autoComplete="name"
               type="text"
               placeholder="Nome Completo"
-              required
             />
             <FieldError errors={[errors.fullname]} />
           </Field>
@@ -63,7 +62,6 @@ export function ParticipantDetailsCard() {
               type="text"
               inputMode="numeric"
               placeholder="000.000.000-00"
-              required
             />
             <FieldError errors={[errors.cpf]} />
           </Field>
@@ -76,7 +74,6 @@ export function ParticipantDetailsCard() {
               type="date"
               placeholder="dd/mm/aaaa"
               autoComplete="bday"
-              required
             />
             <FieldError errors={[errors.birthDate]} />
           </Field>
@@ -115,7 +112,6 @@ export function ParticipantDetailsCard() {
               type="email"
               placeholder="exemplo@exemplo.com.br"
               autoComplete="email"
-              required
             />
             <FieldError errors={[errors.email]} />
           </Field>
@@ -127,7 +123,6 @@ export function ParticipantDetailsCard() {
               name="phoneNumber"
               type="text"
               placeholder="(54) 99999-9999"
-              required
             />
             <FieldError errors={[errors.phoneNumber]} />
           </Field>
@@ -140,7 +135,6 @@ export function ParticipantDetailsCard() {
               type="text"
               placeholder="Sananduva - RS"
               autoComplete="address-level2"
-              required
             />
             <FieldError errors={[errors.cityState]} />
           </Field>
@@ -152,7 +146,6 @@ export function ParticipantDetailsCard() {
               name="emergencyContact"
               type="text"
               placeholder="Nome do contato"
-              required
             />
             <FieldError errors={[errors.emergencyContact]} />
           </Field>
@@ -166,7 +159,6 @@ export function ParticipantDetailsCard() {
               inputMode="tel"
               autoComplete="tel"
               placeholder="(54) 99999-9999"
-              required
             />
             <FieldError errors={[errors.emergencyPhone]} />
           </Field>
