@@ -31,8 +31,8 @@ export function RegistrationsTable({
       <TableHeader>
         <TableRow className="hover:bg-transparent">
           <TableHead>Nome</TableHead>
-          <TableHead className="hidden md:table-cell">Percurso</TableHead>
           <TableHead>Categoria</TableHead>
+          <TableHead className="hidden md:table-cell">Almoço Extra</TableHead>
           <TableHead className="hidden md:table-cell">Valor</TableHead>
           <TableHead>Status</TableHead>
           <TableHead className="text-right">Ações</TableHead>
@@ -58,13 +58,15 @@ export function RegistrationsTable({
                 {formatCPF(row.cpf)}
               </span>
             </TableCell>
-            <TableCell className="hidden md:table-cell">
+            <TableCell>
               <span className="flex items-center gap-1 md:flex font-medium">
                 <Trophy className="h-3.5 w-3.5 text-primary" />
-                {row.route}
+                {row.category}
               </span>
             </TableCell>
-            <TableCell>{row.category}</TableCell>
+            <TableCell className="hidden md:table-cell">
+              {row.extraLunchQuantity}
+            </TableCell>
             <TableCell className="hidden font-medium md:table-cell">
               {BRL.format(row.revenue)}
             </TableCell>

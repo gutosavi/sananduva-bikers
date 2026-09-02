@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CATEGORIES } from "@/lib/event-data";
+import { CATEGORIES_OPTIONS } from "@/lib/event-data";
 
 export function CategoriesCard() {
   return (
@@ -20,12 +20,12 @@ export function CategoriesCard() {
       </CardHeader>
       <CardContent className="px-6 pb-6">
         <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map((category) => (
+          {CATEGORIES_OPTIONS.map((category) => (
             <span
-              key={category}
+              key={category.id}
               className="rounded-full border border-border bg-secondary/40 px-3 py-1.5 text-xs font-medium text-secondary-foreground"
             >
-              {category}
+              {category.label}
             </span>
           ))}
         </div>
