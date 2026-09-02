@@ -16,11 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  CATEGORIES_OPTIONS,
-  ROUTES_EVENT,
-  tshirtSizes,
-} from "@/lib/event-data";
+import { CATEGORIES_OPTIONS, tshirtSizes } from "@/lib/event-data";
 import { calculateAge } from "@/lib/utils";
 import { Controller, useFormContext } from "react-hook-form";
 import { RegistrationFormData } from "../schemas/registration.schema";
@@ -37,7 +33,7 @@ export function RegistrationDetailsCard({
   } = useFormContext<RegistrationFormData>();
 
   const availableCategories = CATEGORIES_OPTIONS.filter((cat) => {
-    if (!birthDate || !gender) return [];
+    if (!birthDate || !gender) return false;
 
     const userAge = calculateAge(birthDate);
 
@@ -50,6 +46,8 @@ export function RegistrationDetailsCard({
 
     return matchAge && matchGender;
   });
+
+  const isProfileIncomplete = !birthDate || !gender;
 
   return (
     <Card className="glass border-white/10">
@@ -65,7 +63,7 @@ export function RegistrationDetailsCard({
 
       <CardContent className="px-6 pt-6">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Field>
+          <Field className="md:col-span-2">
             <Label htmlFor="team">Equipe / Grupo</Label>
             <Input
               {...register("team")}
@@ -100,34 +98,8 @@ export function RegistrationDetailsCard({
                 </Select>
               )}
             />
+
             <FieldError errors={[errors.tshirtSize]} />
-          </Field>
-
-          <Field>
-            <Label htmlFor="route">Percurso</Label>
-
-            <Controller
-              name="route"
-              control={control}
-              render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger id="route">
-                    <SelectValue placeholder="Selecione o percurso" />
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    <SelectGroup>
-                      {ROUTES_EVENT.map((item) => (
-                        <SelectItem key={item.title} value={item.title}>
-                          {item.title} - {item.distance}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            <FieldError errors={[errors.route]} />
           </Field>
 
           <Field>
@@ -139,7 +111,13 @@ export function RegistrationDetailsCard({
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id="category">
-                    <SelectValue placeholder="Selecione a categoria" />
+                    <SelectValue
+                      placeholder={
+                        isProfileIncomplete
+                          ? "Requer idade e gênero"
+                          : "Selecione uma categoria"
+                      }
+                    />
                   </SelectTrigger>
 
                   <SelectContent>
@@ -154,6 +132,7 @@ export function RegistrationDetailsCard({
                 </Select>
               )}
             />
+
             <FieldError errors={[errors.category]} />
           </Field>
         </div>

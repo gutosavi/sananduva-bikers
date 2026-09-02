@@ -18,7 +18,6 @@ export const defaultValues: RegistrationFormData = {
   emergencyContact: "",
   emergencyPhone: "",
   category: "",
-  route: "",
   tshirtSize: "",
   team: "",
   extraLunchQuantity: 0,

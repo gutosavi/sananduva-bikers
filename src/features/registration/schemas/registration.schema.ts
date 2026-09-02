@@ -17,7 +17,6 @@ export const registrationSchema = z.object({
   emergencyContact: z.string().min(1, "Este campo é obrigatório"),
   emergencyPhone: z.string().min(1, "Este campo é obrigatório"),
   category: z.string().min(1, "Selecione sua categoria"),
-  route: z.string().min(1, "Selecione o percurso desejado"),
   tshirtSize: z.string().min(1, "Selecione o tamanho da camiseta"),
   team: z.string().optional(),
   extraLunchQuantity: z.number().min(0),
