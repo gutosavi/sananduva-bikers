@@ -5,7 +5,7 @@ import { registrationsServices } from "@/services/registrations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleX, LoaderIcon, SendIcon } from "lucide-react";
 import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { defaultValues } from "../constants";
 import {
   Registration,
@@ -50,8 +50,12 @@ export function RegistrationForm({
   }, [initialData, methods]);
 
   const {
+    control,
     formState: { isSubmitting },
   } = methods;
+
+  const userBirthDate = useWatch({ control, name: "birthDate" });
+  const userGender = useWatch({ control, name: "gender" });
 
   const onSubmit = async (data: RegistrationFormData): Promise<void> => {
     try {
@@ -83,7 +87,10 @@ export function RegistrationForm({
         {/* Etapas do formulário */}
         <div className="space-y-6">
           <ParticipantDetailsCard />
-          <RegistrationDetailsCard />
+          <RegistrationDetailsCard
+            birthDate={userBirthDate}
+            gender={userGender}
+          />
           {!isEditing && <CheckboxSection />}
         </div>
 

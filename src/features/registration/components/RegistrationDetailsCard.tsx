@@ -16,17 +16,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CATEGORIES, ROUTES_EVENT, tshirtSizes } from "@/lib/event-data";
+import {
+  CATEGORIES_OPTIONS,
+  ROUTES_EVENT,
+  tshirtSizes,
+} from "@/lib/event-data";
+import { calculateAge } from "@/lib/utils";
 import { Controller, useFormContext } from "react-hook-form";
 import { RegistrationFormData } from "../schemas/registration.schema";
 
-export function RegistrationDetailsCard() {
+export function RegistrationDetailsCard({
+  birthDate,
+  gender,
+}: Partial<RegistrationFormData>) {
   /* Card - Etapa 2 */
   const {
     register,
     control,
     formState: { errors },
   } = useFormContext<RegistrationFormData>();
+
+  const availableCategories = CATEGORIES_OPTIONS.filter((cat) => {
+    if (!birthDate || !gender) return [];
+
+    const userAge = calculateAge(birthDate);
+
+    const matchGender =
+      !cat.gender || cat.gender === "Unissex" || cat.gender === gender;
+
+    const minAge = cat.minAge ?? 0;
+    const maxAge = cat.maxAge ?? 150;
+    const matchAge = userAge >= minAge && userAge <= maxAge;
+
+    return matchAge && matchGender;
+  });
+
   return (
     <Card className="glass border-white/10">
       <CardHeader className="px-6 pt-6">
@@ -120,9 +144,9 @@ export function RegistrationDetailsCard() {
 
                   <SelectContent>
                     <SelectGroup>
-                      {CATEGORIES.map((item) => (
-                        <SelectItem key={item} value={item}>
-                          {item} - {item}
+                      {availableCategories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.label}
                         </SelectItem>
                       ))}
                     </SelectGroup>

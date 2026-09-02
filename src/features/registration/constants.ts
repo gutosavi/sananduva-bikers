@@ -3,8 +3,6 @@ import { RegistrationFormData } from "./schemas/registration.schema";
 export const optionsGender = [
   { label: "Feminino", value: "Feminino" },
   { label: "Masculino", value: "Masculino" },
-  { label: "Outro", value: "Outro" },
-  { label: "Prefiro não informar", value: "Prefiro não informar" },
 ];
 
 export const extraLunchQuantity = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

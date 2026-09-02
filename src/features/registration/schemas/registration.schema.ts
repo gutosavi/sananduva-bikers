@@ -10,7 +10,7 @@ export const registrationSchema = z.object({
   fullname: z.string().min(3, "Nome é obrigatório"),
   cpf: cpfSchema,
   birthDate: z.iso.date("Informe uma data válida"),
-  gender: z.string().optional(),
+  gender: z.string().min(1, "Informe seu gênero"),
   email: z.email("Informe seu e-mail"),
   phoneNumber: z.string().min(1, "Informe seu telefone de contato"),
   cityState: z.string().min(1, "Informe a cidade e o Estado"),
