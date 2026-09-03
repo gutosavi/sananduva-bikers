@@ -14,6 +14,7 @@ import {
 } from "../schemas/registration.schema";
 import { CheckboxSection } from "./CheckboxSection";
 import { ParticipantDetailsCard } from "./ParticipantDetailsCard";
+import { PaymentModal } from "./PaymentModal";
 import { RegistrationDetailsCard } from "./RegistrationDetailsCard";
 
 type RegistrationFormProps = {
@@ -29,6 +30,7 @@ export function RegistrationForm({
   onSave,
   onCancel,
 }: RegistrationFormProps) {
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = React.useState(true);
   const [error, setError] = React.useState("");
   const methods = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
@@ -146,6 +148,8 @@ export function RegistrationForm({
             {error}
           </div>
         )}
+
+        {isPaymentModalOpen && <PaymentModal isOpen={isPaymentModalOpen} />}
       </form>
     </FormProvider>
   );
