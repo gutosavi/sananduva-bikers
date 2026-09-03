@@ -170,11 +170,7 @@ export function ParticipantDetailsCard() {
               control={control}
               render={({ field }) => (
                 <Select
-                  value={
-                    field.value !== undefined && field.value !== null
-                      ? String(field.value)
-                      : undefined
-                  }
+                  value={field.value === undefined ? null : String(field.value)}
                   onValueChange={(val) => {
                     field.onChange(val === null ? undefined : Number(val));
                   }}
@@ -186,7 +182,7 @@ export function ParticipantDetailsCard() {
                   <SelectContent>
                     <SelectGroup>
                       {extraLunchQuantity.map((item) => (
-                        <SelectItem key={item} value={String(item)}>
+                        <SelectItem key={item} value={item}>
                           {item}
                         </SelectItem>
                       ))}
