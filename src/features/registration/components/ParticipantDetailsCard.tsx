@@ -169,7 +169,14 @@ export function ParticipantDetailsCard() {
               name="extraLunchQuantity"
               control={control}
               render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={
+                    field.value !== undefined ? String(field.value) : undefined
+                  }
+                  onValueChange={(val) => {
+                    field.onChange(val === null ? undefined : Number(val));
+                  }}
+                >
                   <SelectTrigger id="extraLunchQuantity">
                     <SelectValue placeholder="Selecione a quantidade" />
                   </SelectTrigger>
@@ -186,7 +193,6 @@ export function ParticipantDetailsCard() {
                 </Select>
               )}
             />
-            <FieldError errors={[errors.extraLunchQuantity]} />
           </Field>
         </div>
       </CardContent>

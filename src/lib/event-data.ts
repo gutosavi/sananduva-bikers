@@ -245,8 +245,6 @@ export const CATEGORIES_OPTIONS: CategoryOptions[] = [
   },
 ];
 
-export const tshirtSizes = ["PP", "P", "M", "G", "GG"];
-
 export const REGISTRATION_PRICES: EventPrices = {
   registrationFee: 100.0,
   extraLunchFee: 40.0,

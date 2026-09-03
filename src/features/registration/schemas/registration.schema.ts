@@ -19,7 +19,7 @@ export const registrationSchema = z.object({
   category: z.string().min(1, "Selecione sua categoria"),
   tshirtSize: z.string().min(1, "Selecione o tamanho da camiseta"),
   team: z.string().optional(),
-  extraLunchQuantity: z.number().min(0),
+  extraLunchQuantity: z.number().optional(),
 
   termsCheck: z
     .boolean()

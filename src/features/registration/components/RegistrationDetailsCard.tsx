@@ -16,7 +16,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CATEGORIES_OPTIONS, tshirtSizes } from "@/lib/event-data";
+import { tshirtSizes } from "@/features/registration/constants";
+import { CATEGORIES_OPTIONS } from "@/lib/event-data";
 import { calculateAge } from "@/lib/utils";
 import { Controller, useFormContext } from "react-hook-form";
 import { RegistrationFormData } from "../schemas/registration.schema";

@@ -26,7 +26,7 @@ export const registrationsServices = {
     const registrations = getRegistrations();
     const total =
       REGISTRATION_PRICES.registrationFee +
-      data.extraLunchQuantity * REGISTRATION_PRICES.extraLunchFee;
+      (data.extraLunchQuantity ?? 0) * REGISTRATION_PRICES.extraLunchFee;
 
     const newRegistration: Registration = {
       ...data,
