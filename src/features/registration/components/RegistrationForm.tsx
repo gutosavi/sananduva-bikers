@@ -41,25 +41,29 @@ export function RegistrationForm({
       : defaultValues,
   });
 
-  React.useEffect(() => {
-    methods.reset(
-      initialData
-        ? { ...defaultValues, ...initialData, termsCheck: true }
-        : defaultValues,
-    );
-  }, [initialData, methods]);
-
   const {
     control,
+    reset,
     formState: { isSubmitting },
   } = methods;
+
+  React.useEffect(() => {
+    if (initialData) {
+      reset({
+        ...defaultValues,
+        ...initialData,
+        termsCheck: true,
+      });
+    }
+  }, [initialData, reset]);
 
   const userBirthDate = useWatch({ control, name: "birthDate" });
   const userGender = useWatch({ control, name: "gender" });
 
   const onSubmit = async (data: RegistrationFormData): Promise<void> => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // simula atraso no envio do formulário
+      setError("");
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       if (isEditing && initialData?.id) {
         if (onSave) {
@@ -67,13 +71,11 @@ export function RegistrationForm({
         }
       } else {
         registrationsServices.createRegistration(data);
-
-        methods.reset();
-        console.log("Dados enviados", data); // para debug
+        reset(defaultValues);
       }
-    } catch (error) {
-      setError(`Não foi possível enviar os dados: ${error}`);
-      console.error("Erro no envio:", error); // para debug
+    } catch (err) {
+      setError(`Não foi possível enviar os dados: ${err}`);
+      console.error("Erro no envio:", err);
     }
   };
 
@@ -81,7 +83,10 @@ export function RegistrationForm({
     <FormProvider {...methods}>
       <form
         id="registration-form"
-        onSubmit={methods.handleSubmit(onSubmit)}
+        onSubmit={methods.handleSubmit((data) => {
+          console.log("Categoria enviada:", data.category);
+          onSubmit(data);
+        })}
         className="flex flex-col gap-5"
       >
         {/* Etapas do formulário */}

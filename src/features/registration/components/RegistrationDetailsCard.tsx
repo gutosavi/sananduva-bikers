@@ -110,7 +110,14 @@ export function RegistrationDetailsCard({
               name="category"
               control={control}
               render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  disabled={isProfileIncomplete}
+                  value={field.value ?? null}
+                  onValueChange={(val) => {
+                    console.log("Categoria selecionada:", val);
+                    field.onChange(val || "");
+                  }}
+                >
                   <SelectTrigger id="category">
                     <SelectValue
                       placeholder={
@@ -133,7 +140,6 @@ export function RegistrationDetailsCard({
                 </Select>
               )}
             />
-
             <FieldError errors={[errors.category]} />
           </Field>
         </div>
