@@ -131,7 +131,7 @@ export function RegistrationDetailsCard({
                   <SelectContent>
                     <SelectGroup>
                       {availableCategories.map((cat) => (
-                        <SelectItem key={cat.id} value={cat.id}>
+                        <SelectItem key={cat.id} value={cat.label}>
                           {cat.label}
                         </SelectItem>
                       ))}

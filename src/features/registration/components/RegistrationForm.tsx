@@ -30,7 +30,9 @@ export function RegistrationForm({
   onSave,
   onCancel,
 }: RegistrationFormProps) {
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = React.useState(true);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = React.useState(false);
+  const [submittedData, setSubmittedData] =
+    React.useState<RegistrationFormData>();
   const [error, setError] = React.useState("");
   const methods = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
@@ -73,7 +75,8 @@ export function RegistrationForm({
         }
       } else {
         registrationsServices.createRegistration(data);
-        reset(defaultValues);
+        setSubmittedData(data);
+        setIsPaymentModalOpen(true);
       }
     } catch (err) {
       setError(`Não foi possível enviar os dados: ${err}`);
@@ -81,14 +84,16 @@ export function RegistrationForm({
     }
   };
 
+  const handleClosePaymentModal = () => {
+    setIsPaymentModalOpen(false);
+    reset(defaultValues);
+  };
+
   return (
     <FormProvider {...methods}>
       <form
         id="registration-form"
-        onSubmit={methods.handleSubmit((data) => {
-          console.log("Categoria enviada:", data.category);
-          onSubmit(data);
-        })}
+        onSubmit={methods.handleSubmit((data) => onSubmit(data))}
         className="flex flex-col gap-5"
       >
         {/* Etapas do formulário */}
@@ -111,7 +116,11 @@ export function RegistrationForm({
               Cancelar
             </Button>
 
-            <Button type="submit" form="registration-form">
+            <Button
+              type="submit"
+              form="registration-form"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
                   Salvando...
@@ -142,14 +151,22 @@ export function RegistrationForm({
           </Button>
         )}
 
+        {/* Modal de pagamento */}
+        {isPaymentModalOpen && submittedData && (
+          <PaymentModal
+            isOpen={isPaymentModalOpen}
+            onClose={handleClosePaymentModal}
+            registrationData={submittedData}
+          />
+        )}
+
+        {/* Mensagem de erro */}
         {error && (
           <div className="flex flex-row gap-2 items-center text-sm text-destructive">
             <CircleX className="h-6 w-6" />
             {error}
           </div>
         )}
-
-        {isPaymentModalOpen && <PaymentModal isOpen={isPaymentModalOpen} />}
       </form>
     </FormProvider>
   );
