@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,6 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Registration } from "@/features/registration/schemas/registration.schema";
 import { EllipsisVertical } from "lucide-react";
+import React from "react";
+import { DeleteConfirmationDialog } from "./DeleteConfirmationDialog";
 
 type RegistrantRowActionsProps = {
   row: Registration;
@@ -22,6 +26,8 @@ export function RegistrantRowActions({
   onEdit,
   onDelete,
 }: RegistrantRowActionsProps) {
+  const [isDeleteDialogOpen, setIsDeleteDiagogOpen] = React.useState(false);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -55,13 +61,22 @@ export function RegistrantRowActions({
             Editar
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => onDelete(row.id)}
+            onClick={() => setIsDeleteDiagogOpen(true)}
             className="text-destructive"
           >
             Excluir
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
+
+      <DeleteConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDiagogOpen}
+        onDelete={() => {
+          onDelete(row.id);
+          setIsDeleteDiagogOpen(false);
+        }}
+      />
     </DropdownMenu>
   );
 }
