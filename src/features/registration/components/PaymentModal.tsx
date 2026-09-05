@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,9 +9,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { EventPrices, REGISTRATION_PRICES } from "@/lib/event-data";
-import { BRL } from "@/lib/utils";
-import { Copy, QrCode } from "lucide-react";
-import { paymentInstructions } from "../constants";
+import { BRL, formatCNPJ } from "@/lib/utils";
+import { Check, Copy, QrCode } from "lucide-react";
+import React from "react";
+import { paymentInstructions, pixKey } from "../constants";
 import { RegistrationFormData } from "../schemas/registration.schema";
 interface PaymentModalProps {
   isOpen: boolean;
@@ -22,7 +25,11 @@ export function PaymentModal({
   onClose,
   registrationData,
 }: PaymentModalProps) {
-  function calculateTotalFee(eventData: EventPrices, extraLunchQuantity = 0) {
+  const [isCopied, setCopied] = React.useState(false);
+  const calculateTotalFee = (
+    eventData: EventPrices,
+    extraLunchQuantity = 0,
+  ) => {
     const eventPrice = eventData.registrationFee;
     const extraLunchPrice = eventData.extraLunchFee;
 
@@ -31,12 +38,19 @@ export function PaymentModal({
       extraLunchPrice,
       total: eventPrice + extraLunchQuantity * extraLunchPrice,
     };
-  }
+  };
 
   const { eventPrice, extraLunchPrice, total } = calculateTotalFee(
     REGISTRATION_PRICES,
     registrationData.extraLunchQuantity,
   );
+
+  const handleCopied = () => {
+    navigator.clipboard.writeText(pixKey);
+    setCopied(true);
+
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -69,6 +83,12 @@ export function PaymentModal({
               </h1>
 
               <ul className="mt-4 space-y-2 text-sm">
+                <li className="flex justify-between gap-4">
+                  <span className="text-muted-foreground">Nome:</span>
+                  <span className="font-medium">
+                    {registrationData.fullname}
+                  </span>
+                </li>
                 <li className="flex justify-between gap-4">
                   <span className="text-muted-foreground">Categoria:</span>
                   <span className="font-medium">
@@ -108,16 +128,26 @@ export function PaymentModal({
 
             <div className="mt-1.5 flex items-center gap-2">
               <code className="flex-1 truncate rounded-md border border-border bg-background/60 px-3 py-2.5 text-sm">
-                00.993.039/0001-57
+                {formatCNPJ(pixKey)}
               </code>
               <Button
                 type="button"
                 size="icon"
                 variant="outline"
+                onClick={handleCopied}
                 className="h-11 w-11 shrink-0 border-primary/40 bg-transparent text-primary hover:glow-amber items-center"
               >
-                <Copy className="h-4 w-4" />
-                <span className="sr-only">Copiar Chave Pix</span>
+                {isCopied ? (
+                  <>
+                    <Check className="h-4 w-4" />
+                    <span className="sr-only">Copiado</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-4 w-4" />
+                    <span className="sr-only">Copiar Chave Pix</span>
+                  </>
+                )}
               </Button>
             </div>
 
@@ -137,6 +167,8 @@ export function PaymentModal({
             </div>
           </div>
         </section>
+
+        <Button onClick={onClose}>Concluir</Button>
       </DialogContent>
     </Dialog>
   );

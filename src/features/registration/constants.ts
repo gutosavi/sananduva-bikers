@@ -5,6 +5,8 @@ export const optionsGender = [
   { label: "Masculino", value: "Masculino" },
 ];
 
+export const pixKey = "23639623000104";
+
 export const extraLunchQuantity = [
   "0",
   "1",
