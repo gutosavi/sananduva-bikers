@@ -28,7 +28,7 @@ export const registrationSchema = z.object({
     .refine((value) => value === true, "Você precisa aceitar os termos"),
 });
 
-export type RegistrationStatus = "pending" | "confirmed";
+export type RegistrationStatus = "pending" | "confirmed" | "cancelled";
 
 export type RegistrationFormData = z.infer<typeof registrationSchema>;
 
