@@ -38,7 +38,16 @@ export function CheckboxSection() {
             Eu aceito os termos do regulamento
           </FieldLabel>
           <FieldDescription>
-            Ao clicar neste item, você concorda com os termos do regulamento.
+            Ao clicar neste item, você concorda com os termos do{" "}
+            <a
+              href="/assets/docs/regulamento.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              download="regulamento.pdf"
+            >
+              regulamento
+            </a>
+            .
           </FieldDescription>
         </FieldContent>
       </Field>
