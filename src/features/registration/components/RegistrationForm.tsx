@@ -21,7 +21,7 @@ type RegistrationFormProps = {
   isEditing?: boolean;
   initialData?: Registration | null;
   onSave?: (data: Registration) => void;
-  onCancel: React.Dispatch<React.SetStateAction<Registration | null>>;
+  onCancel?: React.Dispatch<React.SetStateAction<Registration | null>>;
 };
 
 export function RegistrationForm({
@@ -111,7 +111,7 @@ export function RegistrationForm({
             <Button
               type="button"
               variant="outline"
-              onClick={() => onCancel(null)}
+              onClick={() => onCancel && onCancel(null)}
             >
               Cancelar
             </Button>
