@@ -17,8 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { tshirtSizes } from "@/features/registration/constants";
+import { getAvailableCategories } from "@/helpers/isCategoryValid";
 import { CATEGORIES_OPTIONS } from "@/lib/event-data";
-import { calculateAge } from "@/lib/utils";
 import { Controller, useFormContext } from "react-hook-form";
 import { RegistrationFormData } from "../schemas/registration.schema";
 
@@ -33,20 +33,11 @@ export function RegistrationDetailsCard({
     formState: { errors },
   } = useFormContext<RegistrationFormData>();
 
-  const availableCategories = CATEGORIES_OPTIONS.filter((cat) => {
-    if (!birthDate || !gender) return false;
-
-    const userAge = calculateAge(birthDate);
-
-    const matchGender =
-      !cat.gender || cat.gender === "Unissex" || cat.gender === gender;
-
-    const minAge = cat.minAge ?? 0;
-    const maxAge = cat.maxAge ?? 150;
-    const matchAge = userAge >= minAge && userAge <= maxAge;
-
-    return matchAge && matchGender;
-  });
+  const availableCategories = getAvailableCategories(
+    birthDate,
+    gender,
+    CATEGORIES_OPTIONS,
+  );
 
   const isProfileIncomplete = !birthDate || !gender;
 
