@@ -1,25 +1,17 @@
-import { RegistrationStatus } from "@/features/registration/schemas/registration.schema";
-import { CategoryOptions } from "@/lib/event-data";
+import {
+  RegistrationFormData,
+  RegistrationStatus,
+} from "@/features/registration/schemas/registration.schema";
+import { EventPrices } from "@/lib/event-data";
 
-interface ParticipantProps {
-  id: string | undefined;
-  fullname: string;
-  cpf: string;
-  birthDate: Date;
-  gender: string;
-  email: string;
-  phoneNumber: string;
-  cityState: string;
-  emergencyContact: string;
-  emergencyPhone: string;
-  category: string;
-  tshirtSize: string;
-  team: string | undefined;
-  extraLunchQuantity: number;
-  termsCheck: boolean;
-  status: RegistrationStatus;
+export interface ParticipantProps extends Omit<
+  RegistrationFormData,
+  "birthDate"
+> {
+  id?: string;
+  birthDate: Date | string;
+  status?: RegistrationStatus;
 }
-
 export class Participant {
   private id?: string;
   private fullname: string;
@@ -36,13 +28,16 @@ export class Participant {
   private team?: string;
   private extraLunchQuantity: number;
   private termsCheck: boolean;
-  private status: RegistrationStatus;
+  private status?: RegistrationStatus;
 
   constructor(props: ParticipantProps) {
     this.id = props.id;
     this.fullname = props.fullname;
     this.cpf = props.cpf;
-    this.birthDate = props.birthDate;
+    this.birthDate =
+      typeof props.birthDate === "string"
+        ? new Date(props.birthDate)
+        : props.birthDate;
     this.gender = props.gender;
     this.email = props.email;
     this.phoneNumber = props.phoneNumber;
@@ -86,28 +81,11 @@ export class Participant {
     return age;
   }
 
-  calculateTotalValue(): number {
-    return 0;
-  }
+  public calculateTotalValue(eventPrices: EventPrices): number {
+    const registrationFee = eventPrices.registrationFee;
+    const extraLunchQuantity = this.extraLunchQuantity ?? 0;
+    const extraLunchCost = extraLunchQuantity * eventPrices.extraLunchFee;
 
-  isCategoryValid(categoriesOptions: CategoryOptions[]) {
-    const userAge = this.getAge();
-
-    const selectedCategory = categoriesOptions.find(
-      (cat) => cat.id === this.category,
-    );
-
-    if (!selectedCategory) return false;
-
-    const matchGender =
-      !selectedCategory.gender ||
-      selectedCategory.gender === "Unissex" ||
-      selectedCategory.gender === this.gender;
-
-    const minAge = selectedCategory.minAge ?? 0;
-    const maxAge = selectedCategory.maxAge ?? 150;
-    const matchAge = userAge >= minAge && userAge <= maxAge;
-
-    return matchAge && matchGender;
+    return registrationFee + extraLunchCost;
   }
 }
