@@ -2,7 +2,7 @@ import { calculateAge } from "@/helpers/calculateAge";
 import { CategoryOptions } from "@/lib/event-data";
 
 export const getAvailableCategories = (
-  birthDate: string | undefined,
+  birthDate: string | Date | undefined,
   gender: string | undefined,
   categoriesOptions: CategoryOptions[],
 ): CategoryOptions[] => {
