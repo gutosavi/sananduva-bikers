@@ -348,6 +348,6 @@ export const MOCK_REGISTRATIONS: Registration[] = [
   },
 ];
 
-export function routeName(title: Routes["title"]) {
-  return ROUTES_EVENT.find((row) => row.title === title);
+export function routeName(label: Routes["title"]) {
+  return CATEGORIES_OPTIONS.find((row) => row.label === label);
 }

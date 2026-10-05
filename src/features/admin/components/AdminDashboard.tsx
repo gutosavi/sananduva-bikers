@@ -10,15 +10,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { LocalStorageRegistrationRepository } from "@/features/registration/repositories/LocalStorageRegistrationRepository";
 import { Registration } from "@/features/registration/schemas/registration.schema";
-import { registrationsServices } from "@/features/registration/services/registrations";
+import { RegistrationService } from "@/features/registration/services/RegistrationService";
 import useDebounce from "@/hooks/useDebounce";
-import { routeName, ROUTES_EVENT } from "@/lib/event-data";
+import { CATEGORIES_OPTIONS, routeName } from "@/lib/event-data";
 import { Download, Search } from "lucide-react";
 import React from "react";
 import { AdminStats } from "./AdminStats";
 import { EditRegistrationDialog } from "./EditRegistrationDialog";
 import { RegistrationsTable } from "./RegistrationsTable";
+
+const repository = new LocalStorageRegistrationRepository();
+const service = new RegistrationService(repository);
 
 export function AdminDashboard() {
   const [rows, setRows] = React.useState<Registration[]>([]);
@@ -29,11 +33,10 @@ export function AdminDashboard() {
   const debounceSearchTerm = useDebounce(inputValue, 500);
 
   React.useEffect(() => {
-    const loadData = () => {
-      const localData = registrationsServices.getRegistrations();
-      setRows(localData.length > 0 ? localData : []);
+    const loadData = async () => {
+      const data = await service.findAllRegistrations();
+      setRows(data ? [...data] : []);
     };
-
     loadData();
   }, []);
 
@@ -43,38 +46,63 @@ export function AdminDashboard() {
       !input ||
       row.fullname.toLowerCase().includes(input) ||
       row.cityState.toLowerCase().includes(input);
-    const matchRoute = routeFilter === "all" || row.route === routeFilter;
+    const matchCategory = routeFilter === "all" || row.category === routeFilter; // ********* refatorar **********
     const matchStatus = statusFilter === "all" || row.status === statusFilter;
 
-    return matchInput && matchRoute && matchStatus;
+    return matchInput && matchCategory && matchStatus;
   });
 
-  const handleToggleStatus = (id: Registration["id"]) => {
-    const targetRow = rows.find((row) => row.id === id);
-    if (!targetRow) return;
+  const handleToggleStatus = async (id: Registration["id"]) => {
+    try {
+      const targetRow = rows.find((row) => row.id === id);
 
-    const updatedList = registrationsServices.updateRegistration(id, {
-      status: targetRow.status === "confirmed" ? "pending" : "confirmed",
-    });
+      if (!targetRow) {
+        throw new Error("Inscrição não encontrada.");
+      }
 
-    setRows(updatedList);
+      const updatedItem = await service.updateRegistration(targetRow.id, {
+        status: targetRow.status === "confirmed" ? "pending" : "confirmed",
+      });
+
+      setRows((prevRows) =>
+        prevRows.map((row) => (row.id === updatedItem.id ? updatedItem : row)),
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error("Erro ao editar status da inscrição.", error);
+      }
+    }
   };
 
-  const handleEdit = (updateRow: Registration) => {
-    const updatedList = registrationsServices.updateRegistration(
-      updateRow.id,
-      updateRow,
-    );
+  const handleEdit = async (updateRow: Registration) => {
+    try {
+      await service.updateRegistration(updateRow.id, updateRow);
+      const updatedList = await service.findAllRegistrations();
 
-    setRows(updatedList);
-    setEditingRow(null);
+      if (!updatedList) {
+        throw new Error("Lista não encontrada.");
+      }
+
+      setRows([...updatedList]);
+      setEditingRow(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Erro ao editar inscrição:", error);
+      }
+    }
   };
 
-  const handleDelete = (id: Registration["id"]) => {
-    const updateList = registrationsServices.deleteRegistration(id);
+  const handleDelete = async (id: Registration["id"]) => {
+    try {
+      await service.deleteRegistration(id);
 
-    setRows(updateList);
-    setEditingRow(null);
+      setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+      setEditingRow(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Erro ao deletar inscrição.", error);
+      }
+    }
   };
 
   return (
@@ -105,16 +133,16 @@ export function AdminDashboard() {
                   {(value: string) =>
                     value === "all"
                       ? "Todos os percursos"
-                      : routeName(value)?.title
+                      : routeName(value)?.label || "Percurso desconhecido"
                   }
                 </SelectValue>
               </SelectTrigger>
 
               <SelectContent>
                 <SelectItem value="all">Todos os percursos</SelectItem>
-                {ROUTES_EVENT.map((row) => (
-                  <SelectItem key={row.title} value={row.title}>
-                    {row.title}
+                {CATEGORIES_OPTIONS.map((row) => (
+                  <SelectItem key={row.id} value={row.label}>
+                    {row.label}
                   </SelectItem>
                 ))}
               </SelectContent>

@@ -1,17 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { registrationsServices } from "@/features/registration/services/registrations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleX, LoaderIcon, SendIcon } from "lucide-react";
 import React from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { defaultValues } from "../constants";
+import { LocalStorageRegistrationRepository } from "../repositories/LocalStorageRegistrationRepository";
 import {
   Registration,
   RegistrationFormData,
   registrationSchema,
 } from "../schemas/registration.schema";
+import { RegistrationService } from "../services/RegistrationService";
 import { CheckboxSection } from "./CheckboxSection";
 import { ParticipantDetailsCard } from "./ParticipantDetailsCard";
 import { PaymentModal } from "./PaymentModal";
@@ -23,6 +24,9 @@ type RegistrationFormProps = {
   onSave?: (data: Registration) => void;
   onCancel?: React.Dispatch<React.SetStateAction<Registration | null>>;
 };
+
+const dataStorage = new LocalStorageRegistrationRepository();
+const service = new RegistrationService(dataStorage);
 
 export function RegistrationForm({
   isEditing = false,
@@ -74,7 +78,8 @@ export function RegistrationForm({
           onSave({ ...initialData, ...data });
         }
       } else {
-        registrationsServices.createRegistration(data);
+        await service.createRegistration(data);
+
         setSubmittedData(data);
         setIsPaymentModalOpen(true);
       }
