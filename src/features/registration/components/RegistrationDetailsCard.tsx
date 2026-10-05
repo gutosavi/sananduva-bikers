@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { tshirtSizes } from "@/features/registration/constants";
-import { getAvailableCategories } from "@/helpers/isCategoryValid";
+import { getAvailableCategories } from "@/helpers/getAvailableCategories";
 import { CATEGORIES_OPTIONS } from "@/lib/event-data";
 import { Controller, useFormContext } from "react-hook-form";
 import { RegistrationFormData } from "../schemas/registration.schema";

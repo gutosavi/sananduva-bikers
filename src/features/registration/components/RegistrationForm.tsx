@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { registrationsServices } from "@/services/registrations";
+import { registrationsServices } from "@/features/registration/services/registrations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleX, LoaderIcon, SendIcon } from "lucide-react";
 import React from "react";

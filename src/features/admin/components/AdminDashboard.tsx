@@ -11,9 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Registration } from "@/features/registration/schemas/registration.schema";
+import { registrationsServices } from "@/features/registration/services/registrations";
 import useDebounce from "@/hooks/useDebounce";
 import { routeName, ROUTES_EVENT } from "@/lib/event-data";
-import { registrationsServices } from "@/services/registrations";
 import { Download, Search } from "lucide-react";
 import React from "react";
 import { AdminStats } from "./AdminStats";
