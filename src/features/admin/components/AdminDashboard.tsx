@@ -13,10 +13,10 @@ import {
 import { LocalStorageRegistrationRepository } from "@/features/registration/repositories/LocalStorageRegistrationRepository";
 import { Registration } from "@/features/registration/schemas/registration.schema";
 import { RegistrationService } from "@/features/registration/services/RegistrationService";
-import useDebounce from "@/hooks/useDebounce";
 import { CATEGORIES_OPTIONS, routeName } from "@/lib/event-data";
 import { Download, Search } from "lucide-react";
 import React from "react";
+import { useAdminRegistrations } from "../hooks/useAdminRegistrations";
 import { AdminStats } from "./AdminStats";
 import { EditRegistrationDialog } from "./EditRegistrationDialog";
 import { RegistrationsTable } from "./RegistrationsTable";
@@ -25,85 +25,26 @@ const repository = new LocalStorageRegistrationRepository();
 const service = new RegistrationService(repository);
 
 export function AdminDashboard() {
-  const [rows, setRows] = React.useState<Registration[]>([]);
-  const [routeFilter, setRouteFilter] = React.useState<string | null>("all");
-  const [statusFilter, setStatusFilter] = React.useState<string | null>("all");
-  const [inputValue, setInputValue] = React.useState("");
-  const [editingRow, setEditingRow] = React.useState<Registration | null>(null);
-  const debounceSearchTerm = useDebounce(inputValue, 500);
+  const {
+    rows,
+    categoryFilter,
+    setCategoryFilter,
+    statusFilter,
+    setStatusFilter,
+    inputValue,
+    setInputValue,
+    editingRow,
+    setEditingRow,
+    filteredRows,
+    handleToggleStatus,
+    handleEdit,
+    handleDelete,
+    loadData,
+  } = useAdminRegistrations(service);
 
   React.useEffect(() => {
-    const loadData = async () => {
-      const data = await service.findAllRegistrations();
-      setRows(data ? [...data] : []);
-    };
     loadData();
-  }, []);
-
-  const filtered = rows.filter((row) => {
-    const input = debounceSearchTerm.trim().toLowerCase();
-    const matchInput =
-      !input ||
-      row.fullname.toLowerCase().includes(input) ||
-      row.cityState.toLowerCase().includes(input);
-    const matchCategory = routeFilter === "all" || row.category === routeFilter; // ********* refatorar **********
-    const matchStatus = statusFilter === "all" || row.status === statusFilter;
-
-    return matchInput && matchCategory && matchStatus;
-  });
-
-  const handleToggleStatus = async (id: Registration["id"]) => {
-    try {
-      const targetRow = rows.find((row) => row.id === id);
-
-      if (!targetRow) {
-        throw new Error("Inscrição não encontrada.");
-      }
-
-      const updatedItem = await service.updateRegistration(targetRow.id, {
-        status: targetRow.status === "confirmed" ? "pending" : "confirmed",
-      });
-
-      setRows((prevRows) =>
-        prevRows.map((row) => (row.id === updatedItem.id ? updatedItem : row)),
-      );
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error("Erro ao editar status da inscrição.", error);
-      }
-    }
-  };
-
-  const handleEdit = async (updateRow: Registration) => {
-    try {
-      await service.updateRegistration(updateRow.id, updateRow);
-      const updatedList = await service.findAllRegistrations();
-
-      if (!updatedList) {
-        throw new Error("Lista não encontrada.");
-      }
-
-      setRows([...updatedList]);
-      setEditingRow(null);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error("Erro ao editar inscrição:", error);
-      }
-    }
-  };
-
-  const handleDelete = async (id: Registration["id"]) => {
-    try {
-      await service.deleteRegistration(id);
-
-      setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-      setEditingRow(null);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error("Erro ao deletar inscrição.", error);
-      }
-    }
-  };
+  }, [loadData]);
 
   return (
     <section className="w-full overflow-hidden">
@@ -123,23 +64,23 @@ export function AdminDashboard() {
             />
           </div>
           <div>
-            <Select value={routeFilter} onValueChange={setRouteFilter}>
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger
-                id="filterRoute"
-                aria-label="Filtrar por percurso"
+                id="categoryFilter"
+                aria-label="Filtrar por categoria"
                 className="h-10 w-45"
               >
                 <SelectValue>
                   {(value: string) =>
                     value === "all"
-                      ? "Todos os percursos"
-                      : routeName(value)?.label || "Percurso desconhecido"
+                      ? "Categorias"
+                      : routeName(value)?.label || "Categoria desconhecida"
                   }
                 </SelectValue>
               </SelectTrigger>
 
               <SelectContent>
-                <SelectItem value="all">Todos os percursos</SelectItem>
+                <SelectItem value="all">Categorias</SelectItem>
                 {CATEGORIES_OPTIONS.map((row) => (
                   <SelectItem key={row.id} value={row.label}>
                     {row.label}
@@ -182,7 +123,7 @@ export function AdminDashboard() {
 
         <div className="overflow-x-auto">
           <RegistrationsTable
-            rows={filtered}
+            rows={filteredRows}
             onToggleStatus={handleToggleStatus}
             onEdit={(row: Registration) => setEditingRow(row)}
             onDelete={handleDelete}

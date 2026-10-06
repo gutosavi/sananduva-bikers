@@ -51,14 +51,14 @@ export class RegistrationService {
     return await this.storage.update(id, updatedRegistration);
   }
 
-  async deleteRegistration(id: string): Promise<Registration[]> {
+  async deleteRegistration(id: string): Promise<void> {
     const existingRegistration = await this.storage.findById(id);
 
     if (!existingRegistration) {
       throw new Error("Inscrição não encontrada para remoção.");
     }
 
-    return await this.storage.delete(id);
+    await this.storage.delete(id);
   }
 
   async findAllRegistrations(): Promise<readonly Registration[]> {
