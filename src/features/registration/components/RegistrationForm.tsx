@@ -1,24 +1,19 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleX, LoaderIcon, SendIcon } from "lucide-react";
 import React from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
-import { defaultValues } from "../constants";
+import { FormProvider } from "react-hook-form";
+import { useRegistrationsForm } from "../hooks/useRegistrationsForm";
 import { LocalStorageRegistrationRepository } from "../repositories/LocalStorageRegistrationRepository";
-import {
-  Registration,
-  RegistrationFormData,
-  registrationSchema,
-} from "../schemas/registration.schema";
+import { Registration } from "../schemas/registration.schema";
 import { RegistrationService } from "../services/RegistrationService";
 import { CheckboxSection } from "./CheckboxSection";
 import { ParticipantDetailsCard } from "./ParticipantDetailsCard";
 import { PaymentModal } from "./PaymentModal";
 import { RegistrationDetailsCard } from "./RegistrationDetailsCard";
 
-type RegistrationFormProps = {
+export type RegistrationFormProps = {
   isEditing?: boolean;
   initialData?: Registration | null;
   onSave?: (data: Registration) => void;
@@ -34,65 +29,17 @@ export function RegistrationForm({
   onSave,
   onCancel,
 }: RegistrationFormProps) {
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = React.useState(false);
-  const [submittedData, setSubmittedData] =
-    React.useState<RegistrationFormData>();
-  const [error, setError] = React.useState("");
-  const methods = useForm<RegistrationFormData>({
-    resolver: zodResolver(registrationSchema),
-    defaultValues: initialData
-      ? {
-          ...defaultValues,
-          ...initialData,
-          termsCheck: true,
-        }
-      : defaultValues,
-  });
-
   const {
-    control,
-    reset,
-    formState: { isSubmitting },
-  } = methods;
-
-  React.useEffect(() => {
-    if (initialData) {
-      reset({
-        ...defaultValues,
-        ...initialData,
-        termsCheck: true,
-      });
-    }
-  }, [initialData, reset]);
-
-  const userBirthDate = useWatch({ control, name: "birthDate" });
-  const userGender = useWatch({ control, name: "gender" });
-
-  const onSubmit = async (data: RegistrationFormData): Promise<void> => {
-    try {
-      setError("");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      if (isEditing && initialData?.id) {
-        if (onSave) {
-          onSave({ ...initialData, ...data });
-        }
-      } else {
-        await service.createRegistration(data);
-
-        setSubmittedData(data);
-        setIsPaymentModalOpen(true);
-      }
-    } catch (err) {
-      setError(`Não foi possível enviar os dados: ${err}`);
-      console.error("Erro no envio:", err);
-    }
-  };
-
-  const handleClosePaymentModal = () => {
-    setIsPaymentModalOpen(false);
-    reset(defaultValues);
-  };
+    methods,
+    isSubmitting,
+    error,
+    isPaymentModalOpen,
+    submittedData,
+    userBirthDate,
+    userGender,
+    onSubmit,
+    handleClosePaymentModal,
+  } = useRegistrationsForm({ isEditing, initialData, onSave, service });
 
   return (
     <FormProvider {...methods}>
