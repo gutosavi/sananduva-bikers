@@ -5,8 +5,13 @@ export class LocalStorageRegistrationRepository implements IRegistrationReposito
   private readonly STORAGE_KEY = "registration";
 
   async save(registration: Registration): Promise<Registration> {
-    const currentListRaw = await this.getRegistrations();
-    const updateList = [...currentListRaw, registration];
+    const currentList = await this.getRegistrations();
+
+    if (currentList.some((item) => item.id === registration.id)) {
+      throw new Error("Item já existe no repositório.");
+    }
+
+    const updateList = [...currentList, registration];
 
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updateList));
     return registration;
@@ -29,6 +34,11 @@ export class LocalStorageRegistrationRepository implements IRegistrationReposito
 
   async delete(id: string): Promise<void> {
     const currentList = await this.getRegistrations();
+
+    if (!currentList.some((item) => item.id === id)) {
+      throw new Error("Item não encontrado.");
+    }
+
     const updatedList = currentList.filter((item) => item.id !== id);
 
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedList));
