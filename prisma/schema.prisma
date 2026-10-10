@@ -11,3 +11,33 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum RegistrationStatus {
+  pending
+  confirmed
+  cancelled
+}
+
+model Registration {
+  id                  String             @id @default(uuid())
+  fullname            String             @map("nome_completo")
+  cpf                 String             @unique
+  email               String             @unique
+  phoneNumber         String             @map("telefone")
+  category            String             @map("categoria")
+  gender              String             @map("genero")
+  birthDate           DateTime           @db.Date @map("data_nascimento")
+  cityState           String             @map("cidade_estado")
+  emergencyContact    String             @map("nome_contato_emergencia")
+  emergencyPhone      String             @map("telefone_emergencia")
+  team                String?            @map("equipe")
+  tshirtSize          String             @map("tamanho_camisa")
+  extraLunchQuantity  Int                @map("quantidade_almoco_extra")
+  termsCheck          Boolean            @map("aceitou_termos")
+  status              RegistrationStatus @default(pending)
+  revenue             Int                @map("receita")               
+  createdAt           DateTime           @default(now()) @map("criado_em")
+  updatedAt           DateTime           @updatedAt @map("atualizado_em")
+
+  @@map("inscricoes")
+}
