@@ -13,26 +13,28 @@ export class PrismaRegistrationRepository implements IRegistrationRepository {
     await this.prisma.$disconnect();
   }
 
-  async testConnection(): Promise<void> {
-    console.log("A - Testando conexão com o banco");
-
-    await this.prisma.$queryRaw`SELECT 1`;
-
-    console.log("B - Conexão funcionando");
-  }
-
   async save(registration: Registration): Promise<Registration> {
-    const saved = await this.prisma.registration.create({
-      data: {
-        ...registration,
-        birthDate: registration.birthDate
-          ? new Date(`${registration.birthDate}T00:00:00.000Z`)
-          : new Date(),
-        extraLunchQuantity: registration.extraLunchQuantity ?? 0,
-      },
-    });
+    try {
+      const saved = await this.prisma.registration.create({
+        data: {
+          ...registration,
+          birthDate: registration.birthDate
+            ? new Date(`${registration.birthDate}T00:00:00.000Z`)
+            : new Date(),
+          extraLunchQuantity: registration.extraLunchQuantity ?? 0,
+        },
+      });
 
-    return fromPrismaRegistration(saved);
+      return fromPrismaRegistration(saved);
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2002"
+      ) {
+        throw new Error("CPF já cadastrado.");
+      }
+      throw error;
+    }
   }
 
   async update(id: string, data: Partial<Registration>): Promise<Registration> {
@@ -78,23 +80,8 @@ export class PrismaRegistrationRepository implements IRegistrationRepository {
   }
 
   async findById(id: string): Promise<Registration | undefined> {
-    console.log("Iniciando busca");
     const registration = await this.prisma.registration.findUnique({
       where: { id },
-    });
-
-    console.log("Consulta finalizada", registration);
-
-    if (!registration) {
-      return undefined;
-    }
-
-    return fromPrismaRegistration(registration);
-  }
-
-  async findByCpf(cpf: string): Promise<Registration | undefined> {
-    const registration = await this.prisma.registration.findUnique({
-      where: { cpf },
     });
 
     if (!registration) {
