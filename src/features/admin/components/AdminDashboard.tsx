@@ -10,9 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { LocalStorageRegistrationRepository } from "@/features/registration/repositories/LocalStorageRegistrationRepository";
 import { Registration } from "@/features/registration/schemas/registration.schema";
-import { RegistrationService } from "@/features/registration/services/RegistrationService";
 import { CATEGORIES_OPTIONS, routeName } from "@/lib/event-data";
 import { Download, Search } from "lucide-react";
 import React from "react";
@@ -20,9 +18,6 @@ import { useAdminRegistrations } from "../hooks/useAdminRegistrations";
 import { AdminStats } from "./AdminStats";
 import { EditRegistrationDialog } from "./EditRegistrationDialog";
 import { RegistrationsTable } from "./RegistrationsTable";
-
-const repository = new LocalStorageRegistrationRepository();
-const service = new RegistrationService(repository);
 
 export function AdminDashboard() {
   const {
@@ -40,7 +35,7 @@ export function AdminDashboard() {
     handleEdit,
     handleDelete,
     loadData,
-  } = useAdminRegistrations(service);
+  } = useAdminRegistrations();
 
   React.useEffect(() => {
     loadData();

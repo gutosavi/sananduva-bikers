@@ -5,9 +5,8 @@ import { CircleX, LoaderIcon, SendIcon } from "lucide-react";
 import React from "react";
 import { FormProvider } from "react-hook-form";
 import { useRegistrationsForm } from "../hooks/useRegistrationsForm";
-import { LocalStorageRegistrationRepository } from "../repositories/LocalStorageRegistrationRepository";
+// import { LocalStorageRegistrationRepository } from "../repositories/LocalStorageRegistrationRepository";
 import { Registration } from "../schemas/registration.schema";
-import { RegistrationService } from "../services/RegistrationService";
 import { CheckboxSection } from "./CheckboxSection";
 import { ParticipantDetailsCard } from "./ParticipantDetailsCard";
 import { PaymentModal } from "./PaymentModal";
@@ -19,9 +18,6 @@ export type RegistrationFormProps = {
   onSave?: (data: Registration) => void;
   onCancel?: React.Dispatch<React.SetStateAction<Registration | null>>;
 };
-
-const dataStorage = new LocalStorageRegistrationRepository();
-const service = new RegistrationService(dataStorage);
 
 export function RegistrationForm({
   isEditing = false,
@@ -39,7 +35,7 @@ export function RegistrationForm({
     userGender,
     onSubmit,
     handleClosePaymentModal,
-  } = useRegistrationsForm({ isEditing, initialData, onSave, service });
+  } = useRegistrationsForm({ isEditing, initialData, onSave });
 
   return (
     <FormProvider {...methods}>

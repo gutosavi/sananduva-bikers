@@ -30,7 +30,7 @@ export async function GET() {
   }
 }
 
-export async function PUT(request: Request) {
+export async function PATCH(request: Request) {
   try {
     const body = await request.json();
     const { id, ...data } = body;

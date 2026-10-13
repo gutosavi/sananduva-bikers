@@ -25,11 +25,11 @@ async function main() {
   const repository = new PrismaRegistrationRepository(prisma);
 
   try {
-    console.log("Iniciando busca...");
+    console.log("Iniciando inscrição...");
 
-    const allRegistrations = await repository.findAll();
+    const saveRegistration = await repository.save(registration);
 
-    console.log("Inscrições:", allRegistrations);
+    console.log("Inscrições:", saveRegistration);
   } finally {
     await repository.disconnect();
   }

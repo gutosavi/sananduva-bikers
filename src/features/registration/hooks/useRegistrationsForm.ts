@@ -7,18 +7,12 @@ import {
   RegistrationFormData,
   registrationSchema,
 } from "../schemas/registration.schema";
-import { RegistrationService } from "../services/RegistrationService";
-
-type useRegistrationFormProps = RegistrationFormProps & {
-  service: RegistrationService;
-};
 
 export const useRegistrationsForm = ({
   isEditing,
   initialData,
   onSave,
-  service,
-}: useRegistrationFormProps) => {
+}: RegistrationFormProps) => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = React.useState(false);
   const [submittedData, setSubmittedData] =
     React.useState<RegistrationFormData>();
@@ -56,16 +50,26 @@ export const useRegistrationsForm = ({
   const onSubmit = async (data: RegistrationFormData): Promise<void> => {
     try {
       setError("");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       if (isEditing && initialData?.id) {
         if (onSave) {
           onSave({ ...initialData, ...data });
         }
       } else {
-        await service.createRegistration(data);
+        const response = await fetch("/api/registrations", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
 
-        setSubmittedData(data);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error ?? "Erro ao adicionar inscrição.");
+        }
+
+        const registration: RegistrationFormData = await response.json();
+
+        setSubmittedData(registration);
         setIsPaymentModalOpen(true);
       }
     } catch (err) {

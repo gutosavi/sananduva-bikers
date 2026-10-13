@@ -1,9 +1,8 @@
 import { Registration } from "@/features/registration/schemas/registration.schema";
-import { RegistrationService } from "@/features/registration/services/RegistrationService";
 import useDebounce from "@/hooks/useDebounce";
 import React from "react";
 
-export const useAdminRegistrations = (service: RegistrationService) => {
+export const useAdminRegistrations = () => {
   const [rows, setRows] = React.useState<Registration[]>([]);
   const [categoryFilter, setCategoryFilter] = React.useState<string | null>(
     "all",
@@ -14,9 +13,23 @@ export const useAdminRegistrations = (service: RegistrationService) => {
   const debounceSearchTerm = useDebounce(inputValue, 500);
 
   const loadData = React.useCallback(async () => {
-    const data = await service.findAllRegistrations();
-    setRows(data ? [...data] : []);
-  }, [service]);
+    try {
+      const response = await fetch("/api/registrations", {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao buscar inscrições.");
+      }
+
+      const data: Registration[] = await response.json();
+      setRows(data ? [...data] : []);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Erro ao buscar inscrições.", error);
+      }
+    }
+  }, []);
 
   const filteredRows = rows.filter((row) => {
     const input = debounceSearchTerm.trim().toLowerCase();
@@ -39,29 +52,48 @@ export const useAdminRegistrations = (service: RegistrationService) => {
         throw new Error("Inscrição não encontrada.");
       }
 
-      const updatedItem = await service.updateRegistration(targetRow.id, {
+      const updatedItem: Registration = {
+        ...targetRow,
         status: targetRow.status === "confirmed" ? "pending" : "confirmed",
+      };
+
+      const response = await fetch("/api/registrations", {
+        method: "PATCH",
+        body: JSON.stringify(updatedItem),
       });
+
+      if (!response.ok) {
+        throw new Error("Erro ao editar status da inscrição.");
+      }
 
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === updatedItem.id ? updatedItem : row)),
       );
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error("Erro ao editar status da inscrição.", error);
+        console.error("Erro ao editar status da inscrição.", error);
       }
     }
   };
 
   const handleEdit = async (updateRow: Registration) => {
     try {
-      const updatedItem = await service.updateRegistration(
-        updateRow.id,
-        updateRow,
-      );
+      const response = await fetch("/api/registrations", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateRow),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar a inscrição.");
+      }
+
+      const updatedItem: Registration = await response.json();
 
       if (!updatedItem) {
-        throw new Error("Lista não encontrada.");
+        throw new Error("Inscrição não encontrada.");
       }
 
       setRows((prevRows) =>
@@ -70,14 +102,21 @@ export const useAdminRegistrations = (service: RegistrationService) => {
       setEditingRow(null);
     } catch (error) {
       if (error instanceof Error) {
-        console.error("Erro ao editar inscrição:", error);
+        console.error("Erro ao atualizar inscrição:", error);
       }
     }
   };
 
   const handleDelete = async (id: Registration["id"]) => {
     try {
-      await service.deleteRegistration(id);
+      const response = await fetch("/api/registrations", {
+        method: "DELETE",
+        body: JSON.stringify({ id }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao deletar inscrição.");
+      }
 
       setRows((prevRows) => prevRows.filter((row) => row.id !== id));
       setEditingRow(null);
