@@ -18,6 +18,23 @@ enum RegistrationStatus {
   cancelled
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now()) @map("criado_em")
+  updatedAt DateTime @updatedAt @map("atualizado_em")
+
+  @@map("usuarios")
+}
+
 model Registration {
   id                  String             @id @default(uuid())
   fullname            String             @map("nome_completo")
