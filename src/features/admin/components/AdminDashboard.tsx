@@ -47,92 +47,94 @@ export function AdminDashboard() {
         <AdminStats rows={rows} />
       </div>
 
-      <Card className="glass mx-5 border-white/10 p-0">
-        <div className="flex flex-col gap-4 border-b border-border p-4 md:flex-row md:items-center md:justify-between">
-          <div className="relative w-full md:max-w-xs">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              className="h-10 pl-9"
-              placeholder="Buscar por nome ou cidade"
+      <div className="w-full overflow-x-auto no-scrollbar">
+        <Card className="glass mx-5 border-white/10 p-0">
+          <div className="flex flex-col gap-4 border-b border-border p-4 md:flex-row md:items-center md:justify-between">
+            <div className="relative w-full md:max-w-xs">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                className="h-10 pl-9"
+                placeholder="Buscar por nome ou cidade"
+              />
+            </div>
+            <div>
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger
+                  id="categoryFilter"
+                  aria-label="Filtrar por categoria"
+                  className="h-10 w-45"
+                >
+                  <SelectValue>
+                    {(value: string) =>
+                      value === "all"
+                        ? "Categorias"
+                        : routeName(value)?.label || "Categoria desconhecida"
+                    }
+                  </SelectValue>
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="all">Categorias</SelectItem>
+                  {CATEGORIES_OPTIONS.map((row) => (
+                    <SelectItem key={row.id} value={row.label}>
+                      {row.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger
+                  id="filterStatus"
+                  aria-label="Filtrar por status"
+                  className="h-10 w-45"
+                >
+                  <SelectValue>
+                    {(value: string) =>
+                      value === "all"
+                        ? "Todos status"
+                        : value === "confirmed"
+                          ? "Confirmado"
+                          : "Pendente"
+                    }
+                  </SelectValue>
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="all">Todos status</SelectItem>
+                  <SelectItem value="confirmed">Confirmado</SelectItem>
+                  <SelectItem value="pending">Pendente</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <Button className="h-10 gap-2 max-w-35">
+              <Download className="h-4 w-4" />
+              Exportar CSV
+            </Button>
+          </div>
+
+          <div className="overflow-x-auto">
+            <RegistrationsTable
+              rows={filteredRows}
+              onToggleStatus={handleToggleStatus}
+              onEdit={(row: Registration) => setEditingRow(row)}
+              onDelete={handleDelete}
             />
+
+            {editingRow && (
+              <EditRegistrationDialog
+                editingRow={editingRow}
+                setEditingRow={setEditingRow}
+                onSave={handleEdit}
+              />
+            )}
           </div>
-          <div>
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger
-                id="categoryFilter"
-                aria-label="Filtrar por categoria"
-                className="h-10 w-45"
-              >
-                <SelectValue>
-                  {(value: string) =>
-                    value === "all"
-                      ? "Categorias"
-                      : routeName(value)?.label || "Categoria desconhecida"
-                  }
-                </SelectValue>
-              </SelectTrigger>
-
-              <SelectContent>
-                <SelectItem value="all">Categorias</SelectItem>
-                {CATEGORIES_OPTIONS.map((row) => (
-                  <SelectItem key={row.id} value={row.label}>
-                    {row.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger
-                id="filterStatus"
-                aria-label="Filtrar por status"
-                className="h-10 w-45"
-              >
-                <SelectValue>
-                  {(value: string) =>
-                    value === "all"
-                      ? "Todos status"
-                      : value === "confirmed"
-                        ? "Confirmado"
-                        : "Pendente"
-                  }
-                </SelectValue>
-              </SelectTrigger>
-
-              <SelectContent>
-                <SelectItem value="all">Todos status</SelectItem>
-                <SelectItem value="confirmed">Confirmado</SelectItem>
-                <SelectItem value="pending">Pendente</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <Button className="h-10 gap-2 max-w-35">
-            <Download className="h-4 w-4" />
-            Exportar CSV
-          </Button>
-        </div>
-
-        <div className="overflow-x-auto">
-          <RegistrationsTable
-            rows={filteredRows}
-            onToggleStatus={handleToggleStatus}
-            onEdit={(row: Registration) => setEditingRow(row)}
-            onDelete={handleDelete}
-          />
-
-          {editingRow && (
-            <EditRegistrationDialog
-              editingRow={editingRow}
-              setEditingRow={setEditingRow}
-              onSave={handleEdit}
-            />
-          )}
-        </div>
-      </Card>
+        </Card>
+      </div>
     </section>
   );
 }

@@ -26,12 +26,12 @@ export function RegistrationsTable({
   onDelete,
 }: Props) {
   return (
-    <Table>
+    <Table className="w-full border-separate border-spacing-y-2">
       <TableCaption>Lista de inscritos</TableCaption>
       <TableHeader>
         <TableRow className="hover:bg-transparent">
           <TableHead>Nome</TableHead>
-          <TableHead>Categoria</TableHead>
+          <TableHead className="hidden md:table-cell">Categoria</TableHead>
           <TableHead className="hidden md:table-cell">Almoço Extra</TableHead>
           <TableHead className="hidden md:table-cell">Valor</TableHead>
           <TableHead>Status</TableHead>
@@ -52,13 +52,13 @@ export function RegistrationsTable({
         )}
         {rows.map((row) => (
           <TableRow key={row.id} className="py-10">
-            <TableCell className="font-medium flex flex-col text-foreground">
+            <TableCell className="text-xs md:text-base font-medium flex flex-col text-foreground break-all overflow-x-hidden">
               {row.fullname}
               <span className="text-xs text-muted-foreground">
                 {formatCPF(row.cpf)}
               </span>
             </TableCell>
-            <TableCell>
+            <TableCell className="hidden md:table-cell">
               <span className="flex items-center gap-1 md:flex font-medium">
                 <Trophy className="h-3.5 w-3.5 text-primary" />
                 {row.category}
@@ -72,13 +72,13 @@ export function RegistrationsTable({
             </TableCell>
             <TableCell>
               {row.status === "confirmed" ? (
-                <span className="inline-flex items-center gap-1 rounded-full border border-success/40 bg-success/15 px-2 py-1 text-success">
-                  <CircleCheck className="h-3.5 w-3.5" />
+                <span className="inline-flex text-xs md:text-base items-center gap-1 rounded-full border border-success/40 bg-success/15 px-2 py-1 text-success">
+                  <CircleCheck className="h-3 w-3" />
                   Confirmado
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-warning/15 px-2 py-1 text-warning">
-                  <CircleCheck className="h-3.5 w-3.5" />
+                <span className="inline-flex text-xs md:text-base items-center gap-1 rounded-full border border-warning/40 bg-warning/15 px-2 py-1 text-warning">
+                  <CircleCheck className="h-3 w-3" />
                   Pendente
                 </span>
               )}

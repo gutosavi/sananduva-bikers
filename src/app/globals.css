@@ -227,6 +227,18 @@
   }
 }
 
+@layer utilities {
+  /* Para Chrome, Safari e Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Para IE, Edge e Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE e Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 /* Organic drifting background blobs */
 .animate-drift-slow {
   animation: drift 18s ease-in-out infinite alternate;
