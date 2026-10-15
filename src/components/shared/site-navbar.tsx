@@ -1,7 +1,9 @@
 "use client";
 import { Settings } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 import { Button } from "../ui/button";
 import { MenuMobile } from "./menu-mobile";
@@ -16,6 +18,9 @@ export const NAV_LINKS = [
 
 export function SiteNavBar() {
   const [open, setOpen] = React.useState(false);
+  const pathname = usePathname();
+
+  const isAdminRoute = pathname?.startsWith("/admin");
 
   return (
     <header className="sticky top-0 border-b border-white/10 bg-black/60 backdrop-blur-md z-50">
@@ -26,6 +31,8 @@ export function SiteNavBar() {
             alt="Logotipo Sananduva Bikers"
             width={200}
             height={65}
+            loading="eager"
+            className="h-10 w-auto object-contain"
           />
         </Link>
 
@@ -43,21 +50,32 @@ export function SiteNavBar() {
         </div>
 
         <div className="hidden shrink-0 items-center gap-2 md:flex">
-          <Link
-            href="/admin"
-            aria-label="Painel Administrativo"
-            title="Admin"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:bg-white/5"
-          >
-            <Settings className="h-4 w-4" />
-          </Link>
-          <Button
-            render={<Link href="/inscricoes" />}
-            nativeButton={false}
-            className="whitespace-nowrap px-3 text-xs glow-orange font-semibold lg:px-4 lg:text-sm"
-          >
-            Inscreva-se
-          </Button>
+          {isAdminRoute ? (
+            <Button
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="whitespace-nowrap px-3 text-xs font-semibold lg:px-6 lg:text-sm bg-accent text-accent-foreground hover:bg-accent/90"
+            >
+              Sair
+            </Button>
+          ) : (
+            <>
+              <Link
+                href="/admin"
+                aria-label="Painel Administrativo"
+                title="Admin"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:bg-white/5"
+              >
+                <Settings className="h-4 w-4" />
+              </Link>
+              <Button
+                render={<Link href="/inscricoes" />}
+                nativeButton={false}
+                className="whitespace-nowrap px-3 text-xs glow-orange font-semibold lg:px-4 lg:text-sm"
+              >
+                Inscreva-se
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Menu-toggle */}

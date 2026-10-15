@@ -1,9 +1,14 @@
+import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import { MenuToggleProps } from "./menu-toggle";
 import { NAV_LINKS } from "./site-navbar";
 
 export function MenuMobile({ open, setOpen }: MenuToggleProps) {
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith("/admin");
+
   return (
     <>
       {open && (
@@ -32,15 +37,24 @@ export function MenuMobile({ open, setOpen }: MenuToggleProps) {
 
             <div className="my-2 h-px bg-white/10" />
 
-            <Button
-              render={
-                <Link href="/inscricoes" onClick={() => setOpen(false)} />
-              }
-              nativeButton={false}
-              className="mt-2 font-semibold glow-orange"
-            >
-              Inscreva-se Agora
-            </Button>
+            {isAdminRoute ? (
+              <Button
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="whitespace-nowrap px-3 text-xs font-semibold lg:px-6 lg:text-sm bg-accent text-accent-foreground hover:bg-accent/90"
+              >
+                Sair
+              </Button>
+            ) : (
+              <Button
+                render={
+                  <Link href="/inscricoes" onClick={() => setOpen(false)} />
+                }
+                nativeButton={false}
+                className="mt-2 font-semibold glow-orange"
+              >
+                Inscreva-se Agora
+              </Button>
+            )}
           </div>
         </div>
       )}
