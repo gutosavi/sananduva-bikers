@@ -20,11 +20,32 @@ export function SiteNavBar() {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
 
-  const isAdminRoute = pathname?.startsWith("/admin");
+  const isAdminRoute = pathname === "/admin";
+
+  const [scrollPosition, setScrollPosition] = React.useState(0);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const position = window.scrollY;
+      setScrollPosition(position);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
 
   return (
-    <header className="sticky top-0 border-b border-white/10 bg-black/60 backdrop-blur-md z-50">
-      <nav className="mx-auto h-24 flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
+    <header
+      className={`fixed top-0 w-screen border-white/10 z-50 ${
+        scrollPosition < 60
+          ? "bg-black/0 backdrop-blur-none transform transition-all duration-300"
+          : "bg-black/60 backdrop-blur-md transform transition-all duration-300"
+      }`}
+    >
+      <nav className="flex flex-row w-full h-24 items-center justify-between gap-4 px-6 py-3 md:px-30">
         <Link href="/">
           <Image
             src="/assets/logo.png"

@@ -12,7 +12,7 @@ export function MenuMobile({ open, setOpen }: MenuToggleProps) {
   return (
     <>
       {open && (
-        <div className="border-t border-white/10 bg-black/90 backdrop-blur-md md:hidden">
+        <div className="border-t border-white/10 bg-black/10 backdrop-blur-sm md:hidden">
           <div className="flex flex-col gap-1 px-4 py-4">
             {NAV_LINKS.map((link) => (
               <Link

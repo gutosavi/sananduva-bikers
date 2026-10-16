@@ -1,4 +1,4 @@
-import { Banner } from "@/components/shared/Banner";
+import { SectionHeader } from "@/components/shared/section-header";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteNavBar } from "@/components/shared/site-navbar";
 import { CategoriesCard } from "@/features/registration/components/CategoriesCard";
@@ -17,8 +17,13 @@ export default function InscricoesPage() {
     <>
       <SiteNavBar />
       <main className="min-h-screen w-full overflow-x-hidden">
-        <Banner />
-
+        <SectionHeader
+          title={"Painel de Inscrições"}
+          subtitle={"Inscrições"}
+          description={
+            "INSCREVA-SE e participe do Pedal do Tigre, o maior evento de ciclismo de Sananduva-RS!"
+          }
+        />
         <section className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.3fr] mx-5 pb-24 pt-24 md:pt-32 md:mx-20">
           <div className="col-start-1 space-y-10">
             <ParticipantKitCard />
