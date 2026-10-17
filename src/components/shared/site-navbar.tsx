@@ -18,11 +18,11 @@ export const NAV_LINKS = [
 
 export function SiteNavBar() {
   const [open, setOpen] = React.useState(false);
+  const [scrollPosition, setScrollPosition] = React.useState(0);
   const pathname = usePathname();
 
   const isAdminRoute = pathname === "/admin";
-
-  const [scrollPosition, setScrollPosition] = React.useState(0);
+  const isLoginRoute = pathname === "/admin/login";
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -40,7 +40,7 @@ export function SiteNavBar() {
   return (
     <header
       className={`fixed top-0 w-screen border-white/10 z-50 ${
-        scrollPosition < 60
+        scrollPosition < 60 && !isLoginRoute
           ? "bg-black/0 backdrop-blur-none transform transition-all duration-300"
           : "bg-black/60 backdrop-blur-md transform transition-all duration-300"
       }`}
@@ -63,7 +63,7 @@ export function SiteNavBar() {
             <Link
               key={link.href}
               href={link.href}
-              className="whitespace-nowrap rounded-md px-2 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground lg:px-3 lg:text-sm"
+              className="whitespace-nowrap rounded-md px-2 py-2 text-xs font-medium text-secondary transition-colors hover:bg-white/5 hover:text-foreground lg:px-3 lg:text-sm"
             >
               {link.label}
             </Link>

@@ -69,69 +69,67 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
   /* Base */
-  --background: #0b0f0c;
-  --foreground: #f4f2ec;
+  --background: #f6f5ef;
+  --foreground: #222b25;
 
   /* Surfaces */
-  --surface: #17241b;
-  --surface-elevated: #203127;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
 
-  --card: #17241b;
-  --card-foreground: #f4f2ec;
+  --card: #ffffff;
+  --card-foreground: #222b25;
 
-  --popover: #203127;
-  --popover-foreground: #f4f2ec;
+  --popover: #ffffff;
+  --popover-foreground: #222b25;
 
   /* Brand */
-  --primary: #f2670b;
-  --primary-foreground: #0b0f0c;
+  --primary: #d95c16;
+  --primary-foreground: #ffffff;
 
-  /* Green states */
-  --secondary: #1b2e23;
-  --secondary-foreground: #eaf1ec;
+  --secondary: #e8eee6;
+  --secondary-foreground: #193d2b;
 
-  --muted: #142019;
-  --muted-foreground: #a8b3ab;
+  --muted: #efeee7;
+  --muted-foreground: #596259;
 
-  --accent: #24402f;
-  --accent-foreground: #f4f2ec;
+  --accent: #193d2b;
+  --accent-foreground: #ffffff;
 
   /* Feedback */
-  --destructive: #d94b50;
-  --destructive-foreground: #fff5f5;
+  --destructive: #b4232c;
+  --destructive-foreground: #ffffff;
 
-  --success: #4ca875;
-  --success-foreground: #07110b;
+  --success: #267548;
+  --success-foreground: #ffffff;
 
-  --warning: #d9a24a;
-  --warning-foreground: #191306;
+  --warning: #8a5a08;
+  --warning-foreground: #ffffff;
 
   /* Form and borders */
-  --border: rgba(244, 242, 236, 0.14);
-  --input: rgba(244, 242, 236, 0.16);
-  --ring: #f2670b;
-
-  /* Charts */
-  --chart-1: #f2670b;
-  --chart-2: #4ca875;
-  --chart-3: #d9a24a;
-  --chart-4: #477e62;
-  --chart-5: #bd4e12;
-
+  --border: #d9ded6;
+  --input: #c8d0c7;
+  --ring: #d95c16;
   --radius: 0.75rem;
 
+  /* Charts */
+  --chart-1: #d95c16;
+  --chart-2: #267548;
+  --chart-3: #8a6a24;
+  --chart-4: #477e62;
+  --chart-5: #8e451f;
+
   /* Sidebar */
-  --sidebar: #101812;
-  --sidebar-foreground: #f4f2ec;
-  --sidebar-primary: #f2670b;
-  --sidebar-primary-foreground: #0b0f0c;
-  --sidebar-accent: #1b2e23;
-  --sidebar-accent-foreground: #f4f2ec;
-  --sidebar-border: rgba(244, 242, 236, 0.12);
-  --sidebar-ring: #f2670b;
+  --sidebar: #e8eee6;
+  --sidebar-foreground: #222b25;
+  --sidebar-primary: #d95c16;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #dce5da;
+  --sidebar-accent-foreground: #193d2b;
+  --sidebar-border: #d1d9d0;
+  --sidebar-ring: #d95c16;
 }
 
 @layer base {
@@ -144,74 +142,94 @@
   }
 }
 
-@utility text-glow-orange {
-  text-shadow: 0 0 24px rgba(255, 109, 0, 0.45);
-}
+/* =========================================
+   TEXTURES & BACKGROUNDS
+   Forest & Terra — Light Theme
+   ========================================= */
 
+/* Technical grid — subtle on warm paper */
 @utility bg-grid {
   background-image:
-    linear-gradient(rgba(244, 242, 236, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(244, 242, 236, 0.025) 1px, transparent 1px);
+    linear-gradient(rgba(25, 61, 43, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(25, 61, 43, 0.045) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
-/* Topographic / altimetry map grid used over dark green sections.
-   Fine grid + coarser accent lines, like a technical route map. */
+/* Topographic route texture */
 @utility bg-route {
   background-image:
     radial-gradient(
       circle at 82% 18%,
-      rgba(242, 103, 11, 0.1),
-      transparent 28%
+      rgba(217, 92, 22, 0.08),
+      transparent 32%
     ),
-    linear-gradient(135deg, rgba(244, 242, 236, 0.035) 1px, transparent 1px);
+    linear-gradient(135deg, rgba(25, 61, 43, 0.055) 1px, transparent 1px);
   background-size:
     auto,
     34px 34px;
 }
 
-/* Rustic printed-paper grain/noise overlay. Sits above backgrounds,
-   below content. Apply to a pointer-events-none absolute layer. */
+/* Organic paper grain */
 @utility bg-noise {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
   background-repeat: repeat;
 }
 
-/* Duotone image treatment: forest green shadows -> burnt orange highlights.
-   Put on the <img>; a sibling blend layer completes the effect. */
+/* =========================================
+   IMAGE TREATMENTS
+   ========================================= */
+
+/* Restrained monochrome treatment.
+   Best for decorative or editorial imagery. */
 @utility img-duotone {
-  filter: grayscale(1) contrast(1.15) brightness(0.9);
+  filter: grayscale(1) contrast(1.08) brightness(1.02);
 }
 
-/* Frosted glass surface used across cards and panels */
+/* =========================================
+   GLASS SURFACES
+   ========================================= */
+
+/* Light frosted glass — navbar and overlays */
 @utility glass {
-  background-color: color-mix(in oklch, var(--card) 55%, transparent);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: color-mix(in oklch, var(--card) 78%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(25, 61, 43, 0.12);
+  box-shadow: 0 4px 20px rgba(25, 43, 31, 0.06);
 }
 
-/* Persistent neon halo */
+/* =========================================
+   BRAND EFFECTS
+   ========================================= */
+
+/* Orange text highlight */
+@utility text-glow-orange {
+  text-shadow: 0 2px 16px rgba(217, 92, 22, 0.18);
+}
+
+/* Subtle elevation instead of neon glow */
 @utility glow-orange {
-  box-shadow: 0 8px 24px rgba(242, 103, 11, 0.18);
+  box-shadow: 0 6px 20px rgba(217, 92, 22, 0.14);
 }
 
 @utility glow-green {
-  box-shadow: 0 0 14px rgba(53, 196, 122, 0.45);
+  box-shadow: 0 6px 20px rgba(25, 61, 43, 0.12);
 }
 
 @utility glow-amber {
-  box-shadow: 0 0 14px rgba(245, 178, 62, 0.45);
+  box-shadow: 0 6px 20px rgba(138, 90, 8, 0.12);
 }
 
-/* Glowing neon bullet dot, matching the Instagram artwork markers */
+/* Brand marker — restrained orange accent */
 @utility neon-dot {
   border-radius: 9999px;
-  background-color: #f2670b;
-  box-shadow:
-    0 0 12px #f2670b,
-    0 0 4px #f2670b;
+  background-color: #d95c16;
+  box-shadow: 0 0 8px rgba(217, 92, 22, 0.24);
 }
+
+/* =========================================
+   INTERACTION
+   ========================================= */
 
 @layer utilities {
   .hover-glow {
@@ -223,32 +241,41 @@
 
   .hover-glow:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(242, 103, 11, 0.18);
+    box-shadow: 0 8px 24px rgba(25, 61, 43, 0.1);
   }
 }
 
+/* =========================================
+   SCROLLBAR
+   ========================================= */
+
 @layer utilities {
-  /* Para Chrome, Safari e Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  /* Para IE, Edge e Firefox */
+
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE e Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
-/* Organic drifting background blobs */
+/* =========================================
+   AMBIENT ANIMATIONS
+   ========================================= */
+
 .animate-drift-slow {
   animation: drift 18s ease-in-out infinite alternate;
 }
+
 .animate-drift-slower {
   animation: drift 26s ease-in-out infinite alternate;
 }
+
 .animate-pulse-glow {
   animation: pulse-glow 4.5s ease-in-out infinite;
 }
+
 .animate-spin {
   animation: spin 1s linear infinite;
 }
@@ -267,10 +294,10 @@
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(3%, -4%, 0) scale(1.08);
+    transform: translate3d(3%, -4%, 0) scale(1.04);
   }
   100% {
-    transform: translate3d(-3%, 3%, 0) scale(0.96);
+    transform: translate3d(-3%, 3%, 0) scale(0.98);
   }
 }
 
@@ -280,14 +307,24 @@
     opacity: 0.55;
   }
   50% {
-    opacity: 0.9;
+    opacity: 0.8;
   }
 }
 
+/* Accessibility: respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-drift-slow,
   .animate-drift-slower,
-  .animate-pulse-glow {
+  .animate-pulse-glow,
+  .animate-spin {
     animation: none;
+  }
+
+  .hover-glow {
+    transition: none;
+  }
+
+  .hover-glow:hover {
+    transform: none;
   }
 }
