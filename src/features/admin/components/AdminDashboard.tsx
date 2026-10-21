@@ -42,7 +42,7 @@ export function AdminDashboard() {
   }, [loadData]);
 
   return (
-    <section className="w-full overflow-hidden">
+    <section className="w-full overflow-hidden py-4 md:py-8 lg:py-12">
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 mx-5 pb-15 pt-15 md:pt-15">
         <AdminStats rows={rows} />
       </div>

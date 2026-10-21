@@ -1,5 +1,4 @@
 import { LoginForm } from "@/components/auth/login-form";
-import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteNavBar } from "@/components/shared/site-navbar";
 import type { Metadata } from "next";
 
@@ -15,7 +14,6 @@ export default function LoginPage() {
       <main className="flex-1 flex items-center justify-center bg-accent-foreground/5">
         <LoginForm className="w-full max-w-sm" />
       </main>
-      <SiteFooter />
     </div>
   );
 }

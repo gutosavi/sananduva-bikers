@@ -1,5 +1,4 @@
 import { SectionHeader } from "@/components/shared/section-header";
-import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteNavBar } from "@/components/shared/site-navbar";
 import { AdminDashboard } from "@/features/admin/components/AdminDashboard";
 import type { Metadata } from "next";
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function AdminPage() {
   return (
-    <>
+    <div className="flex flex-col min-h-screen overflow-hidden">
       <SiteNavBar />
       <main className="min-h-screen w-full overflow-x-hidden">
         <SectionHeader
@@ -22,7 +21,6 @@ export default function AdminPage() {
 
         <AdminDashboard />
       </main>
-      <SiteFooter />
-    </>
+    </div>
   );
 }
