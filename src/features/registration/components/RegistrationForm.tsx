@@ -41,6 +41,7 @@ export function RegistrationForm({
     <FormProvider {...methods}>
       <form
         id="registration-form"
+        noValidate
         onSubmit={methods.handleSubmit((data) => onSubmit(data))}
         className="flex flex-col gap-5"
       >
