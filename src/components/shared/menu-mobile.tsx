@@ -12,14 +12,14 @@ export function MenuMobile({ open, setOpen }: MenuToggleProps) {
   return (
     <>
       {open && (
-        <div className="border-t border-white/10 bg-black/10 backdrop-blur-sm md:hidden">
+        <div className="border-t border-white/10 bg-black/15 backdrop-blur-sm md:hidden">
           <div className="flex flex-col gap-1 px-4 py-4">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
+                className="rounded-md px-4 py-3 text-sm font-medium text-border hover:text-background transition-colors hover:bg-white/5"
               >
                 {link.label}
               </Link>
@@ -30,7 +30,7 @@ export function MenuMobile({ open, setOpen }: MenuToggleProps) {
             <Link
               href="/admin"
               onClick={() => setOpen(false)}
-              className="rounded-md px-4 py-3 text-sm font-medium transition-colors text-muted-foreground hover:text-foreground hover:bg-white/5"
+              className="rounded-md px-4 py-3 text-sm font-medium transition-colors text-border hover:text-background hover:bg-white/5"
             >
               Admin
             </Link>

@@ -13,7 +13,11 @@ export function MenuToggle({ open, setOpen }: MenuToggleProps) {
       className="flex items-center justify-center rouded-md p-2 text-foreground md:hidden"
       onClick={() => setOpen((prev) => !prev)}
     >
-      {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      {open ? (
+        <X className="w-6 h-6 text-secondary" />
+      ) : (
+        <Menu className="w-6 h-6 text-secondary" />
+      )}
     </button>
   );
 }

@@ -10,10 +10,10 @@ import { MenuMobile } from "./menu-mobile";
 import { MenuToggle } from "./menu-toggle";
 
 export const NAV_LINKS = [
-  { href: "/about", label: "O Grupo" },
-  { href: "/routes", label: "Percursos" },
-  { href: "/gallery", label: "Galeria" },
-  { href: "/sponsor", label: "Apoiadores" },
+  { href: "#about", label: "O Grupo" },
+  { href: "#event", label: "Pedal do Tigre" },
+  { href: "#event-recap", label: "Galeria" },
+  { href: "#sponsors", label: "Apoiadores" },
 ];
 
 export function SiteNavBar() {
@@ -86,7 +86,7 @@ export function SiteNavBar() {
                 title="Admin"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:bg-white/5"
               >
-                <Settings className="h-4 w-4" />
+                <Settings className="h-4 w-4 text-secondary" />
               </Link>
               <Button
                 render={<Link href="/inscricoes" />}
