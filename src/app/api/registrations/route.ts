@@ -13,9 +13,14 @@ export async function POST(request: Request) {
 
     return NextResponse.json(result, { status: 201 });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
+    console.error("Erro ao processar inscrição no servidor:", error);
+
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Erro interno ao processar inscrição.";
+
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }
 
@@ -24,9 +29,14 @@ export async function GET() {
     const result = await service.findAllRegistrations();
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
+    console.error("Erro ao buscar inscrições no servidor:", error);
+
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Erro interno ao buscar inscrições.";
+
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }
 
@@ -37,9 +47,14 @@ export async function PATCH(request: Request) {
     const result = await service.updateRegistration(id, data);
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
+    console.error("Erro ao atualizar inscrição no servidor:", error);
+
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Erro interno ao atualizar inscrição.";
+
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }
 
@@ -53,8 +68,13 @@ export async function DELETE(request: Request) {
       { status: 200 },
     );
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
+    console.error("Erro ao deletar inscrição no servidor:", error);
+
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Erro interno ao deletar inscrição.";
+
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }
