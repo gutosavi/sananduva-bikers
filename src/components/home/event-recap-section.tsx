@@ -2,14 +2,17 @@ import { YouTubePlayer } from "../shared/youtube-player";
 
 export function EventRecapSection() {
   return (
-    <section className="w-full bg-secondary px-6 py-16 md:px-12 lg:px-20 lg:py-24">
-      <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-2 md:gap-12">
+    <section
+      id="event-recap"
+      className="w-full bg-secondary py-20 px-6 md:px-30 lg:px-20 lg:py-24"
+    >
+      <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
         <div className="space-y-4">
-          <p className="text-sm font-semibold font-display uppercase tracking-widest text-primary">
+          <p className="text-sm font-semibold uppercase tracking-widest">
             Reviva essa experiência
           </p>
 
-          <h2 className="text-2xl font-bold uppercase md:text-3xl">
+          <h2 className="text-2xl text-primary font-bold font-display uppercase md:text-3xl">
             Reviva os momentos da última edição
           </h2>
 
@@ -20,7 +23,7 @@ export function EventRecapSection() {
           </p>
         </div>
 
-        <YouTubePlayer videoId="dQw4w9WgXcQ" />
+        <YouTubePlayer videoId="h95Leg2JRts" />
       </div>
     </section>
   );

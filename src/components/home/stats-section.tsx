@@ -46,9 +46,9 @@ export function StatsSection() {
   return (
     <section
       ref={ref}
-      className="w-full bg-secondary-foreground text-primary-foreground py-20 px-6 md:px-30"
+      className="w-full bg-secondary-foreground text-primary-foreground py-20 px-6 md:px-30 lg:px-20 lg:py-24"
     >
-      <h1 className="text-lg font-bold font-display md:text-2xl uppercase">
+      <h1 className="text-lg font-bold font-display md:text-2xl uppercase tracking-widest text-primary">
         Estatísticas · Sananduva Bikers
       </h1>
       <article className="w-full text-base md:text-lg grid grid-cols-2 md:grid-cols-4 place-items-center gap-8 pt-10">

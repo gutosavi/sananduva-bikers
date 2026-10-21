@@ -1,7 +1,8 @@
 import { AboutSection } from "@/components/home/about-section";
-import { GallerySection } from "@/components/home/gallery-section";
+import { EventRecapSection } from "@/components/home/event-recap-section";
+import { EventSection } from "@/components/home/event-section";
+import { FaqSection } from "@/components/home/faq-section";
 import { HeroSection } from "@/components/home/hero-section";
-import { RoutesSection } from "@/components/home/routes-section";
 import { SponsorSection } from "@/components/home/sponsor-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { SiteFooter } from "@/components/shared/site-footer";
@@ -15,9 +16,10 @@ export default function Home() {
         <HeroSection />
         <AboutSection />
         <StatsSection />
-        <RoutesSection />
+        <EventSection />
+        <EventRecapSection />
+        <FaqSection />
         <SponsorSection />
-        <GallerySection />
       </main>
       <SiteFooter />
     </div>

@@ -2,8 +2,11 @@ import { AboutEventCard } from "../shared/about-event-card";
 
 export function EventSection() {
   return (
-    <section className="w-full bg-surface py-20 px-6 md:px-30">
-      <h1 className="text-lg text-primary font-bold font-display md:text-2xl uppercase">
+    <section
+      id="event"
+      className="w-full bg-surface py-20 px-6 md:px-30 lg:px-20 lg:py-24"
+    >
+      <h1 className="text-lg text-primary font-bold font-display md:text-2xl uppercase tracking-widest">
         O Evento · Pedal do Tigre
       </h1>
       <h2 className="text-md text-muted-foreground font-medium py-3 md:text-lg">
