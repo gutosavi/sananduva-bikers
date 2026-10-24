@@ -14,7 +14,7 @@ export const useAdminRegistrations = () => {
 
   const loadData = React.useCallback(async () => {
     try {
-      const response = await fetch("/api/registrations", {
+      const response = await fetch("/api/admin/registrations", {
         method: "GET",
       });
 
@@ -57,7 +57,7 @@ export const useAdminRegistrations = () => {
         status: targetRow.status === "confirmed" ? "pending" : "confirmed",
       };
 
-      const response = await fetch("/api/registrations", {
+      const response = await fetch("/api/admin/registrations", {
         method: "PATCH",
         body: JSON.stringify(updatedItem),
       });
@@ -78,7 +78,7 @@ export const useAdminRegistrations = () => {
 
   const handleEdit = async (updateRow: Registration) => {
     try {
-      const response = await fetch("/api/registrations", {
+      const response = await fetch("/api/admin/registrations", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +109,7 @@ export const useAdminRegistrations = () => {
 
   const handleDelete = async (id: Registration["id"]) => {
     try {
-      const response = await fetch("/api/registrations", {
+      const response = await fetch("/api/admin/registrations", {
         method: "DELETE",
         body: JSON.stringify({ id }),
       });

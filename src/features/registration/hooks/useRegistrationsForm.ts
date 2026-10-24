@@ -63,8 +63,11 @@ export const useRegistrationsForm = ({
         });
 
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error ?? "Erro ao adicionar inscrição.");
+          const errorData = await response.json().catch(() => null);
+          setError(
+            errorData?.error ?? "Não foi possível concluir a inscrição.",
+          );
+          return;
         }
 
         const registration: RegistrationFormData = await response.json();
@@ -73,8 +76,8 @@ export const useRegistrationsForm = ({
         setIsPaymentModalOpen(true);
       }
     } catch (err) {
-      setError(`Não foi possível enviar os dados: ${err}`);
       console.error("Erro no envio:", err);
+      setError("Não foi possível enviar os dados. Tente novamente.");
     }
   };
 

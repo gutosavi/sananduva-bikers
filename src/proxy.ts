@@ -2,15 +2,28 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
 export default auth((req) => {
+  const { pathname } = req.nextUrl;
   const isLoggedIn = !!req.auth;
-  const isAuthRoute = req.nextUrl.pathname === "/admin/login";
-  const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
+  const isAuthRoute = pathname === "/admin/login";
 
-  if (isAdminRoute && !isAuthRoute && !isLoggedIn) {
-    return NextResponse.redirect(new URL("/admin/login", req.url));
+  if (!isLoggedIn) {
+    if (isAuthRoute) {
+      return NextResponse.next();
+    }
+
+    if (pathname.startsWith("/api/admin")) {
+      return NextResponse.json(
+        { error: "Usuário não autorizado." },
+        { status: 401 },
+      );
+    }
+
+    const loginUrl = new URL("/admin/login", req.url);
+    loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
-  if (isAuthRoute && isLoggedIn) {
+  if (isAuthRoute) {
     return NextResponse.redirect(new URL("/admin", req.url));
   }
 
@@ -18,5 +31,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };
