@@ -1,5 +1,4 @@
 "use client";
-
 import { cn } from "cn";
 
 import { Button } from "@/components/ui/button";
@@ -45,8 +44,10 @@ export function LoginForm({
     formState: { isSubmitting, errors },
   } = methods;
 
-  const handleLogin = async (data: LoginFormData) => {
+  const handleLogin = async (data: LoginFormData): Promise<void> => {
     const { email, password } = data;
+    const searchParams = new URLSearchParams(window.location.search);
+    const callbackUrl = searchParams.get("callbackUrl");
 
     const result = await signIn("credentials", {
       redirect: false,
@@ -62,7 +63,11 @@ export function LoginForm({
       return;
     }
 
-    router.push("/admin");
+    const destination = callbackUrl?.startsWith("/admin")
+      ? callbackUrl
+      : "/admin";
+
+    router.push(destination);
     router.refresh();
   };
 
