@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,10 +11,11 @@ import {
 } from "@/components/ui/select";
 import { Registration } from "@/features/registration/schemas/registration.schema";
 import { CATEGORIES_OPTIONS, routeName } from "@/lib/event-data";
-import { Download, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import React from "react";
 import { useAdminRegistrations } from "../hooks/useAdminRegistrations";
 import { AdminStats } from "./AdminStats";
+import { ButtonExportCsv } from "./ButtonExportCsv";
 import { EditRegistrationDialog } from "./EditRegistrationDialog";
 import { RegistrationsTable } from "./RegistrationsTable";
 
@@ -111,10 +111,7 @@ export function AdminDashboard() {
                 </SelectContent>
               </Select>
             </div>
-            <Button className="h-10 gap-2 max-w-35">
-              <Download className="h-4 w-4" />
-              Exportar CSV
-            </Button>
+            <ButtonExportCsv />
           </div>
 
           <div className="overflow-x-auto">
