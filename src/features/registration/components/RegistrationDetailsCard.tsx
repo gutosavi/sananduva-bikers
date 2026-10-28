@@ -73,7 +73,10 @@ export function RegistrationDetailsCard({
               name="tshirtSize"
               control={control}
               render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value ?? null}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger id="tshirtSize">
                     <SelectValue placeholder="Selecione o tamanho" />
                   </SelectTrigger>

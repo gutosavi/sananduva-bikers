@@ -14,7 +14,7 @@ export const validRegistration: RegistrationFormData = {
   cityState: "Sananduva/RS",
   emergencyContact: "Maria Savi",
   emergencyPhone: "(54) 98888-4321",
-  category: "pedal-60km",
+  category: "Masculino Elite",
   tshirtSize: "M",
   team: "Sananduva Bikers",
   extraLunchQuantity: 2,
@@ -32,7 +32,7 @@ export const minimalRegistration: RegistrationFormData = {
   cityState: "Passo Fundo/RS",
   emergencyContact: "Carlos Souza",
   emergencyPhone: "54977776666",
-  category: "pedal-30km",
+  category: "Feminino Elite",
   tshirtSize: "P",
   termsCheck: true,
 };

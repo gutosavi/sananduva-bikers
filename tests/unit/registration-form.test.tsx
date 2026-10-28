@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { quantitySelect } from "@/features/registration/constants";
 import { RegistrationForm } from "../../src/features/registration/components/RegistrationForm";
 import { validRegistration } from "./fixtures";
 
@@ -83,7 +84,9 @@ async function fillForm(
     user,
     container,
     /^almoço extra/i,
-    String(data.extraLunchQuantity ?? 0),
+    quantitySelect.find(
+      (q) => String(q.value) === String(data.extraLunchQuantity),
+    )?.label ?? "0 almoços",
   );
 
   if (data.termsCheck) {
