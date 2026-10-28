@@ -70,9 +70,7 @@ export const useRegistrationsForm = ({
           return;
         }
 
-        const registration: RegistrationFormData = await response.json();
-
-        setSubmittedData(registration);
+        setSubmittedData(data);
         setIsPaymentModalOpen(true);
       }
     } catch (err) {
