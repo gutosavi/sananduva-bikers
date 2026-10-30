@@ -38,13 +38,15 @@ export const registrationSchema = z.object({
     .string()
     .min(1, "Este campo é obrigatório")
     .max(20, "Telefone de emergência deve ter no máximo 20 caracteres"),
-  category: z
-    .string()
-    .refine(
-      (value) => CATEGORIES_OPTIONS.some((category) => category.id === value),
-      "Selecione a sua categoria",
-    ),
-  tshirtSize: z.enum(tshirtSizes, "Selecione o tamanho da camiseta"),
+  category: z.enum(
+    CATEGORIES_OPTIONS.map((category) => category.id),
+    {
+      error: "Selecione a sua categoria",
+    },
+  ),
+  tshirtSize: z.enum(tshirtSizes, {
+    error: "Selecione o tamanho da camiseta",
+  }),
   team: z
     .string()
     .max(80, "Nome da equipe deve ter no máximo 80 caracteres")

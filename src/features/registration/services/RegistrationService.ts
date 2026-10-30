@@ -1,21 +1,29 @@
 import { REGISTRATION_PRICES } from "@/lib/event-data";
 import { Participant } from "@/models/Participant";
+import { RegistrationError } from "../errors/RegistrationError";
 import { IRegistrationRepository } from "../repositories/IRegistrationRepository";
 import {
   Registration,
   RegistrationFormData,
+  registrationSchema,
 } from "../schemas/registration.schema";
 
 export class RegistrationService {
   constructor(private readonly storage: IRegistrationRepository) {}
 
-  async createRegistration(data: RegistrationFormData): Promise<Registration> {
-    const registration = new Participant(data);
+  async createRegistration(input: unknown): Promise<Registration> {
+    const result = registrationSchema.safeParse(input);
+
+    if (!result.success) {
+      throw new RegistrationError(result.error.issues[0].message);
+    }
+
+    const registration = new Participant(result.data);
 
     const total = registration.calculateTotalValue(REGISTRATION_PRICES);
 
     const newRegistration: Registration = {
-      ...data,
+      ...result.data,
       id: crypto.randomUUID(),
       status: "pending",
       revenue: total,
