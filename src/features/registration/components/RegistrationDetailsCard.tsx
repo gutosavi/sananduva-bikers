@@ -107,10 +107,7 @@ export function RegistrationDetailsCard({
                 <Select
                   disabled={isProfileIncomplete}
                   value={field.value ?? null}
-                  onValueChange={(val) => {
-                    console.log("Categoria selecionada:", val);
-                    field.onChange(val || "");
-                  }}
+                  onValueChange={(value) => field.onChange(value)}
                 >
                   <SelectTrigger id="category">
                     <SelectValue
@@ -119,13 +116,19 @@ export function RegistrationDetailsCard({
                           ? "Requer idade e gênero"
                           : "Selecione uma categoria"
                       }
-                    />
+                    >
+                      {(value: string) =>
+                        availableCategories.find(
+                          (category) => category.id === value,
+                        )?.label ?? "Selecione uma categoria"
+                      }
+                    </SelectValue>
                   </SelectTrigger>
 
                   <SelectContent>
                     <SelectGroup>
                       {availableCategories.map((cat) => (
-                        <SelectItem key={cat.id} value={cat.label}>
+                        <SelectItem key={cat.id} value={cat.id}>
                           {cat.label}
                         </SelectItem>
                       ))}

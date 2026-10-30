@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { quantitySelect } from "@/features/registration/constants";
+import { CATEGORIES_OPTIONS } from "@/lib/event-data";
 import { RegistrationForm } from "../../src/features/registration/components/RegistrationForm";
 import { validRegistration } from "./fixtures";
 
@@ -30,7 +31,7 @@ function jsonResponse(body: unknown, status = 200) {
 const validFormData = {
   ...validRegistration,
   gender: "Masculino",
-  category: "Masculino Master A",
+  category: "pro-masc-elite",
 };
 
 function getField(container: HTMLElement, label: RegExp) {
@@ -76,7 +77,12 @@ async function fillForm(
   await user.type(byName(container, "emergencyContact"), data.emergencyContact);
   await user.type(byName(container, "emergencyPhone"), data.emergencyPhone);
 
-  await selectOption(user, container, /^categoria/i, data.category);
+  await selectOption(
+    user,
+    container,
+    /^categoria/i,
+    CATEGORIES_OPTIONS.find((c) => c.id === data.category)?.label ?? "",
+  );
   await selectOption(user, container, /^tamanho da camisa/i, data.tshirtSize);
   await user.type(byName(container, "team"), data.team ?? "");
 
@@ -209,7 +215,7 @@ describe("RegistrationForm", () => {
           fullname: "Gustavo Savi",
           cpf: "52998224725",
           email: "gustavo.savi@example.com",
-          category: "Masculino Master A",
+          category: "pro-masc-elite",
           extraLunchQuantity: 2,
           termsCheck: true,
         }),

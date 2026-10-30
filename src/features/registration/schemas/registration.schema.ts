@@ -41,8 +41,7 @@ export const registrationSchema = z.object({
   category: z
     .string()
     .refine(
-      (value) =>
-        CATEGORIES_OPTIONS.some((category) => category.label === value),
+      (value) => CATEGORIES_OPTIONS.some((category) => category.id === value),
       "Selecione a sua categoria",
     ),
   tshirtSize: z.enum(tshirtSizes, "Selecione o tamanho da camiseta"),
