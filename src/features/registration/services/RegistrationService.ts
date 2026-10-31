@@ -4,8 +4,8 @@ import { RegistrationError } from "../errors/RegistrationError";
 import { IRegistrationRepository } from "../repositories/IRegistrationRepository";
 import {
   Registration,
-  RegistrationFormData,
   registrationSchema,
+  updateSchema,
 } from "../schemas/registration.schema";
 
 export class RegistrationService {
@@ -32,26 +32,28 @@ export class RegistrationService {
     return await this.storage.save(newRegistration);
   }
 
-  async updateRegistration(
-    id: string,
-    data: Partial<Registration>,
-  ): Promise<Registration> {
+  async updateRegistration(id: string, data: unknown): Promise<Registration> {
+    const result = updateSchema.safeParse(data);
+
+    if (!result.success) {
+      throw new RegistrationError(result.error.issues[0].message);
+    }
+
     const existingRegistration = await this.storage.findById(id);
 
     if (!existingRegistration) {
-      throw new Error("Inscrição não encontrada.");
+      throw new RegistrationError("Inscrição não encontrada.");
     }
 
-    const updatedFormData: RegistrationFormData = {
+    const updatedFormData = {
       ...existingRegistration,
-      ...data,
+      ...result.data,
     };
 
     const participant = new Participant(updatedFormData);
     const total = participant.calculateTotalValue(REGISTRATION_PRICES);
 
     const updatedRegistration: Registration = {
-      ...existingRegistration,
       ...updatedFormData,
       revenue: total,
     };
@@ -63,7 +65,7 @@ export class RegistrationService {
     const existingRegistration = await this.storage.findById(id);
 
     if (!existingRegistration) {
-      throw new Error("Inscrição não encontrada para remoção.");
+      throw new RegistrationError("Inscrição não encontrada para remoção.");
     }
 
     await this.storage.delete(id);

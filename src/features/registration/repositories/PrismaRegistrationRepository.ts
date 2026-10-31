@@ -48,7 +48,7 @@ export class PrismaRegistrationRepository implements IRegistrationRepository {
         data: {
           ...updatePayload,
           ...(birthDate && {
-            birthDate: new Date(`${data.birthDate}T00:00:00.000Z`),
+            birthDate: new Date(`${birthDate}T00:00:00.000Z`),
           }),
         },
       });
@@ -57,10 +57,10 @@ export class PrismaRegistrationRepository implements IRegistrationRepository {
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === "P2025"
+        error.code === "P2002"
       ) {
         throw new RegistrationError(
-          "Inscrição não encontrada para atualização.",
+          "Não é possível atualizar para este e-mail e/ou CPF, pois já existe outra inscrição com esses dados.",
         );
       }
       throw error;

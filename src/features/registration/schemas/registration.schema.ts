@@ -61,12 +61,25 @@ export const registrationSchema = z.object({
     .int("Quantidade de almoços extras deve ser um número inteiro")
     .optional(),
 
-  termsCheck: z
-    .boolean()
-    .refine((value) => value === true, "Você precisa aceitar os termos"),
+  termsCheck: z.boolean().refine((value) => value === true, {
+    message: "Você precisa aceitar os termos",
+  }),
 });
 
-export type RegistrationStatus = "pending" | "confirmed" | "cancelled";
+export const registrationStatusSchema = z.enum([
+  "pending",
+  "confirmed",
+  "cancelled",
+]);
+
+export const updateSchema = registrationSchema
+  .omit({ termsCheck: true })
+  .partial()
+  .extend({
+    status: registrationStatusSchema.optional(),
+  });
+
+export type RegistrationStatus = z.infer<typeof registrationStatusSchema>;
 
 export type RegistrationFormData = z.infer<typeof registrationSchema>;
 
