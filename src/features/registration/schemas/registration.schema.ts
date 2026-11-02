@@ -79,6 +79,10 @@ export const updateSchema = registrationSchema
     status: registrationStatusSchema.optional(),
   });
 
+export const idSchema = z.object({
+  id: z.string().min(1, "O campo 'id' é obrigatório"),
+});
+
 export type RegistrationStatus = z.infer<typeof registrationStatusSchema>;
 
 export type RegistrationFormData = z.infer<typeof registrationSchema>;
