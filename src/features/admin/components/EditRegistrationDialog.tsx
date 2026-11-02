@@ -10,17 +10,19 @@ import { Registration } from "@/features/registration/schemas/registration.schem
 
 type EditRegistrationDialogProps = {
   editingRow: Registration;
-  setEditingRow: React.Dispatch<React.SetStateAction<Registration | null>>;
+  onClose: () => void;
   onSave: (updateRow: Registration) => void;
+  errorMessage: string;
 };
 
 export function EditRegistrationDialog({
+  errorMessage,
   editingRow,
-  setEditingRow,
+  onClose,
   onSave,
 }: EditRegistrationDialogProps) {
   return (
-    <Dialog open={!!editingRow} onOpenChange={() => setEditingRow(null)}>
+    <Dialog open={!!editingRow} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-lg flex flex-col max-h-[90vh]">
         <DialogHeader className="m-2">
           <DialogTitle>
@@ -38,9 +40,12 @@ export function EditRegistrationDialog({
             isEditing={true}
             initialData={editingRow}
             onSave={onSave}
-            onCancel={setEditingRow}
+            onCancel={onClose}
           />
         </div>
+        {errorMessage && (
+          <p className="text-destructive text-sm text-center">{errorMessage}</p>
+        )}
       </DialogContent>
     </Dialog>
   );

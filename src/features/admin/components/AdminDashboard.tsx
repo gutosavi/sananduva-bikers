@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Registration } from "@/features/registration/schemas/registration.schema";
 import { CATEGORIES_OPTIONS, routeName } from "@/lib/event-data";
 import { Search } from "lucide-react";
 import React from "react";
@@ -21,6 +20,7 @@ import { RegistrationsTable } from "./RegistrationsTable";
 
 export function AdminDashboard() {
   const {
+    error,
     rows,
     categoryFilter,
     setCategoryFilter,
@@ -29,11 +29,12 @@ export function AdminDashboard() {
     inputValue,
     setInputValue,
     editingRow,
-    setEditingRow,
     filteredRows,
     handleToggleStatus,
     handleEdit,
     handleDelete,
+    handleCloseEdit,
+    handleStartEdit,
     loadData,
   } = useAdminRegistrations();
 
@@ -118,14 +119,15 @@ export function AdminDashboard() {
             <RegistrationsTable
               rows={filteredRows}
               onToggleStatus={handleToggleStatus}
-              onEdit={(row: Registration) => setEditingRow(row)}
+              onEdit={handleStartEdit}
               onDelete={handleDelete}
             />
 
             {editingRow && (
               <EditRegistrationDialog
+                errorMessage={error}
                 editingRow={editingRow}
-                setEditingRow={setEditingRow}
+                onClose={handleCloseEdit}
                 onSave={handleEdit}
               />
             )}
