@@ -106,6 +106,18 @@ describe("registrationSchema", () => {
       expect(result.success).toBe(false);
     });
 
+    it.each([
+      ["negativo", -1],
+      ["fracionado", 1.5],
+    ])("rejeita extraLunchQuantity %s", (_label, value) => {
+      const result = registrationSchema.safeParse({
+        ...validRegistration,
+        extraLunchQuantity: value,
+      });
+
+      expect(result.success).toBe(false);
+    });
+
     it("exige o CPF com a mensagem específica quando vazio", () => {
       const errors = errorsFor({ ...validRegistration, cpf: "" }, "cpf");
 
@@ -151,9 +163,6 @@ describe("registrationSchema", () => {
     // Lacunas conhecidas do schema atual — ative quando o schema for reforçado.
     it.todo(
       "rejeita CPF com dígitos verificadores inválidos (ex.: 111.111.111-11)",
-    );
-    it.todo(
-      "rejeita extraLunchQuantity negativo ou fracionado (.int().min(0))",
     );
   });
 });

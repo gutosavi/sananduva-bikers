@@ -1,27 +1,24 @@
+import { DefaultValues } from "react-hook-form";
 import { RegistrationFormData } from "./schemas/registration.schema";
 
 export const optionsGender = [
-  { label: "Feminino", value: "Feminino" },
-  { label: "Masculino", value: "Masculino" },
-];
+  { value: "Feminino" },
+  { value: "Masculino" },
+] as const;
 
 export const pixKey = "23639623000104";
 
-export const extraLunchQuantity = [
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-];
+export const MAX_EXTRA_LUNCH = 20;
 
-export const tshirtSizes = ["PP", "P", "M", "G", "GG"];
+export const quantitySelect = Array.from(
+  { length: MAX_EXTRA_LUNCH + 1 },
+  (_, index) => ({
+    value: index,
+    label: `${index} ${index === 1 ? "almoço" : "almoços"}`,
+  }),
+);
+
+export const tshirtSizes = ["PP", "P", "M", "G", "GG"] as const;
 
 export const paymentInstructions = [
   {
@@ -35,18 +32,18 @@ export const paymentInstructions = [
   },
 ];
 
-export const defaultValues: RegistrationFormData = {
+export const defaultValues: DefaultValues<RegistrationFormData> = {
   fullname: "",
   cpf: "",
   birthDate: "",
-  gender: "",
+  gender: undefined,
   email: "",
   phoneNumber: "",
   cityState: "",
   emergencyContact: "",
   emergencyPhone: "",
   category: "",
-  tshirtSize: "",
+  tshirtSize: undefined,
   team: "",
   extraLunchQuantity: undefined,
   termsCheck: false,

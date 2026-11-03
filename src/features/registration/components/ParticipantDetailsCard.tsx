@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Controller, useFormContext } from "react-hook-form";
-import { extraLunchQuantity, optionsGender } from "../constants";
+import { optionsGender, quantitySelect } from "../constants";
 import { RegistrationFormData } from "../schemas/registration.schema";
 
 export function ParticipantDetailsCard() {
@@ -84,7 +84,10 @@ export function ParticipantDetailsCard() {
               name="gender"
               control={control}
               render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value ?? null}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger id="gender">
                     <SelectValue placeholder="Selecione seu gênero" />
                   </SelectTrigger>
@@ -93,7 +96,7 @@ export function ParticipantDetailsCard() {
                     <SelectGroup>
                       {optionsGender.map((item) => (
                         <SelectItem key={item.value} value={item.value}>
-                          {item.label}
+                          {item.value}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -181,9 +184,12 @@ export function ParticipantDetailsCard() {
 
                   <SelectContent>
                     <SelectGroup>
-                      {extraLunchQuantity.map((item) => (
-                        <SelectItem key={item} value={item}>
-                          {item}
+                      {quantitySelect.map((item) => (
+                        <SelectItem
+                          key={item.value}
+                          value={item.value.toString()}
+                        >
+                          {item.label}
                         </SelectItem>
                       ))}
                     </SelectGroup>

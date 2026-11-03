@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from "../../../generated/prisma/client";
+import { RegistrationError } from "../errors/RegistrationError";
 import {
   fromPrismaRegistration,
   fromPrismaRegistrations,
@@ -18,9 +19,7 @@ export class PrismaRegistrationRepository implements IRegistrationRepository {
       const saved = await this.prisma.registration.create({
         data: {
           ...registration,
-          birthDate: registration.birthDate
-            ? new Date(`${registration.birthDate}T00:00:00.000Z`)
-            : new Date(),
+          birthDate: new Date(`${registration.birthDate}T00:00:00.000Z`),
           extraLunchQuantity: registration.extraLunchQuantity ?? 0,
         },
       });
@@ -31,8 +30,11 @@ export class PrismaRegistrationRepository implements IRegistrationRepository {
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === "P2002"
       ) {
-        throw new Error("CPF já cadastrado.");
+        throw new RegistrationError(
+          "Já existe uma inscrição com este e-mail e/ou CPF.",
+        );
       }
+
       throw error;
     }
   }
@@ -46,7 +48,7 @@ export class PrismaRegistrationRepository implements IRegistrationRepository {
         data: {
           ...updatePayload,
           ...(birthDate && {
-            birthDate: new Date(`${data.birthDate}T00:00:00.000Z`),
+            birthDate: new Date(`${birthDate}T00:00:00.000Z`),
           }),
         },
       });
@@ -55,9 +57,11 @@ export class PrismaRegistrationRepository implements IRegistrationRepository {
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === "P2025"
+        error.code === "P2002"
       ) {
-        throw new Error("Inscrição não encontrada para atualização.");
+        throw new RegistrationError(
+          "Não é possível atualizar para este e-mail e/ou CPF, pois já existe outra inscrição com esses dados.",
+        );
       }
       throw error;
     }
@@ -73,7 +77,7 @@ export class PrismaRegistrationRepository implements IRegistrationRepository {
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === "P2025"
       ) {
-        throw new Error("Inscrição não encontrada para remoção.");
+        throw new RegistrationError("Inscrição não encontrada para remoção.");
       }
       throw error;
     }

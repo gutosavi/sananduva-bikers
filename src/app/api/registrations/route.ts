@@ -1,5 +1,6 @@
 import { PrismaRegistrationRepository } from "@/features/registration/repositories/PrismaRegistrationRepository";
 import { RegistrationService } from "@/features/registration/services/RegistrationService";
+import { mapErrorToResponse } from "@/helpers/mapErrorToResponse";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -13,13 +14,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(result, { status: 201 });
   } catch (error) {
-    console.error("Erro ao processar inscrição no servidor:", error);
-
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "Erro interno ao processar inscrição.";
-
-    return NextResponse.json({ error: errorMessage }, { status: 400 });
+    return mapErrorToResponse(error);
   }
 }

@@ -10,6 +10,7 @@ export const useAdminRegistrations = () => {
   const [statusFilter, setStatusFilter] = React.useState<string | null>("all");
   const [inputValue, setInputValue] = React.useState("");
   const [editingRow, setEditingRow] = React.useState<Registration | null>(null);
+  const [error, setError] = React.useState("");
   const debounceSearchTerm = useDebounce(inputValue, 500);
 
   const loadData = React.useCallback(async () => {
@@ -46,6 +47,8 @@ export const useAdminRegistrations = () => {
 
   const handleToggleStatus = async (id: Registration["id"]) => {
     try {
+      setError("");
+
       const targetRow = rows.find((row) => row.id === id);
 
       if (!targetRow) {
@@ -63,7 +66,9 @@ export const useAdminRegistrations = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Erro ao editar status da inscrição.");
+        const errorData = await response.json().catch(() => null);
+        setError(errorData?.error ?? "Não foi possível editar a inscrição.");
+        return;
       }
 
       setRows((prevRows) =>
@@ -71,6 +76,7 @@ export const useAdminRegistrations = () => {
       );
     } catch (error) {
       if (error instanceof Error) {
+        setError("Erro ao editar status da inscrição.");
         console.error("Erro ao editar status da inscrição.", error);
       }
     }
@@ -78,6 +84,8 @@ export const useAdminRegistrations = () => {
 
   const handleEdit = async (updateRow: Registration) => {
     try {
+      setError("");
+
       const response = await fetch("/api/admin/registrations", {
         method: "PATCH",
         headers: {
@@ -87,14 +95,12 @@ export const useAdminRegistrations = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Erro ao atualizar a inscrição.");
+        const errorData = await response.json().catch(() => null);
+        setError(errorData?.error ?? "Não foi possível editar a inscrição.");
+        return;
       }
 
       const updatedItem: Registration = await response.json();
-
-      if (!updatedItem) {
-        throw new Error("Inscrição não encontrada.");
-      }
 
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === updatedItem.id ? updatedItem : row)),
@@ -102,7 +108,8 @@ export const useAdminRegistrations = () => {
       setEditingRow(null);
     } catch (error) {
       if (error instanceof Error) {
-        console.error("Erro ao atualizar inscrição:", error);
+        console.error("Erro ao editar inscrição:", error);
+        setError("Erro ao editar inscrição.");
       }
     }
   };
@@ -127,7 +134,18 @@ export const useAdminRegistrations = () => {
     }
   };
 
+  const handleCloseEdit = () => {
+    setError("");
+    setEditingRow(null);
+  };
+
+  const handleStartEdit = (row: Registration) => {
+    setError("");
+    setEditingRow(row);
+  };
+
   return {
+    error,
     rows,
     setRows,
     categoryFilter,
@@ -142,6 +160,8 @@ export const useAdminRegistrations = () => {
     handleToggleStatus,
     handleEdit,
     handleDelete,
+    handleCloseEdit,
+    handleStartEdit,
     loadData,
   };
 };
