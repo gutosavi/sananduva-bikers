@@ -214,5 +214,18 @@ describe("RegistrationService", () => {
 
       expect(result).toBe(undefined);
     });
+
+    it("rejeita quando a inscrição é inexistente", async () => {
+      repository.findById.mockResolvedValue(undefined);
+
+      const result = service.deleteRegistration("id_inexistente");
+
+      await expect(result).rejects.toBeInstanceOf(RegistrationError);
+      await expect(result).rejects.toThrow(
+        "Inscrição não encontrada para remoção.",
+      );
+
+      expect(repository.delete).not.toHaveBeenCalled();
+    });
   });
 });
