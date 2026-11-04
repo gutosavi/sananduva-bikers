@@ -1,3 +1,4 @@
+import { toast } from "@/components/ui/toast";
 import { Registration } from "@/features/registration/schemas/registration.schema";
 import useDebounce from "@/hooks/useDebounce";
 import React from "react";
@@ -116,13 +117,18 @@ export const useAdminRegistrations = () => {
 
   const handleDelete = async (id: Registration["id"]) => {
     try {
-      const response = await fetch("/api/admin/registrations", {
+      const response = await fetch(`/api/admin/registrations/${id}`, {
         method: "DELETE",
-        body: JSON.stringify({ id }),
       });
 
       if (!response.ok) {
-        throw new Error("Erro ao deletar inscrição.");
+        const errorData = await response.json().catch(() => null);
+        toast.add({
+          type: "error",
+          description: errorData?.error ?? "Erro ao deletar a inscrição.",
+          priority: "high",
+        });
+        return;
       }
 
       setRows((prevRows) => prevRows.filter((row) => row.id !== id));
