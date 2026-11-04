@@ -1,4 +1,4 @@
-import { Toaster } from "@/components/ui/toast";
+import { Toaster } from "@/components/ui/sonner";
 import { inter, neueMachina } from "@/functions/fonts";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";

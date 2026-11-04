@@ -1,7 +1,7 @@
-import { toast } from "@/components/ui/toast";
 import { Registration } from "@/features/registration/schemas/registration.schema";
 import useDebounce from "@/hooks/useDebounce";
 import React from "react";
+import { toast } from "sonner";
 
 export const useAdminRegistrations = () => {
   const [rows, setRows] = React.useState<Registration[]>([]);
@@ -123,11 +123,7 @@ export const useAdminRegistrations = () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
-        toast.add({
-          type: "error",
-          description: errorData?.error ?? "Erro ao deletar a inscrição.",
-          priority: "high",
-        });
+        toast.error(errorData?.error ?? "Erro ao deletar a inscrição.");
         return;
       }
 
