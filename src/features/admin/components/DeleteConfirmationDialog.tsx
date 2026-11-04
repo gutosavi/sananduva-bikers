@@ -21,22 +21,24 @@ export function DeleteConfirmationDialog({
   onOpenChange,
 }: DeleteConfirmationDialogProps) {
   return (
-    <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            Você tem certeza que deseja excluir?
-          </AlertDialogTitle>
-          <AlertDialogDescription>
-            Esta ação não poderá ser desfeita. A inscrição vai ser excluída
-            permanentemente do banco de dados.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction onClick={onDelete}>Continuar</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <>
+      <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Você tem certeza que deseja excluir?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não poderá ser desfeita. A inscrição vai ser excluída
+              permanentemente do banco de dados.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={onDelete}>Continuar</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

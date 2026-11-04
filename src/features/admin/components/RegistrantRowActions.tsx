@@ -17,7 +17,7 @@ type RegistrantRowActionsProps = {
   row: Registration;
   onToggleStatus: (id: Registration["id"]) => void;
   onEdit: (updateRow: Registration) => void;
-  onDelete: (id: Registration["id"]) => void;
+  onDelete: (id: Registration["id"]) => Promise<void>;
 };
 
 export function RegistrantRowActions({
@@ -27,6 +27,15 @@ export function RegistrantRowActions({
   onDelete,
 }: RegistrantRowActionsProps) {
   const [isDeleteDialogOpen, setIsDeleteDiagogOpen] = React.useState(false);
+
+  async function handleDelete() {
+    try {
+      await onDelete(row.id);
+      setIsDeleteDiagogOpen(false);
+    } catch (error) {
+      console.error("Erro ao excluir inscrição.", error);
+    }
+  }
 
   return (
     <DropdownMenu>
@@ -72,10 +81,7 @@ export function RegistrantRowActions({
       <DeleteConfirmationDialog
         isOpen={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDiagogOpen}
-        onDelete={() => {
-          onDelete(row.id);
-          setIsDeleteDiagogOpen(false);
-        }}
+        onDelete={handleDelete}
       />
     </DropdownMenu>
   );
