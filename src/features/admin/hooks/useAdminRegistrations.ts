@@ -11,7 +11,6 @@ export const useAdminRegistrations = () => {
   const [statusFilter, setStatusFilter] = React.useState<string | null>("all");
   const [inputValue, setInputValue] = React.useState("");
   const [editingRow, setEditingRow] = React.useState<Registration | null>(null);
-  const [error, setError] = React.useState("");
   const debounceSearchTerm = useDebounce(inputValue, 500);
 
   const loadData = React.useCallback(async () => {
@@ -46,10 +45,8 @@ export const useAdminRegistrations = () => {
     return matchInput && matchCategory && matchStatus;
   });
 
-  const handleToggleStatus = async (id: Registration["id"]) => {
+  const handleToggleStatus = async (id: Registration["id"]): Promise<void> => {
     try {
-      setError("");
-
       const targetRow = rows.find((row) => row.id === id);
 
       if (!targetRow) {
@@ -71,7 +68,7 @@ export const useAdminRegistrations = () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
-        setError(errorData?.error ?? "Não foi possível editar a inscrição.");
+        toast.error(errorData?.error ?? "Não foi possível editar a inscrição.");
         return;
       }
 
@@ -79,17 +76,16 @@ export const useAdminRegistrations = () => {
         prevRows.map((row) => (row.id === updatedItem.id ? updatedItem : row)),
       );
     } catch (error) {
-      if (error instanceof Error) {
-        setError("Erro ao editar status da inscrição.");
-        console.error("Erro ao editar status da inscrição.", error);
-      }
+      console.error(
+        "Não foi possível conectar ao servidor. Tente novamente.",
+        error,
+      );
+      toast.error("Não foi possível conectar ao servidor. Tente novamente.");
     }
   };
 
-  const handleEdit = async (updateRow: Registration) => {
+  const handleEdit = async (updateRow: Registration): Promise<void> => {
     try {
-      setError("");
-
       const response = await fetch(`/api/admin/registrations/${updateRow.id}`, {
         method: "PATCH",
         headers: {
@@ -100,7 +96,7 @@ export const useAdminRegistrations = () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
-        setError(errorData?.error ?? "Não foi possível editar a inscrição.");
+        toast.error(errorData?.error ?? "Não foi possível editar a inscrição.");
         return;
       }
 
@@ -110,15 +106,17 @@ export const useAdminRegistrations = () => {
         prevRows.map((row) => (row.id === updatedItem.id ? updatedItem : row)),
       );
       setEditingRow(null);
+      toast.success("Inscrição editada com sucesso!");
     } catch (error) {
-      if (error instanceof Error) {
-        console.error("Erro ao editar inscrição:", error);
-        setError("Erro ao editar inscrição.");
-      }
+      console.error(
+        "Não foi possível conectar ao servidor. Tente novamente.",
+        error,
+      );
+      toast.error("Não foi possível conectar ao servidor. Tente novamente.");
     }
   };
 
-  const handleDelete = async (id: Registration["id"]) => {
+  const handleDelete = async (id: Registration["id"]): Promise<void> => {
     try {
       const response = await fetch(`/api/admin/registrations/${id}`, {
         method: "DELETE",
@@ -132,25 +130,25 @@ export const useAdminRegistrations = () => {
 
       setRows((prevRows) => prevRows.filter((row) => row.id !== id));
       setEditingRow(null);
+      toast.success("Inscrição excluída com sucesso!");
     } catch (error) {
-      if (error instanceof Error) {
-        console.error("Erro ao deletar inscrição.", error);
-      }
+      console.error(
+        "Não foi possível conectar ao servidor. Tente novamente.",
+        error,
+      );
+      toast.error("Não foi possível conectar ao servidor. Tente novamente.");
     }
   };
 
-  const handleCloseEdit = () => {
-    setError("");
+  const handleCloseEdit = (): void => {
     setEditingRow(null);
   };
 
-  const handleStartEdit = (row: Registration) => {
-    setError("");
+  const handleStartEdit = (row: Registration): void => {
     setEditingRow(row);
   };
 
   return {
-    error,
     rows,
     setRows,
     categoryFilter,

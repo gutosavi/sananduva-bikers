@@ -12,11 +12,9 @@ type EditRegistrationDialogProps = {
   editingRow: Registration;
   onClose: () => void;
   onSave: (updateRow: Registration) => void;
-  errorMessage: string;
 };
 
 export function EditRegistrationDialog({
-  errorMessage,
   editingRow,
   onClose,
   onSave,
@@ -43,9 +41,6 @@ export function EditRegistrationDialog({
             onCancel={onClose}
           />
         </div>
-        {errorMessage && (
-          <p className="text-destructive text-sm text-center">{errorMessage}</p>
-        )}
       </DialogContent>
     </Dialog>
   );

@@ -20,7 +20,6 @@ import { RegistrationsTable } from "./RegistrationsTable";
 
 export function AdminDashboard() {
   const {
-    error,
     rows,
     categoryFilter,
     setCategoryFilter,
@@ -125,7 +124,6 @@ export function AdminDashboard() {
 
             {editingRow && (
               <EditRegistrationDialog
-                errorMessage={error}
                 editingRow={editingRow}
                 onClose={handleCloseEdit}
                 onSave={handleEdit}
