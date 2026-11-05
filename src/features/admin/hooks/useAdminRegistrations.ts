@@ -61,8 +61,11 @@ export const useAdminRegistrations = () => {
         status: targetRow.status === "confirmed" ? "pending" : "confirmed",
       };
 
-      const response = await fetch("/api/admin/registrations", {
+      const response = await fetch(`/api/admin/registrations/${id}`, {
         method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(updatedItem),
       });
 
@@ -87,7 +90,7 @@ export const useAdminRegistrations = () => {
     try {
       setError("");
 
-      const response = await fetch("/api/admin/registrations", {
+      const response = await fetch(`/api/admin/registrations/${updateRow.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
