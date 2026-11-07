@@ -228,4 +228,65 @@ describe("RegistrationService", () => {
       expect(repository.delete).not.toHaveBeenCalled();
     });
   });
+
+  describe("findPublicRegistrations", () => {
+    const existingData: Registration = {
+      ...validRegistration,
+      id: "reg_123",
+      status: "pending",
+      revenue: 180,
+    };
+
+    it("não expõe dados sensíveis", async () => {
+      repository.findAll.mockResolvedValue([existingData]);
+
+      const result = await service.findPublicRegistrations();
+
+      expect(result).toEqual([
+        {
+          id: "reg_123",
+          fullname: "Gustavo Savi",
+          cityState: "Sananduva/RS",
+          status: "pending",
+          category: "pro-masc-elite",
+          team: "Sananduva Bikers",
+        },
+      ]);
+    });
+
+    it("inclui inscrições confirmadas", async () => {
+      const confirmedRegistration: Registration = {
+        ...existingData,
+        status: "confirmed",
+      };
+
+      repository.findAll.mockResolvedValue([confirmedRegistration]);
+
+      const result = await service.findPublicRegistrations();
+
+      expect(result).toEqual([
+        {
+          id: "reg_123",
+          fullname: "Gustavo Savi",
+          cityState: "Sananduva/RS",
+          status: "confirmed",
+          category: "pro-masc-elite",
+          team: "Sananduva Bikers",
+        },
+      ]);
+    });
+
+    it("exclui inscrições canceladas", async () => {
+      const cancelledRegistration: Registration = {
+        ...existingData,
+        status: "cancelled",
+      };
+
+      repository.findAll.mockResolvedValue([cancelledRegistration]);
+
+      const result = await service.findPublicRegistrations();
+
+      expect(result).toHaveLength(0);
+    });
+  });
 });

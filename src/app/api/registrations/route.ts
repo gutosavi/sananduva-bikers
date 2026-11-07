@@ -17,3 +17,12 @@ export async function POST(request: Request) {
     return mapErrorToResponse(error);
   }
 }
+
+export async function GET() {
+  try {
+    const result = await service.findPublicRegistrations();
+    return NextResponse.json(result, { status: 200 });
+  } catch (error) {
+    return mapErrorToResponse(error);
+  }
+}

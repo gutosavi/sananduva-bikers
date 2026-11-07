@@ -92,3 +92,13 @@ export type Registration = RegistrationFormData & {
   status: RegistrationStatus;
   revenue: number;
 };
+
+type PublicProps =
+  | "id"
+  | "fullname"
+  | "cityState"
+  | "category"
+  | "team"
+  | "status";
+
+export type PublicRegistration = Pick<Registration, PublicProps>;

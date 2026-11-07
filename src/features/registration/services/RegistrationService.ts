@@ -3,6 +3,7 @@ import { Participant } from "@/models/Participant";
 import { RegistrationError } from "../errors/RegistrationError";
 import { IRegistrationRepository } from "../repositories/IRegistrationRepository";
 import {
+  PublicRegistration,
   Registration,
   registrationSchema,
   updateSchema,
@@ -73,5 +74,22 @@ export class RegistrationService {
 
   async findAllRegistrations(): Promise<readonly Registration[]> {
     return await this.storage.findAll();
+  }
+
+  async findPublicRegistrations(): Promise<readonly PublicRegistration[]> {
+    const registrations = await this.storage.findAll();
+
+    const filteredByStatus = registrations.filter(
+      (registration) => registration.status !== "cancelled",
+    );
+
+    return filteredByStatus.map((registration) => ({
+      id: registration.id,
+      fullname: registration.fullname,
+      cityState: registration.cityState,
+      category: registration.category,
+      team: registration.team,
+      status: registration.status,
+    }));
   }
 }
