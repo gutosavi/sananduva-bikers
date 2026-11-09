@@ -7,28 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Registration } from "@/features/registration/schemas/registration.schema";
+import { PublicRegistration } from "@/features/registration/schemas/registration.schema";
+import { groupByCategory } from "@/helpers/groupByCategory";
 import { User } from "lucide-react";
 import { Fragment } from "react";
 
-export function RegisteredTable({ rows }: { rows: Registration[] }) {
-  function groupByCategory(
-    rows: Registration[],
-  ): Record<string, Registration[]> {
-    return rows.reduce<Record<string, Registration[]>>((acc, row) => {
-      const category = row.category;
-
-      if (!acc[category]) {
-        acc[category] = [];
-      }
-
-      acc[category].push(row);
-
-      return acc;
-    }, {});
-  }
-
-  const registrationsByCategory = groupByCategory(rows);
+export function RegisteredTable({ rows }: { rows: PublicRegistration[] }) {
+  const registrationsByCategory = groupByCategory<PublicRegistration>(rows);
 
   return (
     <Card className="m-5 overflow-hidden max-w-3xl border">
@@ -58,7 +43,8 @@ export function RegisteredTable({ rows }: { rows: Registration[] }) {
                     <TableCell className="flex flex-col">
                       {registration.fullname}
                       <span className="text-xs text-muted-foreground">
-                        Equipe - Cidade
+                        {registration.cityState} -{" "}
+                        {registration.team ?? "Sem equipe"}
                       </span>
                     </TableCell>
                     <TableCell className="text-right">
