@@ -14,6 +14,7 @@ export const NAV_LINKS = [
   { href: "#event", label: "Pedal do Tigre" },
   { href: "#event-recap", label: "Galeria" },
   { href: "#sponsors", label: "Apoiadores" },
+  { href: "/inscritos", label: "Inscritos" },
 ];
 
 export function SiteNavBar() {
@@ -23,6 +24,7 @@ export function SiteNavBar() {
 
   const isAdminRoute = pathname === "/admin";
   const isLoginRoute = pathname === "/admin/login";
+  const isInscritosRoute = pathname === "/inscritos";
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -58,17 +60,19 @@ export function SiteNavBar() {
         </Link>
 
         {/* Menu desktop */}
-        <div className="hidden min-w-0 items-center gap-5 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="whitespace-nowrap rounded-md px-2 py-2 text-xs font-medium text-secondary transition-colors hover:bg-white/5 hover:text-foreground lg:px-3 lg:text-sm"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
+        {!isInscritosRoute && (
+          <div className="hidden min-w-0 items-center gap-5 md:flex">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="whitespace-nowrap rounded-md px-2 py-2 text-xs font-medium text-secondary transition-colors hover:bg-white/5 hover:text-foreground lg:px-3 lg:text-sm"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        )}
 
         <div className="hidden shrink-0 items-center gap-2 md:flex">
           {isAdminRoute ? (
