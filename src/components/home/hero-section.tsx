@@ -51,7 +51,7 @@ export function HeroSection() {
               />
               <div className="absolute inset-0 bg-black/50 bg-linear-to-t from-zinc-950 via-black/40 to-black/20" />
 
-              <div className="relative z-10 container h-full flex flex-col items-start justify-center text-start space-y-6 px-10 md:px-35">
+              <div className="relative z-10 container h-full flex flex-col items-start justify-center text-start space-y-6 px-10 md:px-25">
                 <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase italic">
                   {slide.title}
                   <span className="text-primary">!</span>
