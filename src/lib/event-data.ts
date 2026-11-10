@@ -351,3 +351,41 @@ export const MOCK_REGISTRATIONS: Registration[] = [
 export function routeName(label: Routes["title"]) {
   return CATEGORIES_OPTIONS.find((row) => row.label === label);
 }
+
+export const sponsors = {
+  master: [
+    {
+      name: "Prefeitura Municipal de Sananduva",
+      logo: "/assets/images/sponsors/logo-pmsananduva.png",
+      width: 200,
+      height: 50,
+    },
+    {
+      name: "Sicredi",
+      logo: "/assets/images/sponsors/logo-sicredi.png",
+      width: 200,
+      height: 50,
+    },
+  ],
+
+  ouro: [
+    {
+      name: "Valvita",
+      logo: "/assets/images/sponsors/valvita.png",
+      width: 100,
+      height: 50,
+    },
+    {
+      name: "Cresol",
+      logo: "/assets/images/sponsors/logo-cresol.svg",
+      width: 80,
+      height: 50,
+    },
+    {
+      name: "Furbo",
+      logo: "/assets/images/sponsors/logo-furbo.png",
+      width: 100,
+      height: 50,
+    },
+  ],
+};
