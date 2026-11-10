@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { getCategoryLabel } from "@/helpers/getCategoryLabel";
 import { EventPrices, REGISTRATION_PRICES } from "@/lib/event-data";
 import { BRL, formatCNPJ } from "@/lib/utils";
 import { Check, Copy, QrCode } from "lucide-react";
@@ -92,7 +93,7 @@ export function PaymentModal({
                 <li className="flex justify-between gap-4">
                   <span className="text-muted-foreground">Categoria:</span>
                   <span className="font-medium">
-                    {registrationData.category}
+                    {getCategoryLabel(registrationData.category)}
                   </span>
                 </li>
                 <li className="flex justify-between gap-4">

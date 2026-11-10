@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Registration } from "@/features/registration/schemas/registration.schema";
+import { getCategoryLabel } from "@/helpers/getCategoryLabel";
 import { BRL, formatCPF } from "@/lib/utils";
 import { CircleCheck, Trophy } from "lucide-react";
 import { RegistrantRowActions } from "./RegistrantRowActions";
@@ -61,7 +62,7 @@ export function RegistrationsTable({
             <TableCell className="hidden md:table-cell">
               <span className="flex items-center gap-1 md:flex font-medium">
                 <Trophy className="h-3.5 w-3.5 text-primary" />
-                {row.category}
+                {getCategoryLabel(row.category)}
               </span>
             </TableCell>
             <TableCell className="hidden md:table-cell">

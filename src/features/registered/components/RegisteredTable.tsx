@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PublicRegistration } from "@/features/registration/schemas/registration.schema";
+import { getCategoryLabel } from "@/helpers/getCategoryLabel";
 import { groupByCategory } from "@/helpers/groupByCategory";
 import { User } from "lucide-react";
 import { Fragment } from "react";
@@ -34,7 +35,7 @@ export function RegisteredTable({ rows }: { rows: PublicRegistration[] }) {
                     colSpan={4}
                     className="font-semibold uppercase text-primary"
                   >
-                    {category}
+                    {getCategoryLabel(category)}
                   </TableCell>
                 </TableRow>
 
@@ -44,7 +45,9 @@ export function RegisteredTable({ rows }: { rows: PublicRegistration[] }) {
                       {registration.fullname}
                       <span className="text-xs text-muted-foreground">
                         {registration.cityState} -{" "}
-                        {registration.team ?? "Sem equipe"}
+                        {registration.team === ""
+                          ? "Sem equipe"
+                          : registration.team}
                       </span>
                     </TableCell>
                     <TableCell className="text-right">
