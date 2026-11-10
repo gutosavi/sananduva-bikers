@@ -47,7 +47,7 @@ export function SiteNavBar() {
           : "bg-black/60 backdrop-blur-md transform transition-all duration-300"
       }`}
     >
-      <nav className="flex flex-row w-full h-24 items-center justify-between gap-4 px-6 py-3 md:px-30">
+      <nav className="flex flex-row w-full h-24 items-center justify-between gap-4 px-6 py-3 md:px-20">
         <Link href="/">
           <Image
             src="/assets/logo.png"
@@ -66,7 +66,7 @@ export function SiteNavBar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="whitespace-nowrap rounded-md px-2 py-2 text-xs font-medium text-secondary transition-colors hover:bg-white/5 hover:text-foreground lg:px-3 lg:text-sm"
+                className="whitespace-nowrap rounded-md px-2 py-2 text-xs font-medium text-surface transition-colors hover:bg-white/5 hover:text-white/75 lg:px-3 lg:text-sm"
               >
                 {link.label}
               </Link>
