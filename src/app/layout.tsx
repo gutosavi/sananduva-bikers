@@ -14,7 +14,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="pt-BR"
       data-scroll-behavior="smooth"
-      className={`dark ${cn("font-sans", inter.variable)} ${neueMachina.variable} bg-background`}
+      className={`dark scroll-smooth ${cn("font-sans", inter.variable)} ${neueMachina.variable} bg-background`}
     >
       <body className="font-sans">
         {children}
