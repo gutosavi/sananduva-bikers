@@ -1,106 +1,185 @@
-# 🚴‍♂️ Sananduva Bikers — Sistema de Inscrições & Painel Administrativo
+# Sananduva Bikers — Landing Page, Inscrições & Painel Administrativo
 
-Aplicação web desenvolvida para o gerenciamento de inscrições, dados dos participantes e controle administrativo do evento de ciclismo **Sananduva Bikers**.
+🔗 **Produção:** [sananduva-bikers.vercel.app](https://sananduva-bikers.vercel.app/)
 
-O sistema foi construído utilizando **Next.js (App Router)**, **TypeScript**, **Prisma ORM** e **PostgreSQL (Neon Serverless)**, seguindo rigorosamente os princípios de **Clean Architecture** e **Domain-Driven Design (DDD)**.
+Aplicação web do grupo de ciclismo **Sananduva Bikers** e do seu evento anual de mountain bike, o **Pedal do Tigre**. Reúne a landing page do evento, o fluxo de inscrição, a lista pública de inscritos e um painel administrativo protegido para a organização.
 
-## 🏗️ Arquitetura & Conceitos Chave
+Construída com **Next.js (App Router)**, **TypeScript**, **Prisma ORM** e **PostgreSQL (Neon Serverless)**, seguindo princípios de **Clean Architecture** e **Domain-Driven Design (DDD)**, com validação de dados no servidor e cobertura de testes com **Vitest**.
 
-As camadas de backend e acesso a dados seguem uma arquitetura em camadas para manter a separação de responsabilidades, alta testabilidade e facilidade de manutenção.
+---
 
-```text
+## ✨ Funcionalidades
+
+| Rota          | Acesso    | Descrição                                                            |
+| ------------- | --------- | -------------------------------------------------------------------- |
+| `/`           | Público   | Landing page: Hero, Sobre, o evento Pedal do Tigre, Apoiadores e FAQ |
+| `/inscricoes` | Público   | Formulário de inscrição com validação no cliente e no servidor       |
+| `/inscritos`  | Público   | Lista pública para acompanhar os inscritos (sem dados sensíveis)     |
+| `/admin`      | Protegido | Painel para listar, editar e excluir inscrições                      |
+
+---
+
+## 🏗️ Arquitetura
+
+O backend segue uma arquitetura em camadas para manter a separação de responsabilidades, a testabilidade e a facilidade de manutenção.
+
+```
 [ Cliente / Navegador ]
         │  (HTTP / Fetch)
         ▼
-[ API Routes / Handlers ] ── (src/app/api/registrations/route.ts)
+[ proxy.ts ] ── (proteção de /admin e /api/admin)
         │
         ▼
-[ RegistrationService ]  ── (Regras de Negócio e Validações)
+[ API Routes ] ── /api/registrations (POST público)
+        │          /api/admin/registrations (GET / PATCH / DELETE autenticados)
+        ▼
+[ RegistrationService ] ── (regras de negócio + validação com Zod)
         │
-        ▼  (Interface IRegistrationRepository)
-[ PrismaRegistrationRepository ] ── (Acesso a Dados & CRUD)
+        ▼  (interface IRegistrationRepository)
+[ PrismaRegistrationRepository ] ── (acesso a dados, tradução de erros do Prisma)
         │
         ▼  (registrationMapper)
-[ PostgreSQL / Neon DB ] ── (Banco Relacional Serverless)
+[ PostgreSQL / Neon DB ]
 ```
 
-### Padrões Arquiteturais Aplicados
+### Padrões aplicados
 
-- **Domain-Driven Design (DDD):** O modelo do domínio (`Participant` / `Registration`) encapsula as regras de negócio, validações e invariantes.
+- **Domain-Driven Design (DDD):** o domínio (`Participant` / `Registration`) concentra regras de negócio, validações e invariantes.
+- **Repository Pattern & Inversão de Dependência (DIP):** o `RegistrationService` depende da abstração `IRegistrationRepository`, o que desacopla as regras de negócio do Prisma e permite injetar repositórios falsos nos testes.
+- **Data Mapper:** o `registrationMapper` traduz os registros do banco para entidades de domínio e valida campos enumerados (`gender`, `tshirtSize`) reaproveitando o próprio schema.
+- **Mapeamento híbrido (`@map` / `@@map`):**
+  - Aplicação: `camelCase` em inglês (`fullName`, `birthDate`, `tshirtSize`).
+  - Banco: `snake_case` em português (`nome_completo`, `data_nascimento`, `tamanho_camisa`), facilitando relatórios e consultas SQL pela organização.
+- **Singleton do PrismaClient:** instância global em `src/lib/prisma.ts` com `@prisma/adapter-neon`, evitando o esgotamento do pool de conexões em ambiente serverless.
 
-- **Repository Pattern & Inversão de Dependência (DIP):** A camada de serviço depende de abstrações (`IRegistrationRepository`), desacoplando as regras de negócio de detalhes do Prisma ou do banco de dados.
+---
 
-- **Data Mapper Pattern:** Mappers (`fromPrismaRegistration`) fazem a tradução entre as consultas brutas do banco de dados e as entidades de domínio.
+## 🔒 Segurança & Validação
 
-- **Estratégia de Mapeamento Híbrido (`@map` / `@@map`):**
-  - **Aplicação em TypeScript:** _camelCase_ em inglês (`fullName`, `birthDate`, `tshirtSize`).
-  - **Camada de Banco de Dados:** _snake_case_ em português (`nome_completo`, `data_nascimento`, `tamanho_camisa`) para facilitar a leitura por membros da organização em relatórios e consultas SQL.
+### Autenticação e autorização
 
-- **Singleton Client Pattern:** A conexão do `PrismaClient` é instanciada como um singleton global (`src/lib/prisma.ts`) utilizando o `@prisma/adapter-neon` para evitar o esgotamento do pool de conexões em ambiente serverless.
+- Rotas administrativas separadas das públicas: `/api/registrations` aceita apenas `POST`; leitura, edição e exclusão ficam em `/api/admin/registrations`.
+- Verificação de sessão com `auth()` **em cada rota** administrativa, além do `proxy.ts` (matcher `["/admin/:path*", "/api/admin/:path*"]`).
+- Requisições não autenticadas recebem **401 em JSON** nas APIs e **redirecionamento para o login** nas páginas.
+- O `callbackUrl` do login só é aceito se começar com `/admin` (padrão `/admin`), evitando redirecionamentos abertos.
 
-## 🛠️ Tecnologias Utilizadas
+### Validação no servidor (Zod)
+
+- O service recebe `input: unknown` e valida com `safeParse` antes de qualquer acesso ao banco — o servidor não confia no que vem do cliente.
+- Schema com limites explícitos: `.max()` nos textos, `z.enum` para gênero, tamanho de camisa e categoria (por `id`), quantidade de almoços extras inteira e limitada (`MAX_EXTRA_LUNCH`).
+- **Atualização** com um `updateSchema` próprio (parcial, sem `id` nem `revenue`), validado antes do `findById`.
+- O **valor da inscrição (`revenue`) é sempre calculado no servidor**, na criação e na edição.
+- `id` validado com `idSchema` no `PATCH` e no `DELETE`.
+
+### Tratamento de erros
+
+- `RegistrationError` representa erros de domínio (mensagem amigável, sem acoplamento a HTTP).
+- Violações de unicidade do Prisma (`P2002` em CPF e e-mail) são traduzidas no repositório para `RegistrationError`, com mensagem genérica que não revela qual dado já existe.
+- O helper `mapErrorToResponse` padroniza as respostas: `RegistrationError` e `SyntaxError` → **400**; qualquer outro erro → **500** genérico, com log no servidor.
+- No cliente, o hook `useRegistrationsForm` distingue erro do servidor (exibe a mensagem recebida) de erro de rede (mensagem genérica). O painel admin também exibe o erro do servidor ao editar.
+
+---
+
+## 🧪 Testes
+
+Suíte de testes unitários com **Vitest** e **Testing Library**:
+
+- **`registrationSchema`** — dados válidos e inválidos, limites e enums.
+- **`RegistrationService`** — criação e atualização com repositório falso injetado via `IRegistrationRepository`, cálculo do valor no servidor e tradução de erros.
+- **`RegistrationForm`** — comportamento do formulário e envio do payload esperado.
+
+Configuração em `vitest.config.mts` com `vitest.setup.ts` (matchers do `jest-dom` e `cleanup` após cada teste).
+
+```bash
+npm run test         # executa a suíte
+npx tsc --noEmit     # checagem de tipos
+```
+
+---
+
+## 🎨 Interface
+
+- **Tailwind CSS v4** + **shadcn/ui**
+- Tipografia: **Neue Machina** nos títulos e **Inter** nos textos
+- Paleta: background `#0b0f0c`, superfícies `#17241b` / `#203127`, primária `#f2670b`, texto `#f4f2ec`
+- Direção visual esportiva e editorial: fotografia de MTB em grande escala, títulos em caixa alta, grafismos de trilha e altimetria, animações sutis e atenção especial ao mobile
+
+---
+
+## 🛠️ Tecnologias
 
 - **Framework:** Next.js (App Router)
 - **Linguagem:** TypeScript
-- **Banco de Dados:** PostgreSQL (Neon Serverless)
+- **Banco de dados:** PostgreSQL (Neon Serverless)
 - **ORM:** Prisma v5.22.0
-- **Qualidade de Código & Linter:** ESLint 9 (Flat Config)
+- **Validação:** Zod
+- **Autenticação:** Auth.js (NextAuth)
+- **Estilo:** Tailwind CSS v4 + shadcn/ui
+- **Testes:** Vitest + Testing Library
+- **Qualidade de código:** ESLint 9 (Flat Config)
+- **Deploy:** Vercel
 
-## 📊 Progresso do Projeto
+---
 
-- [x] Configuração inicial do ambiente Next.js App Router e estrutura limpa de versionamento.
-- [x] Modelagem da entidade de domínio `Participant`/`Registration` e contratos (`IRegistrationRepository`).
-- [x] Configuração do `schema.prisma` com estrutura PostgreSQL e mapeamentos em português.
-- [x] Execução de migrações no banco de dados (`npx prisma migrate dev`).
-- [x] Implementação do `PrismaRegistrationRepository` com operações completas de CRUD (`save`, `update`, `delete`, `findById`, `findByCpf`, `findAll`).
-- [x] Criação do Singleton para gerenciamento do pool de conexões com o Neon.
-- [x] Configuração do ESLint para suporte a variáveis descartáveis em desestruturação (`_id`).
-- [x] Implementação das API Routes (`POST /api/registrations`, `GET /api/registrations`).
-- [x] Conexão dos componentes de formulário com as rotas de API via `fetch`.
-- [ ] Desenvolvimento do Layout / Interface do Usuário (Formulário de Inscrição & Dashboard Admin).
+## 📊 Progresso
 
-## 🚀 Como Executar o Projeto
+- [x] Configuração do Next.js App Router e estrutura de versionamento
+- [x] Modelagem do domínio `Participant` / `Registration` e contrato `IRegistrationRepository`
+- [x] `schema.prisma` com PostgreSQL e mapeamentos em português
+- [x] Migrações do banco (`npx prisma migrate dev`)
+- [x] `PrismaRegistrationRepository` com CRUD completo (`save`, `update`, `delete`, `findById`, `findByCpf`, `findAll`)
+- [x] Singleton do Prisma com adapter do Neon
+- [x] API Routes públicas e administrativas
+- [x] Formulário de inscrição conectado à API
+- [x] Autenticação e proteção do painel admin
+- [x] Validação completa no servidor e tratamento padronizado de erros
+- [x] Suíte de testes unitários (schema, service e formulário)
+- [x] Landing page do evento
+- [x] Lista pública de inscritos
+- [x] Deploy na Vercel
+- [ ] Campo de cupom de desconto na inscrição
+- [ ] Atualização dos assets finais (logos de apoiadores e fotos do evento)
+
+---
+
+## 🚀 Como executar
 
 ### Pré-requisitos
 
-- **Node.js:** `v20.x` ou `v24.x`
-- **npm:** `v10.x`+
-- **Banco PostgreSQL:** String de conexão do Neon (`DATABASE_URL`)
+- **Node.js:** v20.x ou v24.x
+- **npm:** v10.x+
+- **PostgreSQL:** string de conexão do Neon
 
-### Passo a Passo
+### Passo a passo
 
-1. **Clonar o repositório:**
+```bash
+# 1. Clonar o repositório
+git clone https://github.com/gutosavi/sananduva-bikers.git
+cd sananduva-bikers
 
-   ```bash
-   git clone https://github.com/seu-usuario/sananduva-bikers.git
-   cd sananduva-bikers
-   ```
+# 2. Instalar as dependências
+npm install
+```
 
-2. **Instalar as dependências:**
+3. Criar o arquivo `.env` na raiz:
 
-   ```bash
-   npm install
-   ```
+```env
+DATABASE_URL="postgresql://usuario:senha@ep-exemplo.us-east-2.aws.neon.tech/neondb?sslmode=require"
+AUTH_SECRET="gere-com-npx-auth-secret"
+```
 
-3. **Configurar as Variáveis de Ambiente:**
-   Crie um arquivo `.env` na raiz do projeto:
+```bash
+# 4. Executar as migrações
+npx prisma migrate dev
 
-   ```env
-   DATABASE_URL="postgresql://usuario:senha@ep-exemplo.us-east-2.aws.neon.tech/neondb?sslmode=require"
-   ```
+# 5. Iniciar o servidor de desenvolvimento
+npm run dev
+```
 
-4. **Executar as Migrações do Prisma:**
+Acesse [http://localhost:3000](http://localhost:3000).
 
-   ```bash
-   npx prisma migrate dev
-   ```
-
-5. **Iniciar o Servidor de Desenvolvimento:**
-   ```bash
-   npm run dev
-   ```
-   Acesse <http://localhost:3000> no seu navegador.
+---
 
 ## 📝 Licença
 
-Este projeto é privado e de uso exclusivo da organização do evento **Sananduva Bikers**.
+Projeto privado, de uso exclusivo da organização do evento Sananduva Bikers.
